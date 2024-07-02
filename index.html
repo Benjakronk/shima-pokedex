@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokédex Search</title>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <style>
+        .pokemon-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        .pokemon-card h2 {
+            color: #333;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .pokemon-card ul {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pokédex Search</h1>
+    <button id="authorize_button" style="display: none;" onclick="handleAuthClick()">Authorize</button>
+    <button id="signout_button" style="display: none;">Sign Out</button>
+    <input type="text" id="searchInput" placeholder="Search for a Pokémon...">
+    <button onclick="searchPokemon()">Search</button>
+    <div id="results"></div>
+    <div id="debug"></div>
+
+    <script>
+    const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/images/';
+    const IMAGE_FORMATS = ['png', 'jpg', 'jpeg', 'jfif'];
+    const CLIENT_ID = '640296952332-niust59g0mgdci7btsjobfkvaarppfuf.apps.googleusercontent.com';
+    const API_KEY = 'AIzaSyDaQqh54K_B3YhQZny6BQrhSpNwrnRyWBk';
+    const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
+    const SCOPES = 'https://www.googleapis.com/auth/spreadsheets.readonly';
+
+    let tokenClient;
+    let pokemonData = [];
+    let unlockedPokemon = new Set();
+
+    function debug(message) {
+        console.log(message);
+        document.getElementById('debug').innerHTML += message + '<br>';
+    }
+
+    function gapiLoaded() {
+        debug('gapiLoaded called');
+        gapi.load('client', initializeGapiClient);
+    }
+
+    async function initializeGapiClient() {
+        debug('initializeGapiClient called');
+        try {
+            await gapi.client.init({
+                apiKey: API_KEY,
+                discoveryDocs: [DISCOVERY_DOC],
+            });
+            debug('GAPI client initialized');
+        } catch (error) {
+            debug('Error initializing GAPI client: ' + error.message);
+        }
+        maybeEnableButtons();
+    }
+
+    function gisLoaded() {
+        debug('gisLoaded called');
+        try {
+            tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: CLIENT_ID,
+                scope: SCOPES,
+                callback: '', // defined later
+            });
+            debug('GIS loaded, tokenClient initialized');
+        } catch (error) {
+            debug('Error initializing tokenClient: ' + error.message);
+        }
+        maybeEnableButtons();
+    }
+
+    function maybeEnableButtons() {
+        debug('maybeEnableButtons called');
+        if (gapi.client && tokenClient) {
+            document.getElementById('authorize_button').style.display = 'inline-block';
+            debug('Authorize button displayed');
+        } else {
+            debug('Not ready to display authorize button. gapi.client: ' + !!gapi.client + ', tokenClient: ' + !!tokenClient);
+        }
+    }
+
+    function handleAuthClick() {
+        debug('handleAuthClick called');
+        tokenClient.callback = async (resp) => {
+            if (resp.error !== undefined) {
+                throw (resp);
+            }
+            document.getElementById('signout_button').style.display = 'inline-block';
+            document.getElementById('authorize_button').innerText = 'Refresh';
+            await loadPokemonData();
+        };
+
+        if (gapi.client.getToken() === null) {
+            debug('Requesting access token with consent prompt');
+            tokenClient.requestAccessToken({prompt: 'consent'});
+        } else {
+            debug('Requesting access token without consent prompt');
+            tokenClient.requestAccessToken({prompt: ''});
+        }
+    }
+
+    function handleSignoutClick() {
+        const token = gapi.client.getToken();
+        if (token !== null) {
+            google.accounts.oauth2.revoke(token.access_token);
+            gapi.client.setToken('');
+            document.getElementById('results').innerText = '';
+            document.getElementById('authorize_button').innerText = 'Authorize';
+            document.getElementById('signout_button').style.display = 'none';
+        }
+    }
+
+    function searchPokemon() {
+    debug('searchPokemon called');
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    debug('Search term: ' + searchTerm);
+    const results = pokemonData.filter(pokemon => 
+        (pokemon.name.toLowerCase().includes(searchTerm) || pokemon.id.includes(searchTerm)) &&
+        unlockedPokemon.has(pokemon.id)
+    );
+    debug('Search results: ' + results.length + ' Pokémon found');
+    displayResults(results);
+    }
+
+    async function getImageUrl(pokemonName, pokemonId) {
+    const paddedId = pokemonId.toString().padStart(3, '0');
+    const sanitizedName = sanitizeFileName(pokemonName);
+    const baseFileName = `${paddedId}-${sanitizedName}`;
+    for (const format of IMAGE_FORMATS) {
+        const url = `${IMAGE_BASE_URL}${baseFileName}.${format}`;
+        try {
+            if (await imageExists(url)) {
+                debug(`Image found: ${url}`);
+                return url;
+            }
+        } catch (error) {
+            debug(`Error checking image ${url}: ${error.message}`);
+        }
+    }
+    debug(`No image found for ${pokemonName} (ID: ${pokemonId})`);
+    return null;
+    }
+
+    function imageExists(url) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = url;
+    });
+    }
+
+    function sanitizeFileName(name) {
+    // First, lowercase and replace spaces and other characters with hyphens
+    let sanitized = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    // Remove any leading or trailing hyphens
+    sanitized = sanitized.replace(/^-+|-+$/g, '');
+    return sanitized;
+    }
+
+    async function loadPokemonData() {
+    debug('loadPokemonData called');
+    showLoading();
+    let response;
+    try {
+        response = await gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: '12piqAgh9dh_y_C4Gu7lyEL9slsLGER8TBxm8F6zwhKk',
+            range: 'Encyclopedia!A2:AO',
+        });
+    } catch (err) {
+        debug('Error loading Pokémon data: ' + err.message);
+        hideLoading();
+        return;
+    }
+    const values = response.result.values;
+    if (!values || values.length == 0) {
+        debug('No data found in the spreadsheet');
+        hideLoading();
+        return;
+    }
+    debug('Raw data loaded: ' + values.length + ' rows');
+    try {
+        pokemonData = await Promise.all(values.map(async (row, index) => {
+            debug(`Processing Pokémon ${index + 1}/${values.length}: ${row[2]} (ID: ${row[1]})`);
+            const imageUrl = await getImageUrl(row[2], row[1]);
+            return {
+                image: imageUrl,
+                id: row[1],
+                name: row[2],
+                classification: row[5],
+                flavorText: row[6],
+                primaryType: row[7],
+                secondaryType: row[8],
+                size: row[9],
+                rarity: row[10],
+                habitat: row[11],
+                behavior: row[12],
+                activityTime: row[13],
+                evolutionReq: row[14],
+                primaryAbility: row[15],
+                secondaryAbility: row[16],
+                hiddenAbility: row[17],
+                catchDifficulty: row[18],
+                level: row[19],
+                ac: row[20],
+                hitDice: row[21],
+                hp: row[22],
+                vitalityDice: row[23],
+                vp: row[24],
+                speed: row[25],
+                strength: row[27],
+                dexterity: row[28],
+                constitution: row[29],
+                intelligence: row[30],
+                wisdom: row[31],
+                charisma: row[32],
+                savingThrows: row[33],
+                skills: row[34],
+                moves: {
+                    starting: row[35],
+                    level2: row[36],
+                    level6: row[37],
+                    level10: row[38],
+                    level14: row[39],
+                    level18: row[40]
+                }
+            };
+        }));
+    } catch (error) {
+        debug(`Error processing Pokémon data: ${error.message}`);
+    }
+    debug('Pokémon data processed: ' + pokemonData.length + ' Pokémon');
+    pokemonData.forEach(pokemon => unlockedPokemon.add(pokemon.id));
+    hideLoading();
+    debug('loadPokemonData completed');
+    }
+
+    function displayResults(results) {
+        debug('displayResults called');
+        const resultsContainer = document.getElementById('results');
+        resultsContainer.innerHTML = '';
+        if (results.length === 0) {
+            resultsContainer.innerHTML = '<p>No Pokémon found. Try a different search term.</p>';
+        } else {
+            results.forEach(pokemon => {
+                const pokemonCard = document.createElement('div');
+                pokemonCard.className = 'pokemon-card';
+                pokemonCard.innerHTML = `
+                    <h2>${pokemon.name} (#${pokemon.id})</h2>
+                    ${pokemon.image ? `<img src="${pokemon.image}" alt="${pokemon.name}" style="max-width: 200px;">` : ''}
+                    <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
+                    <p><strong>Size:</strong> ${pokemon.size}</p>
+                    <p><strong>Rarity:</strong> ${pokemon.rarity}</p>
+                    <p><strong>Behavior:</strong> ${pokemon.behavior}</p>
+                    <p><strong>Habitat:</strong> ${pokemon.habitat}</p>
+                    <p><strong>Classification:</strong> ${pokemon.classification}</p>
+                    <p><strong>Flavor Text:</strong> ${pokemon.flavorText}</p>
+                    <h3>Abilities:</h3>
+                    <ul>
+                        <li><strong>Primary:</strong> ${pokemon.primaryAbility}</li>
+                        ${pokemon.secondaryAbility ? `<li><strong>Secondary:</strong> ${pokemon.secondaryAbility}</li>` : ''}
+                        ${pokemon.hiddenAbility ? `<li><strong>Hidden:</strong> ${pokemon.hiddenAbility}</li>` : ''}
+                    </ul>
+                    <h3>Stats:</h3>
+                    <ul>
+                        <li><strong>Hit Dice:</strong> ${pokemon.hitDice}</li>
+                        <li><strong>Vitality Dice:</strong> ${pokemon.vitalityDice}</li>
+                        <li><strong>Strength:</strong> ${pokemon.strength}</li>
+                        <li><strong>Dexterity:</strong> ${pokemon.dexterity}</li>
+                        <li><strong>Constitution:</strong> ${pokemon.constitution}</li>
+                        <li><strong>Intelligence:</strong> ${pokemon.intelligence}</li>
+                        <li><strong>Wisdom:</strong> ${pokemon.wisdom}</li>
+                        <li><strong>Charisma:</strong> ${pokemon.charisma}</li>
+                        <li><strong>Speed:</strong> ${pokemon.speed}</li>
+                    </ul>
+                    <h3>Available Moves:</h3>
+                    <ul>
+                        <li><strong>Starting:</strong> ${pokemon.moves.starting}</li>
+                        <li><strong>Level 2:</strong> ${pokemon.moves.level2}</li>
+                        <li><strong>Level 6:</strong> ${pokemon.moves.level6}</li>
+                        <li><strong>Level 10:</strong> ${pokemon.moves.level10}</li>
+                        <li><strong>Level 14:</strong> ${pokemon.moves.level14}</li>
+                        <li><strong>Level 18:</strong> ${pokemon.moves.level18}</li>
+                    </ul>
+                `;
+                resultsContainer.appendChild(pokemonCard);
+            });
+        }
+        debug('Results displayed');
+    }
+
+    function showLoading() {
+    document.getElementById('results').innerHTML = '<p>Loading Pokémon data...</p>';
+    }
+
+    function hideLoading() {
+    document.getElementById('results').innerHTML = '';
+    }
+    </script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+</body>
+</html>
