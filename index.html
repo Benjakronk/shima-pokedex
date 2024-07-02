@@ -26,7 +26,6 @@
 <body>
     <h1>Pokédex Search</h1>
     <button id="authorize_button" style="display: none;" onclick="handleAuthClick()">Authorize</button>
-    <button id="signout_button" style="display: none;">Sign Out</button>
     <input type="text" id="searchInput" placeholder="Search for a Pokémon...">
     <button onclick="searchPokemon()">Search</button>
     <div id="results"></div>
@@ -50,89 +49,77 @@
     }
 
     function gapiLoaded() {
-        debug('gapiLoaded called');
+        // debug('gapiLoaded called');
         gapi.load('client', initializeGapiClient);
     }
 
     async function initializeGapiClient() {
-        debug('initializeGapiClient called');
+        // debug('initializeGapiClient called');
         try {
             await gapi.client.init({
                 apiKey: API_KEY,
                 discoveryDocs: [DISCOVERY_DOC],
             });
-            debug('GAPI client initialized');
+            // debug('GAPI client initialized');
         } catch (error) {
-            debug('Error initializing GAPI client: ' + error.message);
+            // debug('Error initializing GAPI client: ' + error.message);
         }
         maybeEnableButtons();
     }
 
     function gisLoaded() {
-        debug('gisLoaded called');
+        // debug('gisLoaded called');
         try {
             tokenClient = google.accounts.oauth2.initTokenClient({
                 client_id: CLIENT_ID,
                 scope: SCOPES,
                 callback: '', // defined later
             });
-            debug('GIS loaded, tokenClient initialized');
+            // debug('GIS loaded, tokenClient initialized');
         } catch (error) {
-            debug('Error initializing tokenClient: ' + error.message);
+            // debug('Error initializing tokenClient: ' + error.message);
         }
         maybeEnableButtons();
     }
 
     function maybeEnableButtons() {
-        debug('maybeEnableButtons called');
+        // debug('maybeEnableButtons called');
         if (gapi.client && tokenClient) {
             document.getElementById('authorize_button').style.display = 'inline-block';
-            debug('Authorize button displayed');
+            // debug('Authorize button displayed');
         } else {
-            debug('Not ready to display authorize button. gapi.client: ' + !!gapi.client + ', tokenClient: ' + !!tokenClient);
+            // debug('Not ready to display authorize button. gapi.client: ' + !!gapi.client + ', tokenClient: ' + !!tokenClient);
         }
     }
 
     function handleAuthClick() {
-        debug('handleAuthClick called');
+        // debug('handleAuthClick called');
         tokenClient.callback = async (resp) => {
             if (resp.error !== undefined) {
                 throw (resp);
             }
-            document.getElementById('signout_button').style.display = 'inline-block';
             document.getElementById('authorize_button').innerText = 'Refresh';
             await loadPokemonData();
         };
 
         if (gapi.client.getToken() === null) {
-            debug('Requesting access token with consent prompt');
+            // debug('Requesting access token with consent prompt');
             tokenClient.requestAccessToken({prompt: 'consent'});
         } else {
-            debug('Requesting access token without consent prompt');
+            // debug('Requesting access token without consent prompt');
             tokenClient.requestAccessToken({prompt: ''});
         }
     }
 
-    function handleSignoutClick() {
-        const token = gapi.client.getToken();
-        if (token !== null) {
-            google.accounts.oauth2.revoke(token.access_token);
-            gapi.client.setToken('');
-            document.getElementById('results').innerText = '';
-            document.getElementById('authorize_button').innerText = 'Authorize';
-            document.getElementById('signout_button').style.display = 'none';
-        }
-    }
-
     function searchPokemon() {
-    debug('searchPokemon called');
+    // debug('searchPokemon called');
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    debug('Search term: ' + searchTerm);
+    // debug('Search term: ' + searchTerm);
     const results = pokemonData.filter(pokemon => 
         (pokemon.name.toLowerCase().includes(searchTerm) || pokemon.id.includes(searchTerm)) &&
         unlockedPokemon.has(pokemon.id)
     );
-    debug('Search results: ' + results.length + ' Pokémon found');
+    // debug('Search results: ' + results.length + ' Pokémon found');
     displayResults(results);
     }
 
@@ -144,14 +131,14 @@
         const url = `${IMAGE_BASE_URL}${baseFileName}.${format}`;
         try {
             if (await imageExists(url)) {
-                debug(`Image found: ${url}`);
+                // debug(`Image found: ${url}`);
                 return url;
             }
         } catch (error) {
-            debug(`Error checking image ${url}: ${error.message}`);
+            // debug(`Error checking image ${url}: ${error.message}`);
         }
     }
-    debug(`No image found for ${pokemonName} (ID: ${pokemonId})`);
+    // debug(`No image found for ${pokemonName} (ID: ${pokemonId})`);
     return null;
     }
 
@@ -173,7 +160,7 @@
     }
 
     async function loadPokemonData() {
-    debug('loadPokemonData called');
+    // debug('loadPokemonData called');
     showLoading();
     let response;
     try {
@@ -182,20 +169,20 @@
             range: 'Encyclopedia!A2:AO',
         });
     } catch (err) {
-        debug('Error loading Pokémon data: ' + err.message);
+        // debug('Error loading Pokémon data: ' + err.message);
         hideLoading();
         return;
     }
     const values = response.result.values;
     if (!values || values.length == 0) {
-        debug('No data found in the spreadsheet');
+        // debug('No data found in the spreadsheet');
         hideLoading();
         return;
     }
-    debug('Raw data loaded: ' + values.length + ' rows');
+    // debug('Raw data loaded: ' + values.length + ' rows');
     try {
         pokemonData = await Promise.all(values.map(async (row, index) => {
-            debug(`Processing Pokémon ${index + 1}/${values.length}: ${row[2]} (ID: ${row[1]})`);
+            // debug(`Processing Pokémon ${index + 1}/${values.length}: ${row[2]} (ID: ${row[1]})`);
             const imageUrl = await getImageUrl(row[2], row[1]);
             return {
                 image: imageUrl,
@@ -241,16 +228,16 @@
             };
         }));
     } catch (error) {
-        debug(`Error processing Pokémon data: ${error.message}`);
+        // debug(`Error processing Pokémon data: ${error.message}`);
     }
-    debug('Pokémon data processed: ' + pokemonData.length + ' Pokémon');
+    // debug('Pokémon data processed: ' + pokemonData.length + ' Pokémon');
     pokemonData.forEach(pokemon => unlockedPokemon.add(pokemon.id));
     hideLoading();
-    debug('loadPokemonData completed');
+    // debug('loadPokemonData completed');
     }
 
     function displayResults(results) {
-        debug('displayResults called');
+        // debug('displayResults called');
         const resultsContainer = document.getElementById('results');
         resultsContainer.innerHTML = '';
         if (results.length === 0) {
@@ -300,7 +287,7 @@
                 resultsContainer.appendChild(pokemonCard);
             });
         }
-        debug('Results displayed');
+        // debug('Results displayed');
     }
 
     function showLoading() {
