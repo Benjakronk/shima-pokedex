@@ -21,11 +21,30 @@
         .pokemon-card ul {
             padding-left: 20px;
         }
+        #filters {
+            margin-bottom: 20px;
+        }
+        #filters select {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
     <h1>Pokédex Search</h1>
     <button id="authorize_button" style="display: none;" onclick="handleAuthClick()">Authorize</button>
+    
+    <div id="filters">
+        <select id="typeFilter"><option value="">All Types</option></select>
+        <select id="sizeFilter"><option value="">All Sizes</option></select>
+        <select id="behaviorFilter"><option value="">All Behaviors</option></select>
+        <select id="activityFilter"><option value="">All Activities</option></select>
+        <select id="rarityFilter"><option value="">All Rarities</option></select>
+        <select id="habitatFilter"><option value="">All Habitats</option></select>
+        <button onclick="applyFilters()">Apply Filters</button>
+    </div>
+
+    <div id="filteredList"></div>
+    
     <input type="text" id="searchInput" placeholder="Search for a Pokémon...">
     <button onclick="searchPokemon()">Search</button>
     <div id="results"></div>
@@ -45,9 +64,18 @@
     let tokenClient;
     let pokemonData = [];
     let registeredPokemon = {
-        ids: new Set(),
+        names: new Set(),
         lastFetched: 0
     };
+    let filterOptions = {
+        types: new Set(),
+        sizes: new Set(),
+        behaviors: new Set(),
+        activities: new Set(),
+        rarities: new Set(),
+        habitats: new Set()
+    };
+    let filteredPokemon = [];
 
     // Utility functions
     function showLoading() {
@@ -145,6 +173,7 @@
     } catch (error) {
         console.error('Error fetching registered Pokémon:', error);
     }
+    updateFilterOptions();
     }
 
     async function loadPokemonData() {
@@ -169,18 +198,99 @@
     } finally {
         hideLoading();
     }
+    updateFilterOptions();
+    }
+
+    function updateFilterOptions() {
+        filterOptions = {
+            types: new Set(),
+            sizes: new Set(),
+            behaviors: new Set(),
+            activities: new Set(),
+            rarities: new Set(),
+            habitats: new Set()
+        };
+
+        pokemonData.forEach(pokemon => {
+            if (registeredPokemon.names.has(pokemon.name.toLowerCase())) {
+                filterOptions.types.add(pokemon.primaryType);
+                if (pokemon.secondaryType) filterOptions.types.add(pokemon.secondaryType);
+                filterOptions.sizes.add(pokemon.size);
+                filterOptions.behaviors.add(pokemon.behavior);
+                filterOptions.activities.add(pokemon.activityTime);
+                filterOptions.rarities.add(pokemon.rarity);
+                filterOptions.habitats.add(pokemon.habitat);
+            }
+        });
+
+        populateFilterDropdowns();
+    }
+
+    function populateFilterDropdowns() {
+        populateSelect('typeFilter', filterOptions.types);
+        populateSelect('sizeFilter', filterOptions.sizes);
+        populateSelect('behaviorFilter', filterOptions.behaviors);
+        populateSelect('activityFilter', filterOptions.activities);
+        populateSelect('rarityFilter', filterOptions.rarities);
+        populateSelect('habitatFilter', filterOptions.habitats);
+    }
+
+    function populateSelect(id, options) {
+        const select = document.getElementById(id);
+        select.innerHTML = `<option value="">All ${id.replace('Filter', 's')}</option>`;
+        options.forEach(option => {
+            const optionElement = document.createElement('option');
+            optionElement.value = option;
+            optionElement.textContent = option;
+            select.appendChild(optionElement);
+        });
+    }
+
+    function applyFilters() {
+        const typeFilter = document.getElementById('typeFilter').value;
+        const sizeFilter = document.getElementById('sizeFilter').value;
+        const behaviorFilter = document.getElementById('behaviorFilter').value;
+        const activityFilter = document.getElementById('activityFilter').value;
+        const rarityFilter = document.getElementById('rarityFilter').value;
+        const habitatFilter = document.getElementById('habitatFilter').value;
+
+        filteredPokemon = pokemonData.filter(pokemon => 
+            registeredPokemon.names.has(pokemon.name.toLowerCase()) &&
+            (!typeFilter || pokemon.primaryType === typeFilter || pokemon.secondaryType === typeFilter) &&
+            (!sizeFilter || pokemon.size === sizeFilter) &&
+            (!behaviorFilter || pokemon.behavior === behaviorFilter) &&
+            (!activityFilter || pokemon.activityTime === activityFilter) &&
+            (!rarityFilter || pokemon.rarity === rarityFilter) &&
+            (!habitatFilter || pokemon.habitat === habitatFilter)
+        );
+
+        displayFilteredList();
+    }
+
+    function displayFilteredList() {
+        const listContainer = document.getElementById('filteredList');
+        listContainer.innerHTML = '<h3>Filtered Pokémon List:</h3>';
+        if (filteredPokemon.length === 0) {
+            listContainer.innerHTML += '<p>No Pokémon match the selected filters.</p>';
+        } else {
+            const ul = document.createElement('ul');
+            filteredPokemon.forEach(pokemon => {
+                const li = document.createElement('li');
+                li.textContent = `${pokemon.name} (#${pokemon.id})`;
+                ul.appendChild(li);
+            });
+            listContainer.appendChild(ul);
+        }
     }
 
     // Call loadPokemonData when the page loads
     window.onload = async function() {
-    await initializeGapiClient();
-    if (gapi.client.getToken() === null) {
-        // Not authorized yet, wait for user to click authorize button
-        console.log('Please click the authorize button to load Pokémon data');
-    } else {
-        // Already authorized, load data
-        await loadPokemonData();
-    }
+        await initializeGapiClient();
+        if (gapi.client.getToken() === null) {
+            console.log('Please click the authorize button to load Pokémon data');
+        } else {
+            await loadPokemonData();
+        }
     };
 
     async function processPokemonRow(row) {
@@ -253,19 +363,18 @@
 
     // Search and display functions
     function searchPokemon() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const result = pokemonData.find(pokemon => 
-        (pokemon.name.toLowerCase().includes(searchTerm) || pokemon.id.includes(searchTerm)) &&
-        registeredPokemon.names.has(pokemon.name.toLowerCase())
-    );
-    displayResults(result ? [result] : []);
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const result = filteredPokemon.find(pokemon => 
+            pokemon.name.toLowerCase().includes(searchTerm) || pokemon.id.includes(searchTerm)
+        );
+        displayResults(result ? [result] : []);
     }
 
     function displayResults(results) {
         const resultsContainer = document.getElementById('results');
         resultsContainer.innerHTML = '';
         if (results.length === 0) {
-            resultsContainer.innerHTML = '<p>No Pokémon found. Try a different search term.</p>';
+            resultsContainer.innerHTML = '<p>No Pokémon found. Try a different search term or adjust filters.</p>';
         } else {
             results.forEach(pokemon => {
                 const pokemonCard = createPokemonCard(pokemon);
