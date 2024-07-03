@@ -27,6 +27,14 @@
         #filters select {
             margin-right: 10px;
         }
+        .pagination-controls {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .pagination-controls button {
+        margin: 0 10px;
+    }
+</style>
     </style>
 </head>
 <body>
@@ -51,6 +59,7 @@
 
     <script>
     // Constants
+    const ITEMS_PER_PAGE = 10;
     const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/images/';
     const IMAGE_FORMATS = ['png', 'jpg', 'jpeg', 'jfif'];
     const CLIENT_ID = '640296952332-niust59g0mgdci7btsjobfkvaarppfuf.apps.googleusercontent.com';
@@ -61,6 +70,7 @@
     const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
     // Global variables
+    let currentPage = 1;
     let tokenClient;
     let pokemonData = [];
     let registeredPokemon = {
@@ -263,24 +273,68 @@
             (!rarityFilter || pokemon.rarity === rarityFilter) &&
             (!habitatFilter || pokemon.habitat === habitatFilter)
         );
-
+        currentPage = 1;
         displayFilteredList();
     }
 
     function displayFilteredList() {
-        const listContainer = document.getElementById('filteredList');
-        listContainer.innerHTML = '<h3>Filtered Pokémon List:</h3>';
-        if (filteredPokemon.length === 0) {
-            listContainer.innerHTML += '<p>No Pokémon match the selected filters.</p>';
-        } else {
-            const ul = document.createElement('ul');
-            filteredPokemon.forEach(pokemon => {
-                const li = document.createElement('li');
-                li.textContent = `${pokemon.name} (#${pokemon.id})`;
-                ul.appendChild(li);
-            });
-            listContainer.appendChild(ul);
+    const listContainer = document.getElementById('filteredList');
+    listContainer.innerHTML = '<h3>Filtered Pokémon List:</h3>';
+    if (filteredPokemon.length === 0) {
+        listContainer.innerHTML += '<p>No Pokémon match the selected filters.</p>';
+    } else {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredPokemon.length);
+        const ul = document.createElement('ul');
+        
+        for (let i = startIndex; i < endIndex; i++) {
+            const pokemon = filteredPokemon[i];
+            const li = document.createElement('li');
+            li.textContent = `${pokemon.name} (#${pokemon.id})`;
+            ul.appendChild(li);
         }
+        
+        listContainer.appendChild(ul);
+        
+        // Add pagination controls
+        const paginationControls = createPaginationControls();
+        listContainer.appendChild(paginationControls);
+    }
+    }
+
+    function createPaginationControls() {
+    const totalPages = Math.ceil(filteredPokemon.length / ITEMS_PER_PAGE);
+    const controls = document.createElement('div');
+    controls.className = 'pagination-controls';
+    
+    const prevButton = document.createElement('button');
+    prevButton.textContent = 'Previous';
+    prevButton.onclick = () => {
+        if (currentPage > 1) {
+            currentPage--;
+            displayFilteredList();
+        }
+    };
+    prevButton.disabled = currentPage === 1;
+    
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Next';
+    nextButton.onclick = () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            displayFilteredList();
+        }
+    };
+    nextButton.disabled = currentPage === totalPages;
+    
+    const pageInfo = document.createElement('span');
+    pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+    
+    controls.appendChild(prevButton);
+    controls.appendChild(pageInfo);
+    controls.appendChild(nextButton);
+    
+    return controls;
     }
 
     // Call loadPokemonData when the page loads
