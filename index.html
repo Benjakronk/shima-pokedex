@@ -47,11 +47,12 @@
 </head>
 <body>
     <h1>Pokédex Search</h1>
-    <nav>
-        <button onclick="showPokemonSearch()">Pokédex Search</button>
-        <button onclick="showMoveSearch()">Move Database</button>
-    </nav>
     <button id="authorize_button" style="display: none;" onclick="handleAuthClick()">Authorize</button>
+    <nav>
+        <button id="pokedex_button" onclick="showPokemonSearch()" style="display: none;">Pokédex Search</button>
+        <button id="move_button" onclick="showMoveSearch()" style="display: none;">Move Database</button>
+    </nav>
+
     
     <div id="pokemonSearch" style="display: none;">
         <div id="filters">
@@ -244,6 +245,8 @@ function showMoveSearch() {
         hideLoading();
     }
     updateFilterOptions();
+    document.getElementById('pokedex_button').style.display = 'inline-block';
+    document.getElementById('move_button').style.display = 'inline-block';
     }
 
     function updateFilterOptions() {
