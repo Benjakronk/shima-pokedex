@@ -548,6 +548,7 @@ function showMoveSearch() {
         move.type.toLowerCase().includes(searchTerm)
     );
     displayMoveResults(results);
+    document.getElementById('results').innerHTML = '<p>Searching for move data...</p>';
     }
 
     function displayMoveResults(results) {
