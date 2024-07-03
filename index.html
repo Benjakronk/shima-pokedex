@@ -35,11 +35,24 @@
     .pagination-controls button {
         margin: 0 10px;
     }
+
+    .move-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: #f0f0f0;
+    }
 </style>
     </style>
 </head>
 <body>
     <h1>Pokédex Search</h1>
+    <nav>
+        <button onclick="showPokemonSearch()">Pokédex Search</button>
+        <button onclick="showMoveSearch()">Move Database</button>
+    </nav>
+    <div id="pokemonSearch"></div>
     <button id="authorize_button" style="display: none;" onclick="handleAuthClick()">Authorize</button>
     
     <div id="filters">
@@ -57,9 +70,19 @@
     <input type="text" id="searchInput" placeholder="Search for a Pokémon...">
     <button onclick="searchPokemon()">Search</button>
     <div id="results"></div>
+    </div>
+
+    <div id="moveSearch" style="display: none;">
+        <h2>Move Database</h2>
+        <input type="text" id="moveSearchInput" placeholder="Search for a move...">
+        <button onclick="searchMoves()">Search Moves</button>
+        <div id="moveResults"></div>
+    </div>
 
     <script>
     // Constants
+    const MOVE_SHEET_NAME = 'Move List';
+    const MOVE_SHEET_RANGE = 'A2:Z';
     const ITEMS_PER_PAGE = 10;
     const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/images/';
     const IMAGE_FORMATS = ['png', 'jpg', 'jpeg', 'jfif'];
@@ -71,6 +94,7 @@
     const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
     // Global variables
+    let moveData = [];
     let currentPage = 1;
     let tokenClient;
     let pokemonData = [];
@@ -89,6 +113,16 @@
     let filteredPokemon = [];
 
     // Utility functions
+    function showPokemonSearch() {
+    document.getElementById('pokemonSearch').style.display = 'block';
+    document.getElementById('moveSearch').style.display = 'none';
+    }
+
+function showMoveSearch() {
+    document.getElementById('pokemonSearch').style.display = 'none';
+    document.getElementById('moveSearch').style.display = 'block';
+    }
+    
     function showLoading() {
         document.getElementById('results').innerHTML = '<p>Loading Pokémon data...</p>';
     }
@@ -190,6 +224,7 @@
     async function loadPokemonData() {
     showLoading();
     try {
+        await loadMoveData();
         await fetchRegisteredPokemon();
         if (!gapi.client.sheets) {
             throw new Error('Sheets API not loaded');
@@ -481,6 +516,61 @@
         `;
         return pokemonCard;
     }
+
+    async function loadMoveData() {
+    showLoading();
+    try {
+        const response = await gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: '12piqAgh9dh_y_C4Gu7lyEL9slsLGER8TBxm8F6zwhKk', // Your spreadsheet ID
+            range: `${MOVE_SHEET_NAME}!${MOVE_SHEET_RANGE}`,
+        });
+        const values = response.result.values;
+        if (!values || values.length == 0) {
+            throw new Error('No data found in the move sheet');
+        }
+        moveData = values.map(row => ({
+            name: row[0],
+            type: row[1],
+            effect: row[2],
+            // ... map other fields as needed
+        }));
+        console.log('Move data processed:', moveData.length, 'moves');
+    } catch (error) {
+        console.error('Error loading move data:', error);
+    } finally {
+        hideLoading();
+    }
+    }
+
+    function searchMoves() {
+    const searchTerm = document.getElementById('moveSearchInput').value.toLowerCase();
+    const results = moveData.filter(move => 
+        move.name.toLowerCase().includes(searchTerm) ||
+        move.type.toLowerCase().includes(searchTerm)
+    );
+    displayMoveResults(results);
+    }
+
+    function displayMoveResults(results) {
+    const resultsContainer = document.getElementById('moveResults');
+    resultsContainer.innerHTML = '';
+    if (results.length === 0) {
+        resultsContainer.innerHTML = '<p>No moves found. Try a different search term.</p>';
+    } else {
+        results.forEach(move => {
+            const moveCard = document.createElement('div');
+            moveCard.className = 'move-card';
+            moveCard.innerHTML = `
+                <h3>${move.name}</h3>
+                <p><strong>Type:</strong> ${move.type}</p>
+                <p><strong>Effect:</strong> ${move.effect}</p>
+                <!-- Add other move details as needed -->
+            `;
+            resultsContainer.appendChild(moveCard);
+        });
+    }
+    }
+
     </script>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
     <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
