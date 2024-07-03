@@ -53,22 +53,21 @@
     </nav>
     <button id="authorize_button" style="display: none;" onclick="handleAuthClick()">Authorize</button>
     <div id="pokemonSearch"></div>
-    
-    <div id="filters">
-        <select id="typeFilter"><option value="">All Types</option></select>
-        <select id="sizeFilter"><option value="">All Sizes</option></select>
-        <select id="behaviorFilter"><option value="">All Behaviors</option></select>
-        <select id="activityFilter"><option value="">All Activities</option></select>
-        <select id="rarityFilter"><option value="">All Rarities</option></select>
-        <select id="habitatFilter"><option value="">All Habitats</option></select>
-        <button onclick="applyFilters()">Apply Filters</button>
-    </div>
+        <div id="filters">
+            <select id="typeFilter"><option value="">All Types</option></select>
+            <select id="sizeFilter"><option value="">All Sizes</option></select>
+            <select id="behaviorFilter"><option value="">All Behaviors</option></select>
+            <select id="activityFilter"><option value="">All Activities</option></select>
+            <select id="rarityFilter"><option value="">All Rarities</option></select>
+            <select id="habitatFilter"><option value="">All Habitats</option></select>
+            <button onclick="applyFilters()">Apply Filters</button>
+        </div>
 
-    <div id="filteredList"></div>
-    
-    <input type="text" id="searchInput" placeholder="Search for a Pokémon...">
-    <button onclick="searchPokemon()">Search</button>
-    <div id="results"></div>
+        <div id="filteredList"></div>
+        
+        <input type="text" id="searchInput" placeholder="Search for a Pokémon...">
+        <button onclick="searchPokemon()">Search</button>
+        <div id="results"></div>
     </div>
 
     <div id="moveSearch" style="display: none;">
