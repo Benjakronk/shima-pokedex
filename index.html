@@ -151,6 +151,9 @@
     showLoading();
     try {
         await fetchRegisteredPokemon();
+        if (!gapi.client.sheets) {
+            throw new Error('Sheets API not loaded');
+        }
         const response = await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: '12piqAgh9dh_y_C4Gu7lyEL9slsLGER8TBxm8F6zwhKk',
             range: 'Encyclopedia!A2:AO',
@@ -169,7 +172,16 @@
     }
 
     // Call loadPokemonData when the page loads
-    window.onload = loadPokemonData;
+    window.onload = async function() {
+    await initializeGapiClient();
+    if (gapi.client.getToken() === null) {
+        // Not authorized yet, wait for user to click authorize button
+        console.log('Please click the authorize button to load Pokémon data');
+    } else {
+        // Already authorized, load data
+        await loadPokemonData();
+    }
+    };
 
     async function processPokemonRow(row) {
         const imageUrl = await getImageUrl(row[2], row[1]);
