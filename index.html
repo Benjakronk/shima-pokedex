@@ -68,15 +68,19 @@
     }
 
     async function initializeGapiClient() {
-        try {
-            await gapi.client.init({
-                apiKey: API_KEY,
-                discoveryDocs: [DISCOVERY_DOC],
-            });
-        } catch (error) {
-            console.error('Error initializing GAPI client:', error);
-        }
-        maybeEnableButtons();
+    try {
+        await gapi.client.init({
+            apiKey: API_KEY,
+            discoveryDocs: [DISCOVERY_DOC],
+        });
+        console.log('GAPI client initialized');
+        // Load the sheets API
+        await gapi.client.load('sheets', 'v4');
+        console.log('Sheets API loaded');
+    } catch (error) {
+        console.error('Error initializing GAPI client:', error);
+    }
+    maybeEnableButtons();
     }
 
     function gisLoaded() {
@@ -99,19 +103,24 @@
     }
 
     function handleAuthClick() {
-        tokenClient.callback = async (resp) => {
-            if (resp.error !== undefined) {
-                throw resp;
-            }
-            document.getElementById('authorize_button').innerText = 'Refresh';
-            await loadPokemonData();
-        };
-
-        if (gapi.client.getToken() === null) {
-            tokenClient.requestAccessToken({prompt: 'consent'});
-        } else {
-            tokenClient.requestAccessToken({prompt: ''});
+    tokenClient.callback = async (resp) => {
+        if (resp.error !== undefined) {
+            throw resp;
         }
+        document.getElementById('authorize_button').innerText = 'Refresh';
+        // Ensure sheets API is loaded before calling loadPokemonData
+        if (!gapi.client.sheets) {
+            await gapi.client.load('sheets', 'v4');
+            console.log('Sheets API loaded after auth');
+        }
+        await loadPokemonData();
+    };
+
+    if (gapi.client.getToken() === null) {
+        tokenClient.requestAccessToken({prompt: 'consent'});
+    } else {
+        tokenClient.requestAccessToken({prompt: ''});
+    }
     }
 
     // Pokémon data functions
