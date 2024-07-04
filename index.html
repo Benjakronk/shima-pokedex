@@ -533,13 +533,13 @@ function showMoveSearch() {
         moveData = values.map(row => ({
             name: row[0],
             type: row[1],
-            move_power: row[2],
-            move_time: row[3],
-            vp_cost: row[4],
-            move_duration: row[5],
-            move_range: row[6],
-            move_description: row[7],
-            move_higher_levels: row[8],
+            power: row[2],
+            time: row[3],
+            vp: row[4],
+            duration: row[5],
+            range: row[6],
+            description: row[7],
+            higher: row[8],
             // ... map other fields as needed
         }));
         console.log('Move data processed:', moveData.length, 'moves');
@@ -572,7 +572,13 @@ function showMoveSearch() {
             moveCard.innerHTML = `
                 <h3>${move.name}</h3>
                 <p><strong>Type:</strong> ${move.type}</p>
-                <p><strong>Effect:</strong> ${move.effect}</p>
+                <p><strong>VP Cost:</strong> ${move.vp}</p>
+                <p><strong>Move Power:</strong> ${move.power}</p>
+                <p><strong>Time:</strong> ${move.time}</p>
+                <p><strong>Duration:</strong> ${move.duration}</p>
+                <p><strong>Range:</strong> ${move.range}</p>
+                <p><strong>Effect:</strong> ${move.description}</p>
+                <p><strong>Higher Levels:</strong> ${move.higher}</p>
                 <!-- Add other move details as needed -->
             `;
             resultsContainer.appendChild(moveCard);
