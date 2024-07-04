@@ -533,7 +533,13 @@ function showMoveSearch() {
         moveData = values.map(row => ({
             name: row[0],
             type: row[1],
-            effect: row[2],
+            move_power: row[2],
+            move_time: row[3],
+            vp_cost: row[4],
+            move_duration: row[5],
+            move_range: row[6],
+            move_description: row[7],
+            move_higher_levels: row[8],
             // ... map other fields as needed
         }));
         console.log('Move data processed:', moveData.length, 'moves');
