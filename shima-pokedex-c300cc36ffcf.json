@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "shima-pokedex",
+  "private_key_id": "c300cc36ffcf710a99b13e718960778c21c5041e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDbiW2tvs8JowoU\nGh5LQ0NS2HOW5szKwks5n7Mls5opuBF2fVKN21NG9UYNt87Nym6zGPOpJQzgc2rf\n23oedSRe0CJfWTrLy5dnmu9NwyLyxUB/OleRtosSvZm3PjzZOh7lD1M6hx5XK6t5\nTAQ/LOMfdYON4Sk3T5Ji/ffAAsNpYNnfrxVYDcB+e/IQBB5jS2rvTxclnpAnpdpX\nJutDF6VATa5atfxrslzdDlBBAS7IYUCp3+KJSyx4wVHxurg2laJd0nBP7h9nRBh2\nx/2KIUhfURV2cuZ6ij2A4VvW1VaJzgZuNHfZfuEwWH/p0Fad2rFsTawGCI+V0Y7Y\nVZCeUFrnAgMBAAECggEAVH56u5XGKn/ZJ657vVzYgwCy0D/pTxpjiHyaHycWbPse\noXuPc/CXhyZsfWgijJrea0jtssqDP7m8Rwc6Y5GTW3iA2jDGC9zCW4pKkyPJBiX7\n8lu6i2b19NMLX/bwxWx0qpVw44RQnZ09pHQo6EW27os0hD1GNzcFcNstaPXHTv1U\npD7+f1W0z+uXJHf1FFXbMgkPbCzy7ElzNghFZ2pxh8iL+EqDzIwsv0Oei6uqfb/w\nd57pmhUzk7KyNPakuIAVmdIfiH3ae6i9dAkst2vBMAAvy07Y9v0CS8CyI4kZiUDu\n7m1ucaaoNM4BlWWoufO65bpu4AvA5Mey6Mfi2IHQOQKBgQDyupIbYyZQ0P1SKamq\nUk2nENgApPTSHzxD6qFmCYny81A1LvZ1IYMoRRxNo8WG3mMk6R4laVKKx8DgS+HW\n0kEeaWpnHiyGGJfOSZg1XuxYx/RfAjJVqWmRGvgJySfJLEDcWIVdAfEol60e+H8F\nHXIBftZFbRMkmBsag/sk5MabOQKBgQDnij6B0QOhIPQjImFRocvr+EhGW+s/750v\nvShcZw8tIULgYq+wi8EFo3ntEHnNpRCIPjANz8TFtlEykYuL1lQjjtXY7akwrF+z\nxt2TS5K1fTvxXEnRrW2H60HzOK7bDKWYzKQhNberYJkBK4qhSKoe/c72ZxQruvhf\nOWyYyy0HHwKBgFUIdUzw5Chlvoj9HXoUkS2Y4gL/xuChnqwwU1B6wQACqzOmeyK3\nlcoSxAKTAAzqdZMls7Dpf8gsiG5LRxfJ2pQ729G6KWDk1rGm6JKx6VyE2CA8lcOa\nsOfrqb9L4AtC3IoU3MujdYeB810pMt5o3VqWw5vYxV8Jhl04pU/ccZNJAoGAKfbu\nWUzuoXd9iBilFsyCTyRSxR3Hx3DARnS8KfMr1vweSNjaCt9pfoIgiQzhZpoyIt9S\nik5L1aGzmbyzVAbmfQNYUtbQQVgciFLUueuKjYZDJP2bC3upTGchLtnpJx5lrQn5\n/WLlBRSe5o1jtNOcsb1Ck3ofN8XNWkToH9FDOfUCgYAJM/bbJSqujj5a7oRyioKK\niuyYLoD0ltw7tPs71Z3rWtQJkedtSaxZTGRho+RILLWgjuonQ+WjceFxvWis0rkh\nr5GTmJtXb+jeo2xAhvEwEkzyFsXlq8gc/vR/kHMrVU5cu1AB/V+lCU/IPhkdJt1x\n1tTfdoond4jguTfAmK9Tdw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "shima-pokedex@shima-pokedex.iam.gserviceaccount.com",
+  "client_id": "116568823636833694444",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/shima-pokedex%40shima-pokedex.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
