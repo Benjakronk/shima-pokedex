@@ -469,25 +469,9 @@
             const startIndex = (currentPage - 1) * RESULTS_PER_PAGE;
             const endIndex = Math.min(startIndex + RESULTS_PER_PAGE, currentResults.length);
             
-            function createPaginationControlsWithCallback() {
-                return createPaginationControls(
-                    currentResults.length,
-                    RESULTS_PER_PAGE,
-                    currentPage,
-                    (newPage) => {
-                        currentPage = newPage;
-                        displayResults();
-                        resultsContainer.scrollIntoView({ behavior: 'smooth' });
-                    }
-                );
-            }
-
-            // Add top pagination
-            if (currentResults.length > RESULTS_PER_PAGE) {
-                resultsContainer.appendChild(createPaginationControlsWithCallback());
-            }
-
-            resultsContainer.innerHTML += `<p>Showing ${startIndex + 1}-${endIndex} of ${currentResults.length} results</p>`;
+            const resultsInfo = document.createElement('p');
+            resultsInfo.textContent = `Showing ${startIndex + 1}-${endIndex} of ${currentResults.length} results`;
+            resultsContainer.appendChild(resultsInfo);
             
             for (let i = startIndex; i < endIndex; i++) {
                 const pokemonCard = createPokemonCard(currentResults[i]);
@@ -496,13 +480,13 @@
             
             // Add bottom pagination
             if (currentResults.length > RESULTS_PER_PAGE) {
-                resultsContainer.appendChild(createPaginationControlsWithCallback());
+                resultsContainer.appendChild(createPaginationControls());
             }
         }
     }
 
-    function createPaginationControls(totalItems, itemsPerPage, currentPage, onPageChange) {
-        const totalPages = Math.ceil(totalItems / itemsPerPage);
+    function createPaginationControls() {
+        const totalPages = Math.ceil(currentResults.length / RESULTS_PER_PAGE);
         const controls = document.createElement('div');
         controls.className = 'pagination-controls';
         
@@ -510,7 +494,9 @@
         prevButton.textContent = 'Previous';
         prevButton.onclick = () => {
             if (currentPage > 1) {
-                onPageChange(currentPage - 1);
+                currentPage--;
+                displayResults();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         };
         prevButton.disabled = currentPage === 1;
@@ -519,7 +505,9 @@
         nextButton.textContent = 'Next';
         nextButton.onclick = () => {
             if (currentPage < totalPages) {
-                onPageChange(currentPage + 1);
+                currentPage++;
+                displayResults();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         };
         nextButton.disabled = currentPage === totalPages;
