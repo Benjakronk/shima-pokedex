@@ -45,6 +45,7 @@
 </head>
 <body>
     <audio id="loadingCompleteSound" src="https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/SFX_TURN_ON_PC.wav" preload="auto"></audio>
+    <audio id="searchSelect" src="https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/SFX_PRESS_AB.wav" preload="auto"></audio>
     <h1>Pokédex Search</h1>
     <div id="loadingCompleteNotification" style="display: none; cursor: pointer; padding: 10px; background-color: #e0f7fa; border-radius: 5px; margin: 10px 0;">
         Data loaded! Click here to start searching!
@@ -133,6 +134,17 @@
         }
     }
 
+    function playSearchSelectSound() {
+        if (isSoundEnabled) {
+            const sound = document.getElementById('searchSelect');
+            sound.play()
+                .then(() => {
+                    console.log('Sound played successfully');
+                })
+                .catch(error => console.error('Error playing sound:', error));
+        }
+    }
+
     function toggleSound() {
         isSoundEnabled = !isSoundEnabled;
         const soundButton = document.getElementById('toggleSound');
@@ -181,6 +193,7 @@
     function showPokemonSearch() {
     document.getElementById('pokemonSearch').style.display = 'block';
     document.getElementById('moveSearch').style.display = 'none';
+    playSearchSelectSound;
     
     // Clear Move search results
     document.getElementById('moveResults').innerHTML = '';
@@ -192,6 +205,7 @@
     function showMoveSearch() {
         document.getElementById('pokemonSearch').style.display = 'none';
         document.getElementById('moveSearch').style.display = 'block';
+        playSearchSelectSound;
         
         // Clear Pokémon search results
         document.getElementById('results').innerHTML = '';
