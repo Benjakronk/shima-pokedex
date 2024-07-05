@@ -469,17 +469,22 @@
             const startIndex = (currentPage - 1) * RESULTS_PER_PAGE;
             const endIndex = Math.min(startIndex + RESULTS_PER_PAGE, currentResults.length);
             
-            // Add top pagination
-            if (currentResults.length > RESULTS_PER_PAGE) {
-                resultsContainer.appendChild(createPaginationControls(
+            function createPaginationControlsWithCallback() {
+                return createPaginationControls(
                     currentResults.length,
                     RESULTS_PER_PAGE,
                     currentPage,
                     (newPage) => {
                         currentPage = newPage;
                         displayResults();
+                        resultsContainer.scrollIntoView({ behavior: 'smooth' });
                     }
-                ));
+                );
+            }
+
+            // Add top pagination
+            if (currentResults.length > RESULTS_PER_PAGE) {
+                resultsContainer.appendChild(createPaginationControlsWithCallback());
             }
 
             resultsContainer.innerHTML += `<p>Showing ${startIndex + 1}-${endIndex} of ${currentResults.length} results</p>`;
@@ -491,15 +496,7 @@
             
             // Add bottom pagination
             if (currentResults.length > RESULTS_PER_PAGE) {
-                resultsContainer.appendChild(createPaginationControls(
-                    currentResults.length,
-                    RESULTS_PER_PAGE,
-                    currentPage,
-                    (newPage) => {
-                        currentPage = newPage;
-                        displayResults();
-                    }
-                ));
+                resultsContainer.appendChild(createPaginationControlsWithCallback());
             }
         }
     }
