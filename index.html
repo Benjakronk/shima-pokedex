@@ -64,7 +64,8 @@
         <div id="filteredList"></div>
         
         <input type="text" id="searchInput" placeholder="Search for a Pokémon...">
-        <button onclick="searchPokemon()">Search</button>
+        <button id="searchButton">Search</button>
+
     </div>
     <div id="results"></div>
 
@@ -86,6 +87,7 @@
     const REGISTERED_POKEMON_URL = 'https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/registered_pokemon.json';
     const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
     const ITEMS_PER_PAGE = 5;
+    const RESULTS_PER_PAGE = 5;
 
     // Global variables
     let tokenClient;
@@ -105,6 +107,7 @@
     };
     let filteredPokemon = [];
     let currentPage = 1;
+    let currentResults = [];
 
     // Utility functions
     function showPokemonSearch() {
@@ -229,6 +232,8 @@
         const rarityFilter = document.getElementById('rarityFilter').value;
         const habitatFilter = document.getElementById('habitatFilter').value;
 
+        console.log('Applying filters:', { typeFilter, sizeFilter, behaviorFilter, activityFilter, rarityFilter, habitatFilter });
+
         filteredPokemon = pokemonData.filter(pokemon => 
             registeredPokemon.names.has(pokemon.name.toLowerCase()) &&
             (!typeFilter || pokemon.primaryType === typeFilter || pokemon.secondaryType === typeFilter) &&
@@ -238,6 +243,8 @@
             (!rarityFilter || pokemon.rarity === rarityFilter) &&
             (!habitatFilter || pokemon.habitat === habitatFilter)
         );
+
+        console.log('Filtered Pokémon:', filteredPokemon.length);
         currentPage = 1;
         displayFilteredList();
     }
@@ -245,9 +252,13 @@
     function displayFilteredList() {
         const listContainer = document.getElementById('filteredList');
         listContainer.innerHTML = '<h3>Filtered Pokémon List:</h3>';
+        
+        console.log('Displaying filtered list. Filtered Pokémon:', filteredPokemon.length);
+        
         if (filteredPokemon.length === 0) {
             listContainer.innerHTML += '<p>No Pokémon match the selected filters.</p>';
         } else {
+            const totalPages = Math.ceil(filteredPokemon.length / ITEMS_PER_PAGE);
             const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
             const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredPokemon.length);
             const ul = document.createElement('ul');
@@ -260,46 +271,13 @@
             }
             
             listContainer.appendChild(ul);
-            
             // Add pagination controls
-            const paginationControls = createPaginationControls();
+            const paginationControls = createPaginationControls(filteredPokemon.length, ITEMS_PER_PAGE, currentPage, (newPage) => {
+                currentPage = newPage;
+                displayFilteredList();
+            });
             listContainer.appendChild(paginationControls);
         }
-    }
-
-    function createPaginationControls() {
-        const totalPages = Math.ceil(filteredPokemon.length / ITEMS_PER_PAGE);
-        const controls = document.createElement('div');
-        controls.className = 'pagination-controls';
-        
-        const prevButton = document.createElement('button');
-        prevButton.textContent = 'Previous';
-        prevButton.onclick = () => {
-            if (currentPage > 1) {
-                currentPage--;
-                displayFilteredList();
-            }
-        };
-        prevButton.disabled = currentPage === 1;
-        
-        const nextButton = document.createElement('button');
-        nextButton.textContent = 'Next';
-        nextButton.onclick = () => {
-            if (currentPage < totalPages) {
-                currentPage++;
-                displayFilteredList();
-            }
-        };
-        nextButton.disabled = currentPage === totalPages;
-        
-        const pageInfo = document.createElement('span');
-        pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-        
-        controls.appendChild(prevButton);
-        controls.appendChild(pageInfo);
-        controls.appendChild(nextButton);
-        
-        return controls;
     }
 
     async function processPokemonRow(row) {
@@ -372,24 +350,104 @@
 
     // Search and display functions
     function searchPokemon() {
+        console.log('searchPokemon function called');
         const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-        const result = filteredPokemon.find(pokemon => 
-            pokemon.name.toLowerCase().includes(searchTerm) || pokemon.id.includes(searchTerm)
-        );
-        displayResults(result ? [result] : []);
+        console.log('Searching for:', searchTerm);
+        console.log('Total Pokémon data:', pokemonData.length);
+        console.log('Registered Pokémon:', registeredPokemon.names.size);
+
+        currentResults = pokemonData.filter(pokemon => {
+            if (!pokemon || typeof pokemon !== 'object') {
+                console.warn('Invalid pokemon object:', pokemon);
+                return false;
+            }
+
+            const pokemonName = (pokemon.name || '').toLowerCase();
+            const pokemonId = String(pokemon.id || ''); // Convert ID to string
+            const primaryType = (pokemon.primaryType || '').toLowerCase();
+            const secondaryType = (pokemon.secondaryType || '').toLowerCase();
+
+            const isRegistered = registeredPokemon.names.has(pokemonName);
+            const matchesSearch = 
+                pokemonName.includes(searchTerm) || 
+                pokemonId.includes(searchTerm) ||
+                primaryType.includes(searchTerm) ||
+                secondaryType.includes(searchTerm);
+            
+            return isRegistered && matchesSearch;
+        });
+
+        console.log('Search results:', currentResults.length);
+        currentPage = 1;
+        displayResults();
     }
 
-    function displayResults(results) {
+    function displayResults() {
         const resultsContainer = document.getElementById('results');
         resultsContainer.innerHTML = '';
-        if (results.length === 0) {
-            resultsContainer.innerHTML = '<p>No Pokémon found. Try a different search term or adjust filters.</p>';
+        
+        console.log('Displaying results. Current results:', currentResults.length);
+        
+        if (currentResults.length === 0) {
+            resultsContainer.innerHTML = '<p>No Pokémon found. Try a different search term.</p>';
         } else {
-            results.forEach(pokemon => {
-                const pokemonCard = createPokemonCard(pokemon);
+            const totalPages = Math.ceil(currentResults.length / RESULTS_PER_PAGE);
+            const startIndex = (currentPage - 1) * RESULTS_PER_PAGE;
+            const endIndex = Math.min(startIndex + RESULTS_PER_PAGE, currentResults.length);
+            
+            resultsContainer.innerHTML = `<p>Showing ${startIndex + 1}-${endIndex} of ${currentResults.length} results</p>`;
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                const pokemonCard = createPokemonCard(currentResults[i]);
                 resultsContainer.appendChild(pokemonCard);
-            });
+            }
+            
+            if (currentResults.length > RESULTS_PER_PAGE) {
+                const paginationControls = createPaginationControls(
+                    currentResults.length,
+                    RESULTS_PER_PAGE,
+                    currentPage,
+                    (newPage) => {
+                        currentPage = newPage;
+                        displayResults();
+                    }
+                );
+                resultsContainer.appendChild(paginationControls);
+            }
         }
+    }
+
+    function createPaginationControls(totalItems, itemsPerPage, currentPage, onPageChange) {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        const controls = document.createElement('div');
+        controls.className = 'pagination-controls';
+        
+        const prevButton = document.createElement('button');
+        prevButton.textContent = 'Previous';
+        prevButton.onclick = () => {
+            if (currentPage > 1) {
+                onPageChange(currentPage - 1);
+            }
+        };
+        prevButton.disabled = currentPage === 1;
+        
+        const nextButton = document.createElement('button');
+        nextButton.textContent = 'Next';
+        nextButton.onclick = () => {
+            if (currentPage < totalPages) {
+                onPageChange(currentPage + 1);
+            }
+        };
+        nextButton.disabled = currentPage === totalPages;
+        
+        const pageInfo = document.createElement('span');
+        pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+        
+        controls.appendChild(prevButton);
+        controls.appendChild(pageInfo);
+        controls.appendChild(nextButton);
+        
+        return controls;
     }
 
     function createPokemonCard(pokemon) {
@@ -502,6 +560,7 @@
         try {
             await loadPokemonData(); // This will also load move data
             console.log('Data loaded successfully');
+            document.getElementById('searchButton').addEventListener('click', searchPokemon);
         } catch (error) {
             console.error('Error loading data:', error);
         }
