@@ -44,6 +44,7 @@
     </style>
 </head>
 <body>
+    <audio id="loadingCompleteSound" src="https://assets.mixkit.co/active_storage/sfx/2515/2515-preview.mp3" preload="auto"></audio>
     <h1>Pokédex Search</h1>
     <nav>
         <button id="pokedex_button" onclick="showPokemonSearch()" style="display: none;">Pokédex Search</button>
@@ -90,6 +91,7 @@
     const RESULTS_PER_PAGE = 5;
 
     // Global variables
+    let isSoundEnabled = true;
     let tokenClient;
     let pokemonData = [];
     let moveData = [];
@@ -110,26 +112,79 @@
     let currentResults = [];
 
     // Utility functions
+    function playLoadingCompleteSound() {
+        if (isSoundEnabled) {
+            const sound = document.getElementById('loadingCompleteSound');
+            sound.play().catch(error => console.error('Error playing sound:', error));
+        }
+    }
+
+    function toggleSound() {
+        isSoundEnabled = !isSoundEnabled;
+        const soundButton = document.getElementById('toggleSound');
+        soundButton.textContent = isSoundEnabled ? '🔊' : '🔇';
+    }
+    
+    function sanitizeFileName(name) {
+        return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    }
+
+    function showError(message) {
+        const errorElement = document.createElement('div');
+        errorElement.textContent = `Error: ${message}`;
+        errorElement.style.color = 'red';
+        errorElement.style.marginTop = '10px';
+        document.body.appendChild(errorElement);
+        setTimeout(() => errorElement.remove(), 5000); // Remove after 5 seconds
+    }
+
+    function showLoading() {
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.id = 'loadingIndicator';
+        loadingIndicator.textContent = 'Loading...';
+        loadingIndicator.style.position = 'fixed';
+        loadingIndicator.style.top = '50%';
+        loadingIndicator.style.left = '50%';
+        loadingIndicator.style.transform = 'translate(-50%, -50%)';
+        loadingIndicator.style.padding = '20px';
+        loadingIndicator.style.background = 'rgba(0, 0, 0, 0.7)';
+        loadingIndicator.style.color = 'white';
+        loadingIndicator.style.borderRadius = '5px';
+        loadingIndicator.style.zIndex = '1000';
+        document.body.appendChild(loadingIndicator);
+    }
+
+    function hideLoading() {
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        if (loadingIndicator) {
+            loadingIndicator.remove();
+        }
+    }
+
     function showPokemonSearch() {
-        document.getElementById('pokemonSearch').style.display = 'block';
-        document.getElementById('moveSearch').style.display = 'none';
+    document.getElementById('pokemonSearch').style.display = 'block';
+    document.getElementById('moveSearch').style.display = 'none';
+    
+    // Clear Move search results
+    document.getElementById('moveResults').innerHTML = '';
+    
+    // Clear Move search input
+    document.getElementById('moveSearchInput').value = '';
     }
 
     function showMoveSearch() {
         document.getElementById('pokemonSearch').style.display = 'none';
         document.getElementById('moveSearch').style.display = 'block';
-    }
-    
-    function showLoading() {
-        document.getElementById('results').innerHTML = '<p>Loading Pokémon data...</p>';
-    }
-
-    function hideLoading() {
+        
+        // Clear Pokémon search results
         document.getElementById('results').innerHTML = '';
-    }
-
-    function sanitizeFileName(name) {
-        return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+        
+        // Clear Pokémon search input
+        document.getElementById('searchInput').value = '';
+        
+        // Reset currentResults and currentPage
+        currentResults = [];
+        currentPage = 1;
     }
 
     // Pokémon data functions
@@ -158,25 +213,25 @@
     }
 
     async function loadPokemonData() {
-    showLoading();
-    try {
-        await loadMoveData();
-        await fetchRegisteredPokemon();
-        const response = await fetch('https://script.google.com/macros/s/AKfycbxvxTKdcmzC2fKBc9cy9-Jc5BgaML3GwXZtHHRIavIZ5aKIp_ri3ofUTg43a1e2kyL_/exec?action=pokemon');
-        if (!response.ok) {
-            throw new Error('Failed to fetch Pokémon data');
+        showLoading();
+        try {
+            await loadMoveData();
+            await fetchRegisteredPokemon();
+            const response = await fetch('https://script.google.com/macros/s/AKfycbxvxTKdcmzC2fKBc9cy9-Jc5BgaML3GwXZtHHRIavIZ5aKIp_ri3ofUTg43a1e2kyL_/exec?action=pokemon');
+            if (!response.ok) {
+                throw new Error('Failed to fetch Pokémon data');
+            }
+            const values = await response.json();
+            pokemonData = await Promise.all(values.map(processPokemonRow));
+            console.log('Pokémon data processed:', pokemonData.length, 'Pokémon');
+        } catch (error) {
+            console.error('Error loading Pokémon data:', error);
+        } finally {
+            hideLoading();
         }
-        const values = await response.json();
-        pokemonData = await Promise.all(values.map(processPokemonRow));
-        console.log('Pokémon data processed:', pokemonData.length, 'Pokémon');
-    } catch (error) {
-        console.error('Error loading Pokémon data:', error);
-    } finally {
-        hideLoading();
-    }
-    updateFilterOptions();
-    document.getElementById('pokedex_button').style.display = 'inline-block';
-    document.getElementById('move_button').style.display = 'inline-block';
+        updateFilterOptions();
+        document.getElementById('pokedex_button').style.display = 'inline-block';
+        document.getElementById('move_button').style.display = 'inline-block';
     }
 
     function updateFilterOptions() {
@@ -395,15 +450,9 @@
             const startIndex = (currentPage - 1) * RESULTS_PER_PAGE;
             const endIndex = Math.min(startIndex + RESULTS_PER_PAGE, currentResults.length);
             
-            resultsContainer.innerHTML = `<p>Showing ${startIndex + 1}-${endIndex} of ${currentResults.length} results</p>`;
-            
-            for (let i = startIndex; i < endIndex; i++) {
-                const pokemonCard = createPokemonCard(currentResults[i]);
-                resultsContainer.appendChild(pokemonCard);
-            }
-            
+            // Add top pagination
             if (currentResults.length > RESULTS_PER_PAGE) {
-                const paginationControls = createPaginationControls(
+                resultsContainer.appendChild(createPaginationControls(
                     currentResults.length,
                     RESULTS_PER_PAGE,
                     currentPage,
@@ -411,8 +460,27 @@
                         currentPage = newPage;
                         displayResults();
                     }
-                );
-                resultsContainer.appendChild(paginationControls);
+                ));
+            }
+
+            resultsContainer.innerHTML += `<p>Showing ${startIndex + 1}-${endIndex} of ${currentResults.length} results</p>`;
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                const pokemonCard = createPokemonCard(currentResults[i]);
+                resultsContainer.appendChild(pokemonCard);
+            }
+            
+            // Add bottom pagination
+            if (currentResults.length > RESULTS_PER_PAGE) {
+                resultsContainer.appendChild(createPaginationControls(
+                    currentResults.length,
+                    RESULTS_PER_PAGE,
+                    currentPage,
+                    (newPage) => {
+                        currentPage = newPage;
+                        displayResults();
+                    }
+                ));
             }
         }
     }
