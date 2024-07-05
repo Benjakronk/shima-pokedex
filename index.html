@@ -46,6 +46,9 @@
 <body>
     <audio id="loadingCompleteSound" src="https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/SFX_TURN_ON_PC.wav" preload="auto"></audio>
     <h1>Pokédex Search</h1>
+    <div id="loadingCompleteNotification" style="display: none; cursor: pointer; padding: 10px; background-color: #e0f7fa; border-radius: 5px; margin: 10px 0;">
+        Data loaded! Click here to start searching!
+    </div>
     <nav>
         <button id="pokedex_button" onclick="showPokemonSearch()" style="display: none;">Pokédex Search</button>
         <button id="move_button" onclick="showMoveSearch()" style="display: none;">Move Database</button>
@@ -112,10 +115,21 @@
     let currentResults = [];
 
     // Utility functions
+    function showLoadingCompleteNotification() {
+        const notification = document.getElementById('loadingCompleteNotification');
+        notification.style.display = 'block';
+        notification.onclick = playLoadingCompleteSound;
+    }
+
     function playLoadingCompleteSound() {
         if (isSoundEnabled) {
             const sound = document.getElementById('loadingCompleteSound');
-            sound.play().catch(error => console.error('Error playing sound:', error));
+            sound.play()
+                .then(() => {
+                    console.log('Sound played successfully');
+                    document.getElementById('loadingCompleteNotification').style.display = 'none';
+                })
+                .catch(error => console.error('Error playing sound:', error));
         }
     }
 
@@ -123,6 +137,9 @@
         isSoundEnabled = !isSoundEnabled;
         const soundButton = document.getElementById('toggleSound');
         soundButton.textContent = isSoundEnabled ? '🔊' : '🔇';
+        if (!isSoundEnabled) {
+            document.getElementById('loadingCompleteNotification').style.display = 'none';
+        }
     }
     
     function sanitizeFileName(name) {
@@ -224,7 +241,7 @@
             const values = await response.json();
             pokemonData = await Promise.all(values.map(processPokemonRow));
             console.log('Pokémon data processed:', pokemonData.length, 'Pokémon');
-            playLoadingCompleteSound(); // Play sound when loading is complete
+            showLoadingCompleteNotification(); // Show notification instead of playing sound directly
         } catch (error) {
             console.error('Error loading Pokémon data:', error);
             showError('Failed to load Pokémon data. Please try again later.');
