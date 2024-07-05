@@ -44,7 +44,7 @@
     </style>
 </head>
 <body>
-    <audio id="loadingCompleteSound" src="https://assets.mixkit.co/active_storage/sfx/2515/2515-preview.mp3" preload="auto"></audio>
+    <audio id="loadingCompleteSound" src="https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/SFX_TURN_ON_PC.wav" preload="auto"></audio>
     <h1>Pokédex Search</h1>
     <nav>
         <button id="pokedex_button" onclick="showPokemonSearch()" style="display: none;">Pokédex Search</button>
@@ -224,8 +224,10 @@
             const values = await response.json();
             pokemonData = await Promise.all(values.map(processPokemonRow));
             console.log('Pokémon data processed:', pokemonData.length, 'Pokémon');
+            playLoadingCompleteSound(); // Play sound when loading is complete
         } catch (error) {
             console.error('Error loading Pokémon data:', error);
+            showError('Failed to load Pokémon data. Please try again later.');
         } finally {
             hideLoading();
         }
