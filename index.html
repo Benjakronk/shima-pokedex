@@ -114,6 +114,7 @@
     let filteredPokemon = [];
     let currentPage = 1;
     let currentResults = [];
+    let currentFilteredPage = 1;
 
     // Utility functions
     function showLoadingCompleteNotification() {
@@ -333,7 +334,7 @@
         );
 
         console.log('Filtered Pokémon:', filteredPokemon.length);
-        currentPage = 1;
+        currentFilteredPage = 1;
         displayFilteredList();
     }
 
@@ -347,7 +348,7 @@
             listContainer.innerHTML += '<p>No Pokémon match the selected filters.</p>';
         } else {
             const totalPages = Math.ceil(filteredPokemon.length / ITEMS_PER_PAGE);
-            const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+            const startIndex = (currentFilteredPage - 1) * ITEMS_PER_PAGE;
             const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, filteredPokemon.length);
             const ul = document.createElement('ul');
             
@@ -359,9 +360,9 @@
             }
             
             listContainer.appendChild(ul);
-            // Add pagination controls
-            const paginationControls = createPaginationControls(filteredPokemon.length, ITEMS_PER_PAGE, currentPage, (newPage) => {
-                currentPage = newPage;
+            // Add pagination controls for filtered results
+            const paginationControls = createFilterPaginationControls(filteredPokemon.length, ITEMS_PER_PAGE, currentFilteredPage, (newPage) => {
+                currentFilteredPage = newPage;
                 displayFilteredList();
             });
             listContainer.appendChild(paginationControls);
@@ -497,6 +498,39 @@
                 resultsContainer.appendChild(createPaginationControls());
             }
         }
+    }
+
+    function createFilterPaginationControls(totalItems, itemsPerPage, currentPage, onPageChange) {
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        const controls = document.createElement('div');
+        controls.className = 'pagination-controls';
+        
+        const prevButton = document.createElement('button');
+        prevButton.textContent = 'Previous';
+        prevButton.onclick = () => {
+            if (currentPage > 1) {
+                onPageChange(currentPage - 1);
+            }
+        };
+        prevButton.disabled = currentPage === 1;
+        
+        const nextButton = document.createElement('button');
+        nextButton.textContent = 'Next';
+        nextButton.onclick = () => {
+            if (currentPage < totalPages) {
+                onPageChange(currentPage + 1);
+            }
+        };
+        nextButton.disabled = currentPage === totalPages;
+        
+        const pageInfo = document.createElement('span');
+        pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+        
+        controls.appendChild(prevButton);
+        controls.appendChild(pageInfo);
+        controls.appendChild(nextButton);
+        
+        return controls;
     }
 
     function createPaginationControls() {
