@@ -6,40 +6,61 @@
     <title>Pokédex Search</title>
     <script src="https://apis.google.com/js/api.js"></script>
     <style>
-        .pokemon-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            background-color: #f9f9f9;
-        }
-        .pokemon-card h2 {
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
             color: #333;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 10px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        .pokemon-card ul {
-            padding-left: 20px;
-        }
-        #filters {
-            margin-bottom: 20px;
-        }
-        #filters select {
-            margin-right: 10px;
-        }
-        .pagination-controls {
-            margin-top: 20px;
+        h1 {
+            color: #e3350d;
             text-align: center;
         }
-        .pagination-controls button {
-            margin: 0 10px;
+        nav {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
         }
-        .move-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
+        button {
+            background-color: #30a7d7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #1b82b1;
+        }
+        input[type="text"], select {
             padding: 10px;
-            margin-bottom: 10px;
-            background-color: #f0f0f0;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .pokemon-card, .move-card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease;
+        }
+        .pokemon-card:hover, .move-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .pagination-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .pagination-controls button {
+            background-color: #ffcb05;
+            color: #333;
+        }
+        .pagination-controls button:hover {
+            background-color: #e6b400;
         }
     </style>
 </head>
@@ -68,10 +89,20 @@
 
         <div id="filteredList"></div>
         
-        <input type="text" id="searchInput" placeholder="Search for a Pokémon...">
-        <button id="searchButton">Search</button>
+        <div id="searchSection">
+            <input type="text" id="searchInput" placeholder="Search for a Pokémon...">
+            <select id="searchType">
+                <option value="all">All</option>
+                <option value="name">Name</option>
+                <option value="id">ID</option>
+                <option value="type">Type</option>
+                <option value="ability">Ability</option>
+            </select>
+            <button id="searchButton">Search</button>
+        </div>
 
     </div>
+    
     <div id="results"></div>
 
     <div id="moveSearch" style="display: none;">
@@ -79,6 +110,13 @@
         <input type="text" id="moveSearchInput" placeholder="Search for a move...">
         <button onclick="searchMoves()">Search Moves</button>
         <div id="moveResults"></div>
+    </div>
+
+    <div id="pokemonMoveSearch">
+        <h2>Pokémon Move Search</h2>
+        <input type="text" id="pokemonMoveSearchInput" placeholder="Enter Pokémon name...">
+        <button onclick="searchPokemonMoves()">Search Moves</button>
+        <div id="pokemonMoveResults"></div>
     </div>
 
     <script>
@@ -249,7 +287,7 @@
         try {
             await loadMoveData();
             await fetchRegisteredPokemon();
-            const response = await fetch('https://script.google.com/macros/s/AKfycbxvxTKdcmzC2fKBc9cy9-Jc5BgaML3GwXZtHHRIavIZ5aKIp_ri3ofUTg43a1e2kyL_/exec?action=pokemon');
+            const response = await fetch('https://script.google.com/macros/s/AKfycbz5jkSQ1HuCpCrbg_mePsfLDaoesjCvrX_fCAhJvTC5V3IddYmtjVJnh4_2YaX37Dkj/exec?action=pokemon');
             if (!response.ok) {
                 throw new Error('Failed to fetch Pokémon data');
             }
@@ -385,9 +423,9 @@
             behavior: row[12],
             activityTime: row[13],
             evolutionReq: row[14],
-            primaryAbility: row[15],
-            secondaryAbility: row[16],
-            hiddenAbility: row[17],
+            primaryAbility: { name: row[15], description: row[41] },
+            secondaryAbility: row[16] ? { name: row[16], description: row[42] } : null,
+            hiddenAbility: row[17] ? { name: row[17], description: row[43] } : null,
             catchDifficulty: row[18],
             level: row[19],
             ac: row[20],
@@ -439,34 +477,39 @@
 
     // Search and display functions
     function searchPokemon() {
-        console.log('searchPokemon function called');
         const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-        console.log('Searching for:', searchTerm);
-        console.log('Total Pokémon data:', pokemonData.length);
-        console.log('Registered Pokémon:', registeredPokemon.names.size);
+        const searchType = document.getElementById('searchType').value;
 
         currentResults = pokemonData.filter(pokemon => {
-            if (!pokemon || typeof pokemon !== 'object') {
-                console.warn('Invalid pokemon object:', pokemon);
-                return false;
+            if (!pokemon || typeof pokemon !== 'object') return false;
+
+            const isRegistered = registeredPokemon.names.has(pokemon.name.toLowerCase());
+            if (!isRegistered) return false;
+
+            switch(searchType) {
+                case 'name':
+                    return pokemon.name.toLowerCase().includes(searchTerm);
+                case 'id':
+                    return pokemon.id.includes(searchTerm);
+                case 'type':
+                    return pokemon.primaryType.toLowerCase().includes(searchTerm) || 
+                        (pokemon.secondaryType && pokemon.secondaryType.toLowerCase().includes(searchTerm));
+                case 'ability':
+                    return pokemon.primaryAbility.toLowerCase().includes(searchTerm) ||
+                        (pokemon.secondaryAbility && pokemon.secondaryAbility.toLowerCase().includes(searchTerm)) ||
+                        (pokemon.hiddenAbility && pokemon.hiddenAbility.toLowerCase().includes(searchTerm));
+                case 'all':
+                default:
+                    return pokemon.name.toLowerCase().includes(searchTerm) || 
+                        pokemon.id.includes(searchTerm) ||
+                        pokemon.primaryType.toLowerCase().includes(searchTerm) ||
+                        (pokemon.secondaryType && pokemon.secondaryType.toLowerCase().includes(searchTerm)) ||
+                        pokemon.primaryAbility.toLowerCase().includes(searchTerm) ||
+                        (pokemon.secondaryAbility && pokemon.secondaryAbility.toLowerCase().includes(searchTerm)) ||
+                        (pokemon.hiddenAbility && pokemon.hiddenAbility.toLowerCase().includes(searchTerm));
             }
-
-            const pokemonName = (pokemon.name || '').toLowerCase();
-            const pokemonId = String(pokemon.id || ''); // Convert ID to string
-            const primaryType = (pokemon.primaryType || '').toLowerCase();
-            const secondaryType = (pokemon.secondaryType || '').toLowerCase();
-
-            const isRegistered = registeredPokemon.names.has(pokemonName);
-            const matchesSearch = 
-                pokemonName.includes(searchTerm) || 
-                pokemonId.includes(searchTerm) ||
-                primaryType.includes(searchTerm) ||
-                secondaryType.includes(searchTerm);
-            
-            return isRegistered && matchesSearch;
         });
 
-        console.log('Search results:', currentResults.length);
         currentPage = 1;
         displayResults();
     }
@@ -585,9 +628,9 @@
             <p><strong>Flavor Text:</strong> ${pokemon.flavorText}</p>
             <h3>Abilities:</h3>
             <ul>
-                <li><strong>Primary:</strong> ${pokemon.primaryAbility}</li>
-                ${pokemon.secondaryAbility ? `<li><strong>Secondary:</strong> ${pokemon.secondaryAbility}</li>` : ''}
-                ${pokemon.hiddenAbility ? `<li><strong>Hidden:</strong> ${pokemon.hiddenAbility}</li>` : ''}
+                <li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>
+                ${pokemon.secondaryAbility ? `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>` : ''}
+                ${pokemon.hiddenAbility ? `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>` : ''}
             </ul>
             <h3>Stats:</h3>
             <ul>
@@ -617,7 +660,7 @@
     async function loadMoveData() {
         showLoading();
         try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycbxvxTKdcmzC2fKBc9cy9-Jc5BgaML3GwXZtHHRIavIZ5aKIp_ri3ofUTg43a1e2kyL_/exec?action=moves');
+            const response = await fetch('https://script.google.com/macros/s/AKfycbz5jkSQ1HuCpCrbg_mePsfLDaoesjCvrX_fCAhJvTC5V3IddYmtjVJnh4_2YaX37Dkj/exec?action=moves');
             if (!response.ok) {
                 throw new Error('Failed to fetch move data');
             }
@@ -673,6 +716,31 @@
                 resultsContainer.appendChild(moveCard);
             });
         }
+    }
+
+    function searchPokemonMoves() {
+        const pokemonName = document.getElementById('pokemonMoveSearchInput').value.toLowerCase();
+        const pokemon = pokemonData.find(p => p.name.toLowerCase() === pokemonName);
+        if (pokemon) {
+            displayPokemonMoves(pokemon);
+        } else {
+            document.getElementById('pokemonMoveResults').innerHTML = '<p>No Pokémon found with that name.</p>';
+        }
+    }
+
+    function displayPokemonMoves(pokemon) {
+        const resultsContainer = document.getElementById('pokemonMoveResults');
+        resultsContainer.innerHTML = `
+            <h3>${pokemon.name}'s Moves</h3>
+            <ul>
+                <li><strong>Starting:</strong> ${pokemon.moves.starting}</li>
+                <li><strong>Level 2:</strong> ${pokemon.moves.level2}</li>
+                <li><strong>Level 6:</strong> ${pokemon.moves.level6}</li>
+                <li><strong>Level 10:</strong> ${pokemon.moves.level10}</li>
+                <li><strong>Level 14:</strong> ${pokemon.moves.level14}</li>
+                <li><strong>Level 18:</strong> ${pokemon.moves.level18}</li>
+            </ul>
+        `;
     }
 
     // Initialize
