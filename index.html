@@ -329,7 +329,16 @@
 
     function populateSelect(id, options) {
         const select = document.getElementById(id);
-        select.innerHTML = `<option value="">All ${id.replace('Filter', 's')}</option>`;
+        let allText = `All ${id.replace('Filter', 's')}`;
+        
+        // Special cases for correct pluralization
+        if (id === 'rarityFilter') {
+            allText = 'All rarities';
+        } else if (id === 'activityFilter') {
+            allText = 'All activities';
+        }
+        
+        select.innerHTML = `<option value="">${allText}</option>`;
         options.forEach(option => {
             const optionElement = document.createElement('option');
             optionElement.value = option;
