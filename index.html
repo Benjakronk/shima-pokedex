@@ -42,13 +42,29 @@
             border: 1px solid #ddd;
         }
         .pokemon-card, .move-card {
-            background-color: #f9f9f9;
             border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             transition: box-shadow 0.3s ease;
         }
+
         .pokemon-card:hover, .move-card:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .pokemon-card h2, .move-card h3 {
+            margin-top: 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .pokemon-card ul, .move-card ul {
+            padding-left: 20px;
+        }
+
+        .pokemon-card p, .move-card p {
+            margin: 5px 0;
         }
         .pagination-controls {
             display: flex;
@@ -112,6 +128,26 @@
 
     <script>
     // Constants
+    const TYPE_COLORS = {
+        normal: '#A8A878',
+        fire: '#F08030',
+        water: '#6890F0',
+        electric: '#F8D030',
+        grass: '#78C850',
+        ice: '#98D8D8',
+        fighting: '#C03028',
+        poison: '#A040A0',
+        ground: '#E0C068',
+        flying: '#A890F0',
+        psychic: '#F85888',
+        bug: '#A8B820',
+        rock: '#B8A038',
+        ghost: '#705898',
+        dragon: '#7038F8',
+        dark: '#705848',
+        steel: '#B8B8D0',
+        fairy: '#EE99AC'
+    };
     const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/images/';
     const IMAGE_FORMATS = ['png', 'jpg', 'jpeg', 'jfif'];
     const CLIENT_ID = '640296952332-niust59g0mgdci7btsjobfkvaarppfuf.apps.googleusercontent.com';
@@ -146,6 +182,10 @@
     let currentFilteredPage = 1;
 
     // Utility functions
+    function getTypeColor(type) {
+        return TYPE_COLORS[type.toLowerCase()] || '#68A090'; // default color if type not found
+    }
+
     function playLoadingCompleteSound() {
         if (isSoundEnabled) {
             const sound = document.getElementById('loadingCompleteSound');
@@ -616,9 +656,28 @@
         return controls;
     }
 
+    function getBrightness(color) {
+        // Convert hex to RGB
+        const hex = color.replace('#', '');
+        const r = parseInt(hex.substr(0, 2), 16);
+        const g = parseInt(hex.substr(2, 2), 16);
+        const b = parseInt(hex.substr(4, 2), 16);
+        // Calculate brightness
+        return (r * 299 + g * 587 + b * 114) / 1000;
+    }
+
     function createPokemonCard(pokemon) {
         const pokemonCard = document.createElement('div');
         pokemonCard.className = 'pokemon-card';
+
+        const primaryColor = getTypeColor(pokemon.primaryType);
+        const secondaryColor = pokemon.secondaryType ? getTypeColor(pokemon.secondaryType) : primaryColor;
+        
+        pokemonCard.style.background = pokemon.secondaryType 
+            ? `linear-gradient(135deg, ${primaryColor} 50%, ${secondaryColor} 50%)`
+            : primaryColor;
+        pokemonCard.style.color = getBrightness(primaryColor) > 128 ? '#000' : '#fff';
+
         let abilitiesHtml = '<h3>Abilities:</h3><ul>';
     
         if (pokemon.primaryAbility && pokemon.primaryAbility.name) {
@@ -772,6 +831,11 @@
             results.forEach(move => {
                 const moveCard = document.createElement('div');
                 moveCard.className = 'move-card';
+                
+                const moveColor = getTypeColor(move.type);
+                moveCard.style.backgroundColor = moveColor;
+                moveCard.style.color = getBrightness(moveColor) > 128 ? '#000' : '#fff';
+                
                 moveCard.innerHTML = `
                     <h3>${move.name}</h3>
                     <p><strong>Type:</strong> ${move.type}</p>
