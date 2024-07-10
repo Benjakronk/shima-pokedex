@@ -47,6 +47,8 @@
             margin-bottom: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             transition: box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .pokemon-card:hover, .move-card:hover {
@@ -55,16 +57,26 @@
 
         .pokemon-card h2, .move-card h3 {
             margin-top: 0;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
             padding-bottom: 10px;
+            position: relative;
         }
 
         .pokemon-card ul, .move-card ul {
             padding-left: 20px;
+            position: relative;
         }
 
         .pokemon-card p, .move-card p {
             margin: 5px 0;
+            position: relative;
+        }
+
+        .pokemon-card img {
+            display: block;
+            margin: 10px auto;
+            max-width: 200px;
+            border-radius: 5px;
         }
         .pagination-controls {
             display: flex;
@@ -669,39 +681,37 @@
     function createPokemonCard(pokemon) {
         const pokemonCard = document.createElement('div');
         pokemonCard.className = 'pokemon-card';
-
+        
         const primaryColor = getTypeColor(pokemon.primaryType);
         const secondaryColor = pokemon.secondaryType ? getTypeColor(pokemon.secondaryType) : primaryColor;
         
-        pokemonCard.style.background = pokemon.secondaryType 
-            ? `linear-gradient(135deg, ${primaryColor} 50%, ${secondaryColor} 50%)`
-            : primaryColor;
-        pokemonCard.style.color = getBrightness(primaryColor) > 128 ? '#000' : '#fff';
-
-        let abilitiesHtml = '<h3>Abilities:</h3><ul>';
-    
-        if (pokemon.primaryAbility && pokemon.primaryAbility.name) {
-            abilitiesHtml += `<li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>`;
+        pokemonCard.style.background = '#f0f0f0'; // Light base color
+        pokemonCard.style.color = '#333'; // Dark text color for contrast
+        pokemonCard.style.position = 'relative';
+        pokemonCard.style.overflow = 'hidden';
+        pokemonCard.style.zIndex = '1';
+        
+        // Create color overlay
+        const overlay = document.createElement('div');
+        overlay.style.position = 'absolute';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.right = '0';
+        overlay.style.bottom = '0';
+        overlay.style.zIndex = '-1';
+        overlay.style.opacity = '0.7'; // Adjust for desired intensity
+        
+        if (pokemon.secondaryType) {
+            overlay.style.background = `linear-gradient(135deg, ${primaryColor} 50%, ${secondaryColor} 50%)`;
+        } else {
+            overlay.style.backgroundColor = primaryColor;
         }
         
-        if (pokemon.secondaryAbility && pokemon.secondaryAbility.name) {
-            abilitiesHtml += `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>`;
-        }
+        pokemonCard.appendChild(overlay);
         
-        if (pokemon.hiddenAbility && pokemon.hiddenAbility.name) {
-            abilitiesHtml += `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>`;
-        }
-        
-        abilitiesHtml += '</ul>';
-
-        const primaryAbilityHtml = pokemon.primaryAbility ? 
-            `<li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>` : '';
-        const secondaryAbilityHtml = pokemon.secondaryAbility ? 
-            `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>` : '';
-        const hiddenAbilityHtml = pokemon.hiddenAbility ? 
-            `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>` : '';
-
-        pokemonCard.innerHTML = `
+        // Card content
+        const content = document.createElement('div');
+        content.innerHTML = `
             <h2>${pokemon.name} (#${pokemon.id})</h2>
             ${pokemon.image ? `<img src="${pokemon.image}" alt="${pokemon.name}" style="max-width: 200px;">` : ''}
             <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
@@ -713,7 +723,9 @@
             <p><strong>Description:</strong> ${pokemon.flavorText}</p>
             <h3>Abilities:</h3>
             <ul>
-                ${abilitiesHtml}
+                <li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>
+                ${pokemon.secondaryAbility ? `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>` : ''}
+                ${pokemon.hiddenAbility ? `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>` : ''}
             </ul>
             <h3>Stats:</h3>
             <ul>
@@ -737,6 +749,8 @@
                 <li><strong>Level 18:</strong> ${pokemon.moves.level18}</li>
             </ul>
         `;
+        pokemonCard.appendChild(content);
+        
         return pokemonCard;
     }
 
@@ -833,10 +847,26 @@
                 moveCard.className = 'move-card';
                 
                 const moveColor = getTypeColor(move.type);
-                moveCard.style.backgroundColor = moveColor;
-                moveCard.style.color = getBrightness(moveColor) > 128 ? '#000' : '#fff';
+                moveCard.style.backgroundColor = '#f0f0f0';
+                moveCard.style.color = '#333';
+                moveCard.style.position = 'relative';
+                moveCard.style.overflow = 'hidden';
+                moveCard.style.zIndex = '1';
                 
-                moveCard.innerHTML = `
+                const overlay = document.createElement('div');
+                overlay.style.position = 'absolute';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.right = '0';
+                overlay.style.bottom = '0';
+                overlay.style.backgroundColor = moveColor;
+                overlay.style.opacity = '0.7';
+                overlay.style.zIndex = '-1';
+                
+                moveCard.appendChild(overlay);
+                
+                const content = document.createElement('div');
+                content.innerHTML = `
                     <h3>${move.name}</h3>
                     <p><strong>Type:</strong> ${move.type}</p>
                     <p><strong>VP Cost:</strong> ${move.vp}</p>
@@ -847,6 +877,8 @@
                     <p><strong>Effect:</strong> ${move.description}</p>
                     <p><strong>Higher Levels:</strong> ${move.higher}</p>
                 `;
+                moveCard.appendChild(content);
+                
                 resultsContainer.appendChild(moveCard);
             });
         }
