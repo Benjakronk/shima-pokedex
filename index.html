@@ -68,9 +68,6 @@
     <audio id="loadingCompleteSound" src="https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/SFX_TURN_ON_PC.wav" preload="auto"></audio>
     <audio id="searchSelect" src="https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/SFX_PRESS_AB.wav" preload="auto"></audio>
     <h1>Pokédex Search</h1>
-    <div id="loadingCompleteNotification" style="display: none; cursor: pointer; padding: 10px; background-color: #e0f7fa; border-radius: 5px; margin: 10px 0;">
-        Data loaded! Click here to start searching!
-    </div>
     <nav>
         <button id="pokedex_button" onclick="showPokemonSearch()" style="display: none;">Pokédex Search</button>
         <button id="move_button" onclick="showMoveSearch()" style="display: none;">Move Database</button>
@@ -102,21 +99,14 @@
         </div>
 
     </div>
-    
+
     <div id="results"></div>
 
     <div id="moveSearch" style="display: none;">
         <h2>Move Database</h2>
-        <input type="text" id="moveSearchInput" placeholder="Search for a move...">
+        <input type="text" id="moveSearchInput" placeholder="Search for a move or Pokémon...">
         <button onclick="searchMoves()">Search Moves</button>
         <div id="moveResults"></div>
-    </div>
-
-    <div id="pokemonMoveSearch">
-        <h2>Pokémon Move Search</h2>
-        <input type="text" id="pokemonMoveSearchInput" placeholder="Enter Pokémon name...">
-        <button onclick="searchPokemonMoves()">Search Moves</button>
-        <div id="pokemonMoveResults"></div>
     </div>
 
     <script>
@@ -155,19 +145,12 @@
     let currentFilteredPage = 1;
 
     // Utility functions
-    function showLoadingCompleteNotification() {
-        const notification = document.getElementById('loadingCompleteNotification');
-        notification.style.display = 'block';
-        notification.onclick = playLoadingCompleteSound;
-    }
-
     function playLoadingCompleteSound() {
         if (isSoundEnabled) {
             const sound = document.getElementById('loadingCompleteSound');
             sound.play()
                 .then(() => {
                     console.log('Sound played successfully');
-                    document.getElementById('loadingCompleteNotification').style.display = 'none';
                 })
                 .catch(error => console.error('Error playing sound:', error));
         }
@@ -225,7 +208,12 @@
     function hideLoading() {
         const loadingIndicator = document.getElementById('loadingIndicator');
         if (loadingIndicator) {
-            loadingIndicator.remove();
+            loadingIndicator.textContent = 'Loading complete. Click to dismiss.';
+            loadingIndicator.style.cursor = 'pointer';
+            loadingIndicator.onclick = function() {
+                loadingIndicator.remove();
+                playLoadingCompleteSound();
+            };
         }
     }
 
@@ -293,8 +281,7 @@
             }
             const values = await response.json();
             pokemonData = await Promise.all(values.map(processPokemonRow));
-            console.log('Pokémon data processed:', pokemonData.length, 'Pokémon');
-            showLoadingCompleteNotification(); // Show notification instead of playing sound directly
+        console.log('Pokémon data processed:', pokemonData.length, 'Pokémon');
         } catch (error) {
             console.error('Error loading Pokémon data:', error);
             showError('Failed to load Pokémon data. Please try again later.');
@@ -409,6 +396,11 @@
 
     async function processPokemonRow(row) {
         const imageUrl = await getImageUrl(row[2], row[1]);
+        // Debug
+        // console.log(`Processing Pokémon: ${row[2]}`);
+        // console.log(`Primary Ability: ${row[15]}, Description: ${row[62]}`);
+        // console.log(`Secondary Ability: ${row[16]}, Description: ${row[63]}`);
+        // console.log(`Hidden Ability: ${row[17]}, Description: ${row[64]}`);
         return {
             image: imageUrl,
             id: row[1],
@@ -423,9 +415,9 @@
             behavior: row[12],
             activityTime: row[13],
             evolutionReq: row[14],
-            primaryAbility: { name: row[15], description: row[41] },
-            secondaryAbility: row[16] ? { name: row[16], description: row[42] } : null,
-            hiddenAbility: row[17] ? { name: row[17], description: row[43] } : null,
+            primaryAbility: { name: row[15], description: row[62] ?? "No description available" },
+            secondaryAbility: row[16] ? { name: row[16], description: row[63] ?? "No description available" } : null,
+            hiddenAbility: row[17] ? { name: row[17], description: row[64] ?? "No description available" } : null,
             catchDifficulty: row[18],
             level: row[19],
             ac: row[20],
@@ -449,7 +441,8 @@
                 level10: row[38],
                 level14: row[39],
                 level18: row[40]
-            }
+            },
+            movePool: row.slice(41, 62).filter(move => move !== ""),
         };
     }
 
@@ -616,6 +609,29 @@
     function createPokemonCard(pokemon) {
         const pokemonCard = document.createElement('div');
         pokemonCard.className = 'pokemon-card';
+        let abilitiesHtml = '<h3>Abilities:</h3><ul>';
+    
+        if (pokemon.primaryAbility && pokemon.primaryAbility.name) {
+            abilitiesHtml += `<li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>`;
+        }
+        
+        if (pokemon.secondaryAbility && pokemon.secondaryAbility.name) {
+            abilitiesHtml += `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>`;
+        }
+        
+        if (pokemon.hiddenAbility && pokemon.hiddenAbility.name) {
+            abilitiesHtml += `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>`;
+        }
+        
+        abilitiesHtml += '</ul>';
+
+        const primaryAbilityHtml = pokemon.primaryAbility ? 
+            `<li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>` : '';
+        const secondaryAbilityHtml = pokemon.secondaryAbility ? 
+            `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>` : '';
+        const hiddenAbilityHtml = pokemon.hiddenAbility ? 
+            `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>` : '';
+
         pokemonCard.innerHTML = `
             <h2>${pokemon.name} (#${pokemon.id})</h2>
             ${pokemon.image ? `<img src="${pokemon.image}" alt="${pokemon.name}" style="max-width: 200px;">` : ''}
@@ -625,12 +641,10 @@
             <p><strong>Behavior:</strong> ${pokemon.behavior}</p>
             <p><strong>Habitat:</strong> ${pokemon.habitat}</p>
             <p><strong>Classification:</strong> ${pokemon.classification}</p>
-            <p><strong>Flavor Text:</strong> ${pokemon.flavorText}</p>
+            <p><strong>Description:</strong> ${pokemon.flavorText}</p>
             <h3>Abilities:</h3>
             <ul>
-                <li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>
-                ${pokemon.secondaryAbility ? `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>` : ''}
-                ${pokemon.hiddenAbility ? `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>` : ''}
+                ${abilitiesHtml}
             </ul>
             <h3>Stats:</h3>
             <ul>
@@ -658,7 +672,7 @@
     }
 
     async function loadMoveData() {
-        showLoading();
+        // showLoading();
         try {
             const response = await fetch('https://script.google.com/macros/s/AKfycbz5jkSQ1HuCpCrbg_mePsfLDaoesjCvrX_fCAhJvTC5V3IddYmtjVJnh4_2YaX37Dkj/exec?action=moves');
             if (!response.ok) {
@@ -680,24 +694,44 @@
         } catch (error) {
             console.error('Error loading move data:', error);
         } finally {
-            hideLoading();
+            // hideLoading();
         }
     }
 
     function searchMoves() {
         const searchTerm = document.getElementById('moveSearchInput').value.toLowerCase();
-        const results = moveData.filter(move => 
-            move.name.toLowerCase().includes(searchTerm) ||
-            move.type.toLowerCase().includes(searchTerm)
-        );
-        displayMoveResults(results);
+        let results = [];
+
+        // Check if the search term matches a Pokémon name
+        const pokemon = pokemonData.find(p => p.name.toLowerCase() === searchTerm);
+
+        if (pokemon) {
+            // If it's a Pokémon name, filter moves from its move pool
+            results = moveData.filter(move => 
+                pokemon.movePool.includes(move.name) ||
+                Object.values(pokemon.moves).some(levelMoves => levelMoves.includes(move.name))
+            );
+        } else {
+            // If it's not a Pokémon name, search all moves as before
+            results = moveData.filter(move => 
+                move.name.toLowerCase().includes(searchTerm) ||
+                move.type.toLowerCase().includes(searchTerm)
+            );
+        }
+
+        displayMoveResults(results, pokemon);
     }
 
-    function displayMoveResults(results) {
+    function displayMoveResults(results, pokemon = null) {
         const resultsContainer = document.getElementById('moveResults');
         resultsContainer.innerHTML = '';
+        
+        if (pokemon) {
+            resultsContainer.innerHTML = `<h3>Moves for ${pokemon.name}</h3>`;
+        }
+
         if (results.length === 0) {
-            resultsContainer.innerHTML = '<p>No moves found. Try a different search term.</p>';
+            resultsContainer.innerHTML += '<p>No moves found. Try a different search term.</p>';
         } else {
             results.forEach(move => {
                 const moveCard = document.createElement('div');
@@ -716,31 +750,6 @@
                 resultsContainer.appendChild(moveCard);
             });
         }
-    }
-
-    function searchPokemonMoves() {
-        const pokemonName = document.getElementById('pokemonMoveSearchInput').value.toLowerCase();
-        const pokemon = pokemonData.find(p => p.name.toLowerCase() === pokemonName);
-        if (pokemon) {
-            displayPokemonMoves(pokemon);
-        } else {
-            document.getElementById('pokemonMoveResults').innerHTML = '<p>No Pokémon found with that name.</p>';
-        }
-    }
-
-    function displayPokemonMoves(pokemon) {
-        const resultsContainer = document.getElementById('pokemonMoveResults');
-        resultsContainer.innerHTML = `
-            <h3>${pokemon.name}'s Moves</h3>
-            <ul>
-                <li><strong>Starting:</strong> ${pokemon.moves.starting}</li>
-                <li><strong>Level 2:</strong> ${pokemon.moves.level2}</li>
-                <li><strong>Level 6:</strong> ${pokemon.moves.level6}</li>
-                <li><strong>Level 10:</strong> ${pokemon.moves.level10}</li>
-                <li><strong>Level 14:</strong> ${pokemon.moves.level14}</li>
-                <li><strong>Level 18:</strong> ${pokemon.moves.level18}</li>
-            </ul>
-        `;
     }
 
     // Initialize
