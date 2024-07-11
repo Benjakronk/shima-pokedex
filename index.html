@@ -82,6 +82,33 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
+        .image-container {
+            width: 320px;
+            height: 320px;
+            margin: 10px auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .image-container img {
+            max-width: calc(100% - 20px);
+            max-height: calc(100% - 20px);
+            object-fit: contain;
+            border-radius: 5px;
+        }
         
         .pagination-controls {
             display: flex;
@@ -698,13 +725,11 @@
         const primaryColor = getTypeColor(pokemon.primaryType);
         const secondaryColor = pokemon.secondaryType ? getTypeColor(pokemon.secondaryType) : primaryColor;
         
-        let backgroundStyle, borderStyle;
+        let backgroundStyle;
         if (pokemon.secondaryType) {
             backgroundStyle = `linear-gradient(135deg, ${primaryColor} 50%, ${secondaryColor} 50%)`;
-            borderStyle = `10px solid`;
         } else {
             backgroundStyle = primaryColor;
-            borderStyle = `10px solid ${primaryColor}`;
         }
         
         pokemonCard.style.background = backgroundStyle;
@@ -716,7 +741,27 @@
         pokemonCard.innerHTML = `
             <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
                 <h2>${pokemon.name} (#${pokemon.id})</h2>
-                ${pokemon.image ? `<img src="${pokemon.image}" alt="${pokemon.name}" style="max-width: 300px; border: ${borderStyle}; ${pokemon.secondaryType ? 'border-image: ' + backgroundStyle + ' 1;' : ''}">` : ''}
+                ${pokemon.image ? `
+                    <div class="image-container" style="
+                        width: 320px;
+                        height: 320px;
+                        margin: 10px auto;
+                        position: relative;
+                        overflow: hidden;
+                        border-radius: 10px;
+                        background: ${backgroundStyle};
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    ">
+                        <img src="${pokemon.image}" alt="${pokemon.name}" style="
+                            max-width: calc(100% - 20px);
+                            max-height: calc(100% - 20px);
+                            object-fit: contain;
+                            border-radius: 5px;
+                        ">
+                    </div>
+                ` : ''}
                 <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
                 <p><strong>Size:</strong> ${pokemon.size}</p>
                 <p><strong>Rarity:</strong> ${pokemon.rarity}</p>
