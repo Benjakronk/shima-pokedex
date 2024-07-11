@@ -701,7 +701,7 @@
         let backgroundStyle, borderStyle;
         if (pokemon.secondaryType) {
             backgroundStyle = `linear-gradient(135deg, ${primaryColor} 50%, ${secondaryColor} 50%)`;
-            borderStyle = `10px solid transparent`;
+            borderStyle = `10px solid`;
         } else {
             backgroundStyle = primaryColor;
             borderStyle = `10px solid ${primaryColor}`;
@@ -716,7 +716,7 @@
         pokemonCard.innerHTML = `
             <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
                 <h2>${pokemon.name} (#${pokemon.id})</h2>
-                ${pokemon.image ? `<img src="${pokemon.image}" alt="${pokemon.name}" style="max-width: 300px; border: ${borderStyle}; ${pokemon.secondaryType ? 'background-image: ' + backgroundStyle + '; background-origin: border-box; background-clip: content-box, border-box;' : ''}">` : ''}
+                ${pokemon.image ? `<img src="${pokemon.image}" alt="${pokemon.name}" style="max-width: 300px; border: ${borderStyle}; ${pokemon.secondaryType ? 'border-image: ' + backgroundStyle + ' 1;' : ''}">` : ''}
                 <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
                 <p><strong>Size:</strong> ${pokemon.size}</p>
                 <p><strong>Rarity:</strong> ${pokemon.rarity}</p>
