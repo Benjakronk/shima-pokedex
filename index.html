@@ -503,15 +503,23 @@
             savingThrows: row[33],
             skills: row[34],
             moves: {
-                starting: row[35],
-                level2: row[36],
-                level6: row[37],
-                level10: row[38],
-                level14: row[39],
-                level18: row[40]
+                starting: sanitizeMoves(row[35], 4),
+                level2: sanitizeMoves(row[36], 4),
+                level6: sanitizeMoves(row[37], 4),
+                level10: sanitizeMoves(row[38], 4),
+                level14: sanitizeMoves(row[39], 3),
+                level18: sanitizeMoves(row[40], 3)
             },
             movePool: row.slice(41, 62).filter(move => move !== ""),
         };
+    }
+
+    function sanitizeMoves(moveString, maxMoves) {
+        return moveString.split(',')
+                        .map(move => move.trim())
+                        .filter(move => move !== '')
+                        .slice(0, maxMoves)
+                        .join(', ');
     }
 
     async function getImageUrl(pokemonName, pokemonId) {
@@ -697,7 +705,7 @@
         
         const brightness = getBrightness(primaryColor);
         const textColor = brightness > 128 ? '#000' : '#fff';
-        const boxColor = brightness > 128 ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
+        const boxColor = brightness > 128 ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)';
         const borderColor = brightness > 128 ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.7)';
         
         pokemonCard.innerHTML = `
@@ -761,7 +769,7 @@
                 duration: row[5],
                 range: row[6],
                 description: row[7],
-                higher: row[8],
+                higher: row[8] ? row[8].trim() : '', // Trim whitespace and ensure it's not undefined
             }));
             console.log('Move data processed:', moveData.length, 'moves');
         } catch (error) {
@@ -773,22 +781,16 @@
 
     function searchMoves() {
         const searchTerm = document.getElementById('moveSearchInput').value.toLowerCase();
-        let pokemonLevel = parseInt(document.getElementById('pokemonLevelInput').value);
-        if (isNaN(pokemonLevel) || pokemonLevel < 1) {
-            pokemonLevel = 1;
-            document.getElementById('pokemonLevelInput').value = 1;
-        } else if (pokemonLevel > 20) {
-            pokemonLevel = 20;
-            document.getElementById('pokemonLevelInput').value = 20;
-        }
+        const pokemonLevel = parseInt(document.getElementById('pokemonLevelInput').value) || 20;
         let results = [];
 
         // Check if the search term matches a Pokémon name
         const pokemon = pokemonData.find(p => p.name.toLowerCase() === searchTerm);
 
         if (pokemon) {
-            // If it's a Pokémon name, filter moves from its move pool based on level
-            results = getMovesUpToLevel(pokemon, pokemonLevel);
+            // If it's a Pokémon name, get moves up to the specified level
+            const availableMoves = getMovesUpToLevel(pokemon, pokemonLevel);
+            results = moveData.filter(move => availableMoves.includes(move.name));
         } else {
             // If it's not a Pokémon name, search all moves as before
             results = moveData.filter(move => 
@@ -802,12 +804,12 @@
 
     function getMovesUpToLevel(pokemon, level) {
         const moveLevels = {
-            1: pokemon.moves.starting.split(', '),
-            2: pokemon.moves.level2.split(', '),
-            6: pokemon.moves.level6.split(', '),
-            10: pokemon.moves.level10.split(', '),
-            14: pokemon.moves.level14.split(', '),
-            18: pokemon.moves.level18.split(', ')
+            1: pokemon.moves.starting.split(', ').filter(move => move !== ''),
+            2: pokemon.moves.level2.split(', ').filter(move => move !== ''),
+            6: pokemon.moves.level6.split(', ').filter(move => move !== ''),
+            10: pokemon.moves.level10.split(', ').filter(move => move !== ''),
+            14: pokemon.moves.level14.split(', ').filter(move => move !== ''),
+            18: pokemon.moves.level18.split(', ').filter(move => move !== '')
         };
 
         let availableMoves = new Set();
@@ -818,7 +820,7 @@
             }
         }
 
-        return moveData.filter(move => availableMoves.has(move.name));
+        return Array.from(availableMoves);
     }
 
     function displayMoveResults(results, pokemon = null, level = null) {
@@ -843,6 +845,11 @@
                 const textColor = brightness > 128 ? '#000' : '#fff';
                 const boxColor = brightness > 128 ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
                 
+                let higherLevelsHtml = '';
+                if (move.higher && move.higher.trim() !== '') {
+                    higherLevelsHtml = `<p><strong>Higher Levels:</strong> ${move.higher}</p>`;
+                }
+                
                 moveCard.innerHTML = `
                     <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
                         <h3>${move.name}</h3>
@@ -853,7 +860,7 @@
                         <p><strong>Duration:</strong> ${move.duration}</p>
                         <p><strong>Range:</strong> ${move.range}</p>
                         <p><strong>Effect:</strong> ${move.description}</p>
-                        <p><strong>Higher Levels:</strong> ${move.higher}</p>
+                        ${higherLevelsHtml}
                     </div>
                 `;
                 
