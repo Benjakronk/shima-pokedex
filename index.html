@@ -80,7 +80,6 @@
             margin: 10px auto;
             max-width: 200px;
             border-radius: 5px;
-            border: 3px solid rgba(255, 255, 255, 0.7);
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         
@@ -699,26 +698,32 @@
         const primaryColor = getTypeColor(pokemon.primaryType);
         const secondaryColor = pokemon.secondaryType ? getTypeColor(pokemon.secondaryType) : primaryColor;
         
-        pokemonCard.style.background = pokemon.secondaryType 
-            ? `linear-gradient(135deg, ${primaryColor} 50%, ${secondaryColor} 50%)`
-            : primaryColor;
+        let backgroundStyle, borderStyle;
+        if (pokemon.secondaryType) {
+            backgroundStyle = `linear-gradient(135deg, ${primaryColor} 50%, ${secondaryColor} 50%)`;
+            borderStyle = `5px solid transparent`;
+        } else {
+            backgroundStyle = primaryColor;
+            borderStyle = `5px solid ${primaryColor}`;
+        }
+        
+        pokemonCard.style.background = backgroundStyle;
         
         const brightness = getBrightness(primaryColor);
         const textColor = brightness > 128 ? '#000' : '#fff';
-        const boxColor = brightness > 128 ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)';
-        const borderColor = brightness > 128 ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.7)';
+        const boxColor = brightness > 128 ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
         
         pokemonCard.innerHTML = `
-             <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
+            <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
                 <h2>${pokemon.name} (#${pokemon.id})</h2>
-                ${pokemon.image ? `<img src="${pokemon.image}" alt="${pokemon.name}" style="max-width: 300px; border-color: ${borderColor};">` : ''}
+                ${pokemon.image ? `<img src="${pokemon.image}" alt="${pokemon.name}" style="max-width: 200px; border: ${borderStyle}; ${pokemon.secondaryType ? 'background-image: ' + backgroundStyle + '; background-origin: border-box; background-clip: content-box, border-box;' : ''}">` : ''}
                 <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
                 <p><strong>Size:</strong> ${pokemon.size}</p>
                 <p><strong>Rarity:</strong> ${pokemon.rarity}</p>
                 <p><strong>Behavior:</strong> ${pokemon.behavior}</p>
                 <p><strong>Habitat:</strong> ${pokemon.habitat}</p>
                 <p><strong>Classification:</strong> ${pokemon.classification}</p>
-                <p><strong>Description:</strong> ${pokemon.flavorText}</p>
+                <p><strong>Flavor Text:</strong> ${pokemon.flavorText}</p>
                 <h3>Abilities:</h3>
                 <ul>
                     <li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>
