@@ -703,7 +703,7 @@
         pokemonCard.innerHTML = `
              <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
                 <h2>${pokemon.name} (#${pokemon.id})</h2>
-                ${pokemon.image ? `<img src="${pokemon.image}" alt="${pokemon.name}" style="max-width: 400px; border-color: ${borderColor};">` : ''}
+                ${pokemon.image ? `<img src="${pokemon.image}" alt="${pokemon.name}" style="max-width: 300px; border-color: ${borderColor};">` : ''}
                 <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
                 <p><strong>Size:</strong> ${pokemon.size}</p>
                 <p><strong>Rarity:</strong> ${pokemon.rarity}</p>
