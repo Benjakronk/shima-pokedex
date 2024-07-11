@@ -43,7 +43,7 @@
         }
         .pokemon-card, .move-card {
             border-radius: 10px;
-            padding: 15px;
+            padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
             transition: box-shadow 0.3s ease;
@@ -55,21 +55,24 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
+        .card-content {
+            border-radius: 8px;
+            padding: 15px;
+            margin: -10px;
+        }
+
         .pokemon-card h2, .move-card h3 {
             margin-top: 0;
             border-bottom: 2px solid rgba(0, 0, 0, 0.1);
             padding-bottom: 10px;
-            position: relative;
         }
 
         .pokemon-card ul, .move-card ul {
             padding-left: 20px;
-            position: relative;
         }
 
         .pokemon-card p, .move-card p {
             margin: 5px 0;
-            position: relative;
         }
 
         .pokemon-card img {
@@ -685,71 +688,54 @@
         const primaryColor = getTypeColor(pokemon.primaryType);
         const secondaryColor = pokemon.secondaryType ? getTypeColor(pokemon.secondaryType) : primaryColor;
         
-        pokemonCard.style.background = '#f0f0f0'; // Light base color
-        pokemonCard.style.color = '#333'; // Dark text color for contrast
-        pokemonCard.style.position = 'relative';
-        pokemonCard.style.overflow = 'hidden';
-        pokemonCard.style.zIndex = '1';
+        pokemonCard.style.background = pokemon.secondaryType 
+            ? `linear-gradient(135deg, ${primaryColor} 50%, ${secondaryColor} 50%)`
+            : primaryColor;
         
-        // Create color overlay
-        const overlay = document.createElement('div');
-        overlay.style.position = 'absolute';
-        overlay.style.top = '0';
-        overlay.style.left = '0';
-        overlay.style.right = '0';
-        overlay.style.bottom = '0';
-        overlay.style.zIndex = '-1';
-        overlay.style.opacity = '0.7'; // Adjust for desired intensity
+        const brightness = getBrightness(primaryColor);
+        const textColor = brightness > 128 ? '#000' : '#fff';
+        const boxColor = brightness > 128 ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
         
-        if (pokemon.secondaryType) {
-            overlay.style.background = `linear-gradient(135deg, ${primaryColor} 50%, ${secondaryColor} 50%)`;
-        } else {
-            overlay.style.backgroundColor = primaryColor;
-        }
-        
-        pokemonCard.appendChild(overlay);
-        
-        // Card content
-        const content = document.createElement('div');
-        content.innerHTML = `
-            <h2>${pokemon.name} (#${pokemon.id})</h2>
-            ${pokemon.image ? `<img src="${pokemon.image}" alt="${pokemon.name}" style="max-width: 200px;">` : ''}
-            <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
-            <p><strong>Size:</strong> ${pokemon.size}</p>
-            <p><strong>Rarity:</strong> ${pokemon.rarity}</p>
-            <p><strong>Behavior:</strong> ${pokemon.behavior}</p>
-            <p><strong>Habitat:</strong> ${pokemon.habitat}</p>
-            <p><strong>Classification:</strong> ${pokemon.classification}</p>
-            <p><strong>Description:</strong> ${pokemon.flavorText}</p>
-            <h3>Abilities:</h3>
-            <ul>
-                <li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>
-                ${pokemon.secondaryAbility ? `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>` : ''}
-                ${pokemon.hiddenAbility ? `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>` : ''}
-            </ul>
-            <h3>Stats:</h3>
-            <ul>
-                <li><strong>Hit Dice:</strong> ${pokemon.hitDice}</li>
-                <li><strong>Vitality Dice:</strong> ${pokemon.vitalityDice}</li>
-                <li><strong>Strength:</strong> ${pokemon.strength}</li>
-                <li><strong>Dexterity:</strong> ${pokemon.dexterity}</li>
-                <li><strong>Constitution:</strong> ${pokemon.constitution}</li>
-                <li><strong>Intelligence:</strong> ${pokemon.intelligence}</li>
-                <li><strong>Wisdom:</strong> ${pokemon.wisdom}</li>
-                <li><strong>Charisma:</strong> ${pokemon.charisma}</li>
-                <li><strong>Speed:</strong> ${pokemon.speed}</li>
-            </ul>
-            <h3>Available Moves:</h3>
-            <ul>
-                <li><strong>Starting:</strong> ${pokemon.moves.starting}</li>
-                <li><strong>Level 2:</strong> ${pokemon.moves.level2}</li>
-                <li><strong>Level 6:</strong> ${pokemon.moves.level6}</li>
-                <li><strong>Level 10:</strong> ${pokemon.moves.level10}</li>
-                <li><strong>Level 14:</strong> ${pokemon.moves.level14}</li>
-                <li><strong>Level 18:</strong> ${pokemon.moves.level18}</li>
-            </ul>
+        pokemonCard.innerHTML = `
+            <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
+                <h2>${pokemon.name} (#${pokemon.id})</h2>
+                ${pokemon.image ? `<img src="${pokemon.image}" alt="${pokemon.name}" style="max-width: 200px;">` : ''}
+                <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
+                <p><strong>Size:</strong> ${pokemon.size}</p>
+                <p><strong>Rarity:</strong> ${pokemon.rarity}</p>
+                <p><strong>Behavior:</strong> ${pokemon.behavior}</p>
+                <p><strong>Habitat:</strong> ${pokemon.habitat}</p>
+                <p><strong>Classification:</strong> ${pokemon.classification}</p>
+                <p><strong>Description:</strong> ${pokemon.flavorText}</p>
+                <h3>Abilities:</h3>
+                <ul>
+                    <li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>
+                    ${pokemon.secondaryAbility ? `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>` : ''}
+                    ${pokemon.hiddenAbility ? `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>` : ''}
+                </ul>
+                <h3>Stats:</h3>
+                <ul>
+                    <li><strong>Hit Dice:</strong> ${pokemon.hitDice}</li>
+                    <li><strong>Vitality Dice:</strong> ${pokemon.vitalityDice}</li>
+                    <li><strong>Strength:</strong> ${pokemon.strength}</li>
+                    <li><strong>Dexterity:</strong> ${pokemon.dexterity}</li>
+                    <li><strong>Constitution:</strong> ${pokemon.constitution}</li>
+                    <li><strong>Intelligence:</strong> ${pokemon.intelligence}</li>
+                    <li><strong>Wisdom:</strong> ${pokemon.wisdom}</li>
+                    <li><strong>Charisma:</strong> ${pokemon.charisma}</li>
+                    <li><strong>Speed:</strong> ${pokemon.speed}</li>
+                </ul>
+                <h3>Available Moves:</h3>
+                <ul>
+                    <li><strong>Starting:</strong> ${pokemon.moves.starting}</li>
+                    <li><strong>Level 2:</strong> ${pokemon.moves.level2}</li>
+                    <li><strong>Level 6:</strong> ${pokemon.moves.level6}</li>
+                    <li><strong>Level 10:</strong> ${pokemon.moves.level10}</li>
+                    <li><strong>Level 14:</strong> ${pokemon.moves.level14}</li>
+                    <li><strong>Level 18:</strong> ${pokemon.moves.level18}</li>
+                </ul>
+            </div>
         `;
-        pokemonCard.appendChild(content);
         
         return pokemonCard;
     }
@@ -847,37 +833,25 @@
                 moveCard.className = 'move-card';
                 
                 const moveColor = getTypeColor(move.type);
-                moveCard.style.backgroundColor = '#f0f0f0';
-                moveCard.style.color = '#333';
-                moveCard.style.position = 'relative';
-                moveCard.style.overflow = 'hidden';
-                moveCard.style.zIndex = '1';
+                moveCard.style.backgroundColor = moveColor;
                 
-                const overlay = document.createElement('div');
-                overlay.style.position = 'absolute';
-                overlay.style.top = '0';
-                overlay.style.left = '0';
-                overlay.style.right = '0';
-                overlay.style.bottom = '0';
-                overlay.style.backgroundColor = moveColor;
-                overlay.style.opacity = '0.7';
-                overlay.style.zIndex = '-1';
+                const brightness = getBrightness(moveColor);
+                const textColor = brightness > 128 ? '#000' : '#fff';
+                const boxColor = brightness > 128 ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
                 
-                moveCard.appendChild(overlay);
-                
-                const content = document.createElement('div');
-                content.innerHTML = `
-                    <h3>${move.name}</h3>
-                    <p><strong>Type:</strong> ${move.type}</p>
-                    <p><strong>VP Cost:</strong> ${move.vp}</p>
-                    <p><strong>Move Power:</strong> ${move.power}</p>
-                    <p><strong>Time:</strong> ${move.time}</p>
-                    <p><strong>Duration:</strong> ${move.duration}</p>
-                    <p><strong>Range:</strong> ${move.range}</p>
-                    <p><strong>Effect:</strong> ${move.description}</p>
-                    <p><strong>Higher Levels:</strong> ${move.higher}</p>
+                moveCard.innerHTML = `
+                    <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
+                        <h3>${move.name}</h3>
+                        <p><strong>Type:</strong> ${move.type}</p>
+                        <p><strong>VP Cost:</strong> ${move.vp}</p>
+                        <p><strong>Move Power:</strong> ${move.power}</p>
+                        <p><strong>Time:</strong> ${move.time}</p>
+                        <p><strong>Duration:</strong> ${move.duration}</p>
+                        <p><strong>Range:</strong> ${move.range}</p>
+                        <p><strong>Effect:</strong> ${move.description}</p>
+                        <p><strong>Higher Levels:</strong> ${move.higher}</p>
+                    </div>
                 `;
-                moveCard.appendChild(content);
                 
                 resultsContainer.appendChild(moveCard);
             });
