@@ -80,7 +80,10 @@
             margin: 10px auto;
             max-width: 200px;
             border-radius: 5px;
+            border: 3px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+        
         .pagination-controls {
             display: flex;
             justify-content: center;
@@ -695,11 +698,12 @@
         const brightness = getBrightness(primaryColor);
         const textColor = brightness > 128 ? '#000' : '#fff';
         const boxColor = brightness > 128 ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
+        const borderColor = brightness > 128 ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.7)';
         
         pokemonCard.innerHTML = `
-            <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
+             <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
                 <h2>${pokemon.name} (#${pokemon.id})</h2>
-                ${pokemon.image ? `<img src="${pokemon.image}" alt="${pokemon.name}" style="max-width: 200px;">` : ''}
+                ${pokemon.image ? `<img src="${pokemon.image}" alt="${pokemon.name}" style="max-width: 400px; border-color: ${borderColor};">` : ''}
                 <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
                 <p><strong>Size:</strong> ${pokemon.size}</p>
                 <p><strong>Rarity:</strong> ${pokemon.rarity}</p>
