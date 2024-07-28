@@ -732,21 +732,33 @@ window.onload = async function() {
         await loadPokemonData(); // This will also load move data
         console.log('Data loaded successfully');
         
-        setAudioVolume(0.05);
+        setAudioVolume(0.3);
         
         // Add event listeners
         const searchButton = document.getElementById('searchButton');
-        if (searchButton) {
+        const searchInput = document.getElementById('searchInput');
+        if (searchButton && searchInput) {
             searchButton.addEventListener('click', searchPokemon);
+            searchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    searchPokemon();
+                }
+            });
         } else {
-            console.warn("Search button not found");
+            console.warn("Search button or input not found");
         }
 
         const moveSearchButton = document.getElementById('moveSearchButton');
-        if (moveSearchButton) {
+        const moveSearchInput = document.getElementById('moveSearchInput');
+        if (moveSearchButton && moveSearchInput) {
             moveSearchButton.addEventListener('click', searchMoves);
+            moveSearchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    searchMoves();
+                }
+            });
         } else {
-            console.warn("Move search button not found");
+            console.warn("Move search button or input not found");
         }
         
         // Add event listeners for filters
