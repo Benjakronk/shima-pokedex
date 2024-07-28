@@ -386,7 +386,49 @@ function createPokemonCard(pokemon) {
     const textColor = brightness > 128 ? '#000' : '#fff';
     const boxColor = brightness > 128 ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
     
-    const levelAppropriateMoves = getMovesUpToLevel(pokemon, 20); // Always get moves up to level 20
+    // New styles for move lists and details
+    const moveListStyle = brightness > 128 ? 
+        'background-color: rgba(255,255,255,0.7); color: #000;' :
+        'background-color: transparent; color: #fff;';
+    const moveDetailStyle = brightness > 128 ?
+        'background-color: rgba(255,255,255,0.9); color: #000;' :
+        'background-color: rgba(0,0,0,0.5); color: #fff;';
+    const tableHeaderStyle = brightness > 128 ?
+        'background-color: rgba(0,0,0,0.1); color: #000;' :
+        'background-color: rgba(255,255,255,0.2); color: #fff;';
+    
+    const moveSections = [
+        { level: 1, title: "Starting Moves", moves: pokemon.moves.starting.split(', ').filter(move => move !== '') },
+        { level: 2, title: "Level 2 Moves", moves: pokemon.moves.level2.split(', ').filter(move => move !== '') },
+        { level: 6, title: "Level 6 Moves", moves: pokemon.moves.level6.split(', ').filter(move => move !== '') },
+        { level: 10, title: "Level 10 Moves", moves: pokemon.moves.level10.split(', ').filter(move => move !== '') },
+        { level: 14, title: "Level 14 Moves", moves: pokemon.moves.level14.split(', ').filter(move => move !== '') },
+        { level: 18, title: "Level 18 Moves", moves: pokemon.moves.level18.split(', ').filter(move => move !== '') }
+    ];
+
+    let moveListHTML = moveSections.map(section => {
+        if (section.moves.length === 0) return ''; // Skip empty sections
+        return `
+            <h4 style="${moveListStyle}">${section.title}</h4>
+            <table class="moves-table" style="${moveListStyle}">
+                <tr>
+                    <th style="${tableHeaderStyle}">Move</th>
+                    <th style="${tableHeaderStyle}">Type</th>
+                    <th style="${tableHeaderStyle}">VP Cost</th>
+                </tr>
+                ${section.moves.map(moveName => {
+                    const move = moveData.find(m => m.name === moveName);
+                    return move ? `
+                        <tr class="move-row" onclick="toggleMoveDetails(this, ${JSON.stringify(move).replace(/"/g, '&quot;')}, '${moveDetailStyle}')">
+                            <td>${move.name}</td>
+                            <td>${move.type}</td>
+                            <td>${move.vp}</td>
+                        </tr>
+                    ` : '';
+                }).join('')}
+            </table>
+        `;
+    }).join('');
 
     pokemonCard.innerHTML = `
         <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
@@ -422,21 +464,9 @@ function createPokemonCard(pokemon) {
                 <li><strong>Speed:</strong> ${pokemon.speed}</li>
             </ul>
             <div class="pokemon-moves">
-                <h3 class="moves-toggle" onclick="toggleMoveList('${pokemon.id}')">Available Moves (Level 20) ▼</h3>
+                <h3 class="moves-toggle" onclick="toggleMoveList('${pokemon.id}')" style="${moveListStyle}">Available Moves ▼</h3>
                 <div id="moveList_${pokemon.id}" class="moves-list" style="display: none;">
-                    <table class="moves-table">
-                        <tr><th>Move</th><th>Type</th><th>VP Cost</th></tr>
-                        ${levelAppropriateMoves.map(moveName => {
-                            const move = moveData.find(m => m.name === moveName);
-                            return move ? `
-                                <tr class="move-row" onclick="toggleMoveDetails(this, ${JSON.stringify(move).replace(/"/g, '&quot;')})">
-                                    <td>${move.name}</td>
-                                    <td>${move.type}</td>
-                                    <td>${move.vp}</td>
-                                </tr>
-                            ` : '';
-                        }).join('')}
-                    </table>
+                    ${moveListHTML}
                 </div>
             </div>
         </div>
@@ -469,7 +499,7 @@ function toggleMoveList(pokemonId) {
     }
 }
 
-function toggleMoveDetails(row, move) {
+function toggleMoveDetails(row, move, detailStyle) {
     const detailsRow = row.nextElementSibling;
     if (detailsRow && detailsRow.classList.contains('move-details')) {
         detailsRow.remove();
@@ -478,6 +508,7 @@ function toggleMoveDetails(row, move) {
         newRow.classList.add('move-details');
         const cell = newRow.insertCell();
         cell.colSpan = 3;
+        cell.style = detailStyle;
         cell.innerHTML = `
             <p><strong>Power:</strong> ${move.power}</p>
             <p><strong>Time:</strong> ${move.time}</p>
