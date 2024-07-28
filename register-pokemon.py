@@ -51,12 +51,18 @@ class PokemonSelector:
         self.pokemon_list = pokemon_list
         self.registered_pokemon = registered_pokemon
         self.checkboxes = []
+        self.filter_var = tk.StringVar()
+        self.filter_var.trace("w", self.filter_pokemon)
 
         self.create_widgets()
 
     def create_widgets(self):
         frame = ttk.Frame(self.master)
         frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+
+        # Add search box
+        self.search_entry = ttk.Entry(frame, textvariable=self.filter_var)
+        self.search_entry.pack(pady=5, fill=tk.X)
 
         self.canvas = tk.Canvas(frame)
         scrollbar = ttk.Scrollbar(frame, orient="vertical", command=self.canvas.yview)
@@ -74,7 +80,7 @@ class PokemonSelector:
             var = tk.BooleanVar(value=pokemon in self.registered_pokemon)
             cb = ttk.Checkbutton(self.scrollable_frame, text=pokemon, variable=var)
             cb.pack(anchor='w')
-            self.checkboxes.append((pokemon, var))
+            self.checkboxes.append((pokemon, var, cb))
 
         self.canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
@@ -98,8 +104,16 @@ class PokemonSelector:
             elif event.num == 5:
                 self.canvas.yview_scroll(1, "units")
 
+    def filter_pokemon(self, *args):
+        search_term = self.filter_var.get().lower()
+        for pokemon, var, cb in self.checkboxes:
+            if search_term in pokemon.lower():
+                cb.pack(anchor='w')
+            else:
+                cb.pack_forget()
+
     def save_selection(self):
-        selected_pokemon = {pokemon for pokemon, var in self.checkboxes if var.get()}
+        selected_pokemon = {pokemon for pokemon, var, _ in self.checkboxes if var.get()}
         save_registered_pokemon(selected_pokemon)
         print(f"Selected Pokémon: {selected_pokemon}")  # Debugging
         self.master.quit()
