@@ -2,22 +2,28 @@ import tkinter as tk
 from tkinter import ttk
 import json
 import requests
+import os
+import platform
+
+# Get the directory of the script
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+JSON_FILE = os.path.join(SCRIPT_DIR, 'registered_pokemon.json')
 
 def load_registered_pokemon():
     try:
-        with open('registered_pokemon.json', 'r') as f:
+        with open(JSON_FILE, 'r') as f:
             data = json.load(f)
             registered = set(data.get('registered', []))
-            print(f"Loaded registered Pokémon: {registered}")  # Debugging
+            print(f"Loaded registered Pokémon from {JSON_FILE}: {registered}")  # Debugging
             return registered
     except FileNotFoundError:
-        print("registered_pokemon.json not found. Starting with empty set.")  # Debugging
+        print(f"{JSON_FILE} not found. Starting with empty set.")  # Debugging
         return set()
 
 def save_registered_pokemon(pokemon_list):
-    with open('registered_pokemon.json', 'w') as f:
+    with open(JSON_FILE, 'w') as f:
         json.dump({"registered": list(pokemon_list)}, f, indent=4)
-    print(f"Saved registered Pokémon: {pokemon_list}")  # Debugging
+    print(f"Saved registered Pokémon to {JSON_FILE}: {pokemon_list}")  # Debugging
 
 def fetch_pokemon_from_web_app():
     url = "https://script.google.com/macros/s/AKfycbz5jkSQ1HuCpCrbg_mePsfLDaoesjCvrX_fCAhJvTC5V3IddYmtjVJnh4_2YaX37Dkj/exec?action=pokemon"
@@ -52,29 +58,45 @@ class PokemonSelector:
         frame = ttk.Frame(self.master)
         frame.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
 
-        canvas = tk.Canvas(frame)
-        scrollbar = ttk.Scrollbar(frame, orient="vertical", command=canvas.yview)
-        scrollable_frame = ttk.Frame(canvas)
+        self.canvas = tk.Canvas(frame)
+        scrollbar = ttk.Scrollbar(frame, orient="vertical", command=self.canvas.yview)
+        self.scrollable_frame = ttk.Frame(self.canvas)
 
-        scrollable_frame.bind(
+        self.scrollable_frame.bind(
             "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
         )
 
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        self.canvas.configure(yscrollcommand=scrollbar.set)
 
         for pokemon in self.pokemon_list:
             var = tk.BooleanVar(value=pokemon in self.registered_pokemon)
-            cb = ttk.Checkbutton(scrollable_frame, text=pokemon, variable=var)
+            cb = ttk.Checkbutton(self.scrollable_frame, text=pokemon, variable=var)
             cb.pack(anchor='w')
             self.checkboxes.append((pokemon, var))
 
-        canvas.pack(side="left", fill="both", expand=True)
+        self.canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+
+        # Bind scrolling events
+        self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)
+        self.canvas.bind_all("<Button-4>", self._on_mousewheel)
+        self.canvas.bind_all("<Button-5>", self._on_mousewheel)
 
         save_button = ttk.Button(self.master, text="Save", command=self.save_selection)
         save_button.pack(pady=10)
+
+    def _on_mousewheel(self, event):
+        if platform.system() == "Windows":
+            self.canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+        elif platform.system() == "Darwin":  # macOS
+            self.canvas.yview_scroll(int(-1 * event.delta), "units")
+        else:  # Linux and other Unix
+            if event.num == 4:
+                self.canvas.yview_scroll(-1, "units")
+            elif event.num == 5:
+                self.canvas.yview_scroll(1, "units")
 
     def save_selection(self):
         selected_pokemon = {pokemon for pokemon, var in self.checkboxes if var.get()}
@@ -83,6 +105,9 @@ class PokemonSelector:
         self.master.quit()
 
 def main():
+    print(f"Script directory: {SCRIPT_DIR}")  # Debugging
+    print(f"JSON file path: {JSON_FILE}")  # Debugging
+    
     registered_pokemon = load_registered_pokemon()
     pokemon_list = fetch_pokemon_from_web_app()
     
@@ -92,7 +117,7 @@ def main():
 
     root = tk.Tk()
     root.title("Pokémon Selector")
-    root.geometry("300x400")
+    root.geometry("500x500")
     app = PokemonSelector(root, pokemon_list, registered_pokemon)
     root.mainloop()
 
