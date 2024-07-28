@@ -28,6 +28,13 @@ let currentResults = [];
 let currentFilteredPage = 1;
 
 // Utility functions
+function setAudioVolume(volume) {
+    const audioElements = document.querySelectorAll('audio');
+    audioElements.forEach(audio => {
+        audio.volume = volume;
+    });
+}
+
 function getTypeColor(type) {
     return TYPE_COLORS[type.toLowerCase()] || '#68A090';
 }
@@ -35,14 +42,30 @@ function getTypeColor(type) {
 function playLoadingCompleteSound() {
     if (isSoundEnabled) {
         const sound = document.getElementById('loadingCompleteSound');
-        sound.play().catch(error => console.error('Error playing sound:', error));
+        if (sound) {
+            sound.play()
+                .then(() => {
+                    console.log('Sound played successfully');
+                })
+                .catch(error => console.error('Error playing sound:', error));
+        } else {
+            console.warn('Loading complete sound element not found');
+        }
     }
 }
 
 function playSearchSelectSound() {
     if (isSoundEnabled) {
         const sound = document.getElementById('searchSelect');
-        sound.play().catch(error => console.error('Error playing sound:', error));
+        if (sound) {
+            sound.play()
+                .then(() => {
+                    console.log('Sound played successfully');
+                })
+                .catch(error => console.error('Error playing sound:', error));
+        } else {
+            console.warn('Search select sound element not found');
+        }
     }
 }
 
@@ -363,6 +386,8 @@ function createPokemonCard(pokemon) {
     const textColor = brightness > 128 ? '#000' : '#fff';
     const boxColor = brightness > 128 ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
     
+    const levelAppropriateMoves = getMovesUpToLevel(pokemon, 20); // Always get moves up to level 20
+
     pokemonCard.innerHTML = `
         <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
             <h2>${pokemon.name} (#${pokemon.id})</h2>
@@ -396,19 +421,72 @@ function createPokemonCard(pokemon) {
                 <li><strong>Charisma:</strong> ${pokemon.charisma}</li>
                 <li><strong>Speed:</strong> ${pokemon.speed}</li>
             </ul>
-            <h3>Available Moves:</h3>
-            <ul>
-                <li><strong>Starting:</strong> ${pokemon.moves.starting}</li>
-                <li><strong>Level 2:</strong> ${pokemon.moves.level2}</li>
-                <li><strong>Level 6:</strong> ${pokemon.moves.level6}</li>
-                <li><strong>Level 10:</strong> ${pokemon.moves.level10}</li>
-                <li><strong>Level 14:</strong> ${pokemon.moves.level14}</li>
-                <li><strong>Level 18:</strong> ${pokemon.moves.level18}</li>
-            </ul>
+            <div class="pokemon-moves">
+                <h3 class="moves-toggle" onclick="toggleMoveList('${pokemon.id}')">Available Moves (Level 20) ▼</h3>
+                <div id="moveList_${pokemon.id}" class="moves-list" style="display: none;">
+                    <table class="moves-table">
+                        <tr><th>Move</th><th>Type</th><th>VP Cost</th></tr>
+                        ${levelAppropriateMoves.map(moveName => {
+                            const move = moveData.find(m => m.name === moveName);
+                            return move ? `
+                                <tr class="move-row" onclick="toggleMoveDetails(this, ${JSON.stringify(move).replace(/"/g, '&quot;')})">
+                                    <td>${move.name}</td>
+                                    <td>${move.type}</td>
+                                    <td>${move.vp}</td>
+                                </tr>
+                            ` : '';
+                        }).join('')}
+                    </table>
+                </div>
+            </div>
         </div>
     `;
     
     return pokemonCard;
+}
+
+function getLevelAppropriateMoves(pokemon, level) {
+    const availableMoves = new Set();
+
+    Object.entries(pokemon.moves).forEach(([moveLevel, moves]) => {
+        if (level >= parseInt(moveLevel)) {
+            moves.split(', ').forEach(move => availableMoves.add(move));
+        }
+    });
+
+    return Array.from(availableMoves).filter(move => move !== '');
+}
+
+function toggleMoveList(pokemonId) {
+    const moveList = document.getElementById(`moveList_${pokemonId}`);
+    const toggleButton = moveList.previousElementSibling;
+    if (moveList.style.display === 'none') {
+        moveList.style.display = 'block';
+        toggleButton.innerHTML = 'Available Moves ▲';
+    } else {
+        moveList.style.display = 'none';
+        toggleButton.innerHTML = 'Available Moves ▼';
+    }
+}
+
+function toggleMoveDetails(row, move) {
+    const detailsRow = row.nextElementSibling;
+    if (detailsRow && detailsRow.classList.contains('move-details')) {
+        detailsRow.remove();
+    } else {
+        const newRow = row.parentNode.insertRow(row.rowIndex + 1);
+        newRow.classList.add('move-details');
+        const cell = newRow.insertCell();
+        cell.colSpan = 3;
+        cell.innerHTML = `
+            <p><strong>Power:</strong> ${move.power}</p>
+            <p><strong>Time:</strong> ${move.time}</p>
+            <p><strong>Duration:</strong> ${move.duration}</p>
+            <p><strong>Range:</strong> ${move.range}</p>
+            <p><strong>Description:</strong> ${move.description}</p>
+            ${move.higher ? `<p><strong>Higher Levels:</strong> ${move.higher}</p>` : ''}
+        `;
+    }
 }
 
 async function loadMoveData() {
@@ -436,22 +514,35 @@ async function loadMoveData() {
 }
 
 function searchMoves() {
-    const searchTerm = document.getElementById('moveSearchInput').value.toLowerCase();
-    const pokemonLevel = parseInt(document.getElementById('pokemonLevelInput').value) || 20;
+    const searchInput = document.getElementById('moveSearchInput');
+    const pokemonLevelInput = document.getElementById('pokemonLevelInput');
+
+    if (!searchInput || !pokemonLevelInput) {
+        console.error("Move search input elements not found");
+        return;
+    }
+
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    const pokemonLevel = parseInt(pokemonLevelInput.value) || 20;
+
     let results = [];
 
+    // Check if the search term matches a Pokémon name
     const pokemon = pokemonData.find(p => p.name.toLowerCase() === searchTerm);
 
     if (pokemon) {
+        // If it's a Pokémon name, get moves up to the specified level
         const availableMoves = getMovesUpToLevel(pokemon, pokemonLevel);
         results = moveData.filter(move => availableMoves.includes(move.name));
     } else {
+        // If it's not a Pokémon name, search all moves
         results = moveData.filter(move => 
             move.name.toLowerCase().includes(searchTerm) ||
             move.type.toLowerCase().includes(searchTerm)
         );
     }
 
+    console.log(`Search results for "${searchTerm}":`, results);
     displayMoveResults(results, pokemon, pokemonLevel);
 }
 
@@ -478,6 +569,11 @@ function getMovesUpToLevel(pokemon, level) {
 
 function displayMoveResults(results, pokemon = null, level = null) {
     const resultsContainer = document.getElementById('moveResults');
+    if (!resultsContainer) {
+        console.error("Move results container not found");
+        return;
+    }
+
     resultsContainer.innerHTML = '';
     
     if (pokemon) {
@@ -604,20 +700,38 @@ window.onload = async function() {
     try {
         await loadPokemonData(); // This will also load move data
         console.log('Data loaded successfully');
-        document.getElementById('searchButton').addEventListener('click', searchPokemon);
-        document.getElementById('searchInput').addEventListener('keyup', function(event) {
-            if (event.key === 'Enter') {
-                searchPokemon();
-            }
-        });
+        
+        setAudioVolume(0.3);
+        
+        // Add event listeners
+        const searchButton = document.getElementById('searchButton');
+        if (searchButton) {
+            searchButton.addEventListener('click', searchPokemon);
+        } else {
+            console.warn("Search button not found");
+        }
+
+        const moveSearchButton = document.getElementById('moveSearchButton');
+        if (moveSearchButton) {
+            moveSearchButton.addEventListener('click', searchMoves);
+        } else {
+            console.warn("Move search button not found");
+        }
         
         // Add event listeners for filters
-        document.getElementById('typeFilter').addEventListener('change', searchPokemon);
-        document.getElementById('sizeFilter').addEventListener('change', searchPokemon);
-        document.getElementById('behaviorFilter').addEventListener('change', searchPokemon);
-        document.getElementById('activityFilter').addEventListener('change', searchPokemon);
-        document.getElementById('rarityFilter').addEventListener('change', searchPokemon);
-        document.getElementById('habitatFilter').addEventListener('change', searchPokemon);
+        ['typeFilter', 'sizeFilter', 'behaviorFilter', 'activityFilter', 'rarityFilter', 'habitatFilter'].forEach(filterId => {
+            const filterElement = document.getElementById(filterId);
+            if (filterElement) {
+                filterElement.addEventListener('change', searchPokemon);
+            } else {
+                console.warn(`Filter element ${filterId} not found`);
+            }
+        });
+
+        // Show the navigation buttons
+        document.getElementById('pokedex_button').style.display = 'inline-block';
+        document.getElementById('move_button').style.display = 'inline-block';
+
     } catch (error) {
         console.error('Error loading data:', error);
     }
