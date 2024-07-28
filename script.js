@@ -701,7 +701,7 @@ window.onload = async function() {
         await loadPokemonData(); // This will also load move data
         console.log('Data loaded successfully');
         
-        setAudioVolume(0.3);
+        setAudioVolume(0.05);
         
         // Add event listeners
         const searchButton = document.getElementById('searchButton');
