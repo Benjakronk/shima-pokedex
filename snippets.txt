@@ -386,10 +386,13 @@ function createPokemonCard(pokemon) {
     const textColor = brightness > 128 ? '#000' : '#fff';
     const boxColor = brightness > 128 ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
     
-    // Styles for expandable sections
-    const sectionStyle = brightness > 128 ? 
+    // New styles for move lists and details
+    const moveListStyle = brightness > 128 ? 
         'background-color: rgba(255,255,255,0.7); color: #000;' :
         'background-color: transparent; color: #fff;';
+    const moveDetailStyle = brightness > 128 ?
+        'background-color: rgba(255,255,255,0.9); color: #000;' :
+        'background-color: rgba(0,0,0,0.5); color: #fff;';
     const tableHeaderStyle = brightness > 128 ?
         'background-color: rgba(0,0,0,0.1); color: #000;' :
         'background-color: rgba(255,255,255,0.2); color: #fff;';
@@ -406,8 +409,8 @@ function createPokemonCard(pokemon) {
     let moveListHTML = moveSections.map(section => {
         if (section.moves.length === 0) return ''; // Skip empty sections
         return `
-            <h4 style="${sectionStyle}">${section.title}</h4>
-            <table class="moves-table" style="${sectionStyle}">
+            <h4 style="${moveListStyle}">${section.title}</h4>
+            <table class="moves-table" style="${moveListStyle}">
                 <tr>
                     <th style="${tableHeaderStyle}">Move</th>
                     <th style="${tableHeaderStyle}">Type</th>
@@ -416,7 +419,7 @@ function createPokemonCard(pokemon) {
                 ${section.moves.map(moveName => {
                     const move = moveData.find(m => m.name === moveName);
                     return move ? `
-                        <tr class="move-row" onclick="toggleMoveDetails(this, ${JSON.stringify(move).replace(/"/g, '&quot;')}, '${sectionStyle}')">
+                        <tr class="move-row" onclick="toggleMoveDetails(this, ${JSON.stringify(move).replace(/"/g, '&quot;')}, '${moveDetailStyle}')">
                             <td>${move.name}</td>
                             <td>${move.type}</td>
                             <td>${move.vp}</td>
@@ -435,48 +438,34 @@ function createPokemonCard(pokemon) {
                     <img src="${pokemon.image}" alt="${pokemon.name}">
                 </div>
             ` : ''}
-            <div class="expandable-section">
-                <h3 class="section-toggle" onclick="toggleSection('characteristics_${pokemon.id}')" style="${sectionStyle}">Characteristics ▼</h3>
-                <div id="characteristics_${pokemon.id}" class="section-content" style="display: none;">
-                    <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
-                    <p><strong>Size:</strong> ${pokemon.size}</p>
-                    <p><strong>Rarity:</strong> ${pokemon.rarity}</p>
-                    <p><strong>Behavior:</strong> ${pokemon.behavior}</p>
-                    <p><strong>Habitat:</strong> ${pokemon.habitat}</p>
-                    <p><strong>Classification:</strong> ${pokemon.classification}</p>
-                    <p><strong>Description:</strong> ${pokemon.flavorText}</p>
-                </div>
-            </div>
-            <div class="expandable-section">
-                <h3 class="section-toggle" onclick="toggleSection('abilities_${pokemon.id}')" style="${sectionStyle}">Abilities ▼</h3>
-                <div id="abilities_${pokemon.id}" class="section-content" style="display: none;">
-                    <ul>
-                        <li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>
-                        ${pokemon.secondaryAbility ? `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>` : ''}
-                        ${pokemon.hiddenAbility ? `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>` : ''}
-                    </ul>
-                </div>
-            </div>
-            <div class="expandable-section">
-                <h3 class="section-toggle" onclick="toggleSection('stats_${pokemon.id}')" style="${sectionStyle}">Stats ▼</h3>
-                <div id="stats_${pokemon.id}" class="section-content" style="display: none;">
-                    <ul>
-                        <li><strong>AC:</strong> ${pokemon.ac}</li>
-                        <li><strong>Hit Dice:</strong> ${pokemon.hitDice}</li>
-                        <li><strong>Vitality Dice:</strong> ${pokemon.vitalityDice}</li>
-                        <li><strong>Strength:</strong> ${pokemon.strength}</li>
-                        <li><strong>Dexterity:</strong> ${pokemon.dexterity}</li>
-                        <li><strong>Constitution:</strong> ${pokemon.constitution}</li>
-                        <li><strong>Intelligence:</strong> ${pokemon.intelligence}</li>
-                        <li><strong>Wisdom:</strong> ${pokemon.wisdom}</li>
-                        <li><strong>Charisma:</strong> ${pokemon.charisma}</li>
-                        <li><strong>Speed:</strong> ${pokemon.speed}</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="expandable-section">
-                <h3 class="section-toggle" onclick="toggleSection('moves_${pokemon.id}')" style="${sectionStyle}">Available Moves ▼</h3>
-                <div id="moves_${pokemon.id}" class="section-content" style="display: none;">
+            <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
+            <p><strong>Size:</strong> ${pokemon.size}</p>
+            <p><strong>Rarity:</strong> ${pokemon.rarity}</p>
+            <p><strong>Behavior:</strong> ${pokemon.behavior}</p>
+            <p><strong>Habitat:</strong> ${pokemon.habitat}</p>
+            <p><strong>Classification:</strong> ${pokemon.classification}</p>
+            <p><strong>Description:</strong> ${pokemon.flavorText}</p>
+            <h3>Abilities:</h3>
+            <ul>
+                <li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>
+                ${pokemon.secondaryAbility ? `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>` : ''}
+                ${pokemon.hiddenAbility ? `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>` : ''}
+            </ul>
+            <h3>Stats:</h3>
+            <ul>
+                <li><strong>Hit Dice:</strong> ${pokemon.hitDice}</li>
+                <li><strong>Vitality Dice:</strong> ${pokemon.vitalityDice}</li>
+                <li><strong>Strength:</strong> ${pokemon.strength}</li>
+                <li><strong>Dexterity:</strong> ${pokemon.dexterity}</li>
+                <li><strong>Constitution:</strong> ${pokemon.constitution}</li>
+                <li><strong>Intelligence:</strong> ${pokemon.intelligence}</li>
+                <li><strong>Wisdom:</strong> ${pokemon.wisdom}</li>
+                <li><strong>Charisma:</strong> ${pokemon.charisma}</li>
+                <li><strong>Speed:</strong> ${pokemon.speed}</li>
+            </ul>
+            <div class="pokemon-moves">
+                <h3 class="moves-toggle" onclick="toggleMoveList('${pokemon.id}')" style="${moveListStyle}">Available Moves ▼</h3>
+                <div id="moveList_${pokemon.id}" class="moves-list" style="display: none;">
                     ${moveListHTML}
                 </div>
             </div>
@@ -484,24 +473,6 @@ function createPokemonCard(pokemon) {
     `;
     
     return pokemonCard;
-}
-
-// Add this new function to handle toggling sections
-function toggleSection(sectionId) {
-    const section = document.getElementById(sectionId);
-    const toggle = section.previousElementSibling;
-    if (section.style.display === 'none') {
-        section.style.display = 'block';
-        toggle.innerHTML = toggle.innerHTML.replace('▼', '▲');
-    } else {
-        section.style.display = 'none';
-        toggle.innerHTML = toggle.innerHTML.replace('▲', '▼');
-    }
-}
-
-// Update the existing toggleMoveList function to use the new toggleSection function
-function toggleMoveList(pokemonId) {
-    toggleSection(`moves_${pokemonId}`);
 }
 
 function getLevelAppropriateMoves(pokemon, level) {
