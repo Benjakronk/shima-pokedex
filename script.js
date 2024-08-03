@@ -472,6 +472,8 @@ function createPokemonCard(pokemon) {
                         <li><strong>Charisma:</strong> ${pokemon.charisma}</li>
                         <li><strong>Speed:</strong> ${pokemon.speed}</li>
                     </ul>
+                    <p><strong>Saving Throw Proficiencies:</strong> ${pokemon.savingThrows || 'None'}</p>
+                    <p><strong>Skill Proficiencies:</strong> ${pokemon.skills || 'None'}</p>
                 </div>
             </div>
             <div class="expandable-section">
