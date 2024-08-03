@@ -153,7 +153,7 @@ async function loadPokemonData() {
     try {
         await loadMoveData();
         await fetchRegisteredPokemon();
-        const response = await fetch('https://script.google.com/macros/s/AKfycbz5jkSQ1HuCpCrbg_mePsfLDaoesjCvrX_fCAhJvTC5V3IddYmtjVJnh4_2YaX37Dkj/exec?action=pokemon');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxsSpPMHtVTTZLvHBR7Pat9S2Znqy1gim6bAUu1p2dnUjntxfp6YIU8O9wWQUZDZsfc/exec?action=pokemon');
         if (!response.ok) throw new Error('Failed to fetch Pokémon data');
         const values = await response.json();
         pokemonData = await Promise.all(values.map(processPokemonRow));
@@ -551,7 +551,7 @@ function toggleMoveDetails(row, move, detailStyle) {
 
 async function loadMoveData() {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbz5jkSQ1HuCpCrbg_mePsfLDaoesjCvrX_fCAhJvTC5V3IddYmtjVJnh4_2YaX37Dkj/exec?action=moves');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxsSpPMHtVTTZLvHBR7Pat9S2Znqy1gim6bAUu1p2dnUjntxfp6YIU8O9wWQUZDZsfc/exec?action=moves');
         if (!response.ok) {
             throw new Error('Failed to fetch move data');
         }
