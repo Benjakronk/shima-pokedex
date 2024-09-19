@@ -404,14 +404,14 @@ function createPokemonCard(pokemon) {
     ];
 
     let moveListHTML = moveSections.map(section => {
-        if (section.moves.length === 0) return ''; // Skip empty sections
+        if (section.moves.length === 0) return '';
         return `
             <h4 style="${sectionStyle}">${section.title}</h4>
-            <table class="moves-table" style="${sectionStyle}">
+            <table class="moves-table" style="color: inherit; background-color: inherit;">
                 <tr>
-                    <th style="${tableHeaderStyle}">Move</th>
-                    <th style="${tableHeaderStyle}">Type</th>
-                    <th style="${tableHeaderStyle}">VP Cost</th>
+                    <th>Move</th>
+                    <th>Type</th>
+                    <th>VP Cost</th>
                 </tr>
                 ${section.moves.map(moveName => {
                     const move = moveData.find(m => m.name === moveName);
@@ -539,7 +539,7 @@ function toggleMoveDetails(row, move, detailStyle) {
         newRow.classList.add('move-details');
         const cell = newRow.insertCell();
         cell.colSpan = 3;
-        cell.style = detailStyle;
+        cell.style = `${detailStyle} background-color: inherit; color: inherit;`;
         cell.innerHTML = `
             <p><strong>Power:</strong> ${move.power}</p>
             <p><strong>Time:</strong> ${move.time}</p>
