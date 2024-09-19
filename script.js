@@ -153,7 +153,7 @@ async function loadPokemonData() {
     try {
         await loadMoveData();
         await fetchRegisteredPokemon();
-        const response = await fetch('https://script.google.com/macros/s/AKfycbxsSpPMHtVTTZLvHBR7Pat9S2Znqy1gim6bAUu1p2dnUjntxfp6YIU8O9wWQUZDZsfc/exec?action=pokemon');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzh3t6AUmCXHzWgAnCVYJW1X5Fc4DyWMo2eHutAz3l9Vg7Ua0qWgF7uk62cvQXKBQTM/exec?action=pokemon');
         if (!response.ok) throw new Error('Failed to fetch Pokémon data');
         const values = await response.json();
         pokemonData = await Promise.all(values.map(processPokemonRow));
@@ -427,6 +427,11 @@ function createPokemonCard(pokemon) {
         `;
     }).join('');
 
+    const sensesHtml = Object.entries(pokemon.senses)
+        .filter(([_, value]) => value && value !== "0" && value.toLowerCase() !== "no" && value !== "-")
+        .map(([sense, value]) => `<li><strong>${sense.charAt(0).toUpperCase() + sense.slice(1)}:</strong> ${value}</li>`)
+        .join('');
+
     pokemonCard.innerHTML = `
         <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
             <h2>${pokemon.name} (#${pokemon.id})</h2>
@@ -438,42 +443,46 @@ function createPokemonCard(pokemon) {
             <div class="expandable-section">
                 <h3 class="section-toggle" onclick="toggleSection('characteristics_${pokemon.id}')" style="${sectionStyle}">Characteristics ▼</h3>
                 <div id="characteristics_${pokemon.id}" class="section-content" style="display: none;">
-                    <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
+                <p><strong>Classification:</strong> ${pokemon.classification}</p>
+                <p><strong>Description:</strong> ${pokemon.flavorText}</p>
+                <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
                     <p><strong>Size:</strong> ${pokemon.size}</p>
                     <p><strong>Rarity:</strong> ${pokemon.rarity}</p>
                     <p><strong>Behavior:</strong> ${pokemon.behavior}</p>
                     <p><strong>Habitat:</strong> ${pokemon.habitat}</p>
-                    <p><strong>Classification:</strong> ${pokemon.classification}</p>
-                    <p><strong>Description:</strong> ${pokemon.flavorText}</p>
-                </div>
-            </div>
-            <div class="expandable-section">
-                <h3 class="section-toggle" onclick="toggleSection('abilities_${pokemon.id}')" style="${sectionStyle}">Abilities ▼</h3>
-                <div id="abilities_${pokemon.id}" class="section-content" style="display: none;">
+                    </div>
+                    </div>
+                    <div class="expandable-section">
+                    <h3 class="section-toggle" onclick="toggleSection('abilities_${pokemon.id}')" style="${sectionStyle}">Abilities ▼</h3>
+                    <div id="abilities_${pokemon.id}" class="section-content" style="display: none;">
                     <ul>
-                        <li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>
-                        ${pokemon.secondaryAbility ? `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>` : ''}
-                        ${pokemon.hiddenAbility ? `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>` : ''}
+                    <li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>
+                    ${pokemon.secondaryAbility ? `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>` : ''}
+                    ${pokemon.hiddenAbility ? `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>` : ''}
                     </ul>
-                </div>
-            </div>
-            <div class="expandable-section">
-                <h3 class="section-toggle" onclick="toggleSection('stats_${pokemon.id}')" style="${sectionStyle}">Stats ▼</h3>
-                <div id="stats_${pokemon.id}" class="section-content" style="display: none;">
+                    </div>
+                    </div>
+                    <div class="expandable-section">
+                    <h3 class="section-toggle" onclick="toggleSection('stats_${pokemon.id}')" style="${sectionStyle}">Stats ▼</h3>
+                    <div id="stats_${pokemon.id}" class="section-content" style="display: none;">
                     <ul>
-                        <li><strong>AC:</strong> ${pokemon.ac}</li>
-                        <li><strong>Hit Dice:</strong> ${pokemon.hitDice}</li>
-                        <li><strong>Vitality Dice:</strong> ${pokemon.vitalityDice}</li>
-                        <li><strong>Strength:</strong> ${pokemon.strength}</li>
-                        <li><strong>Dexterity:</strong> ${pokemon.dexterity}</li>
-                        <li><strong>Constitution:</strong> ${pokemon.constitution}</li>
-                        <li><strong>Intelligence:</strong> ${pokemon.intelligence}</li>
-                        <li><strong>Wisdom:</strong> ${pokemon.wisdom}</li>
-                        <li><strong>Charisma:</strong> ${pokemon.charisma}</li>
-                        <li><strong>Speed:</strong> ${pokemon.speed}</li>
+                    <li><strong>AC:</strong> ${pokemon.ac}</li>
+                    <li><strong>Hit Dice:</strong> ${pokemon.hitDice}</li>
+                    <li><strong>Vitality Dice:</strong> ${pokemon.vitalityDice}</li>
+                    <li><strong>Strength:</strong> ${pokemon.strength}</li>
+                    <li><strong>Dexterity:</strong> ${pokemon.dexterity}</li>
+                    <li><strong>Constitution:</strong> ${pokemon.constitution}</li>
+                    <li><strong>Intelligence:</strong> ${pokemon.intelligence}</li>
+                    <li><strong>Wisdom:</strong> ${pokemon.wisdom}</li>
+                    <li><strong>Charisma:</strong> ${pokemon.charisma}</li>
+                    <li><strong>Saving Throw Proficiencies:</strong> ${pokemon.savingThrows || 'None'}</li>
+                    <li><strong>Skill Proficiencies:</strong> ${pokemon.skills || 'None'}</li>
+                    <li><strong>Speed:</strong> ${pokemon.speed}</li>
+                    ${sensesHtml ? `
+                        <li><strong>Senses:</strong></li>
+                        <ul>${sensesHtml}</ul>
+                    ` : ''}
                     </ul>
-                    <p><strong>Saving Throw Proficiencies:</strong> ${pokemon.savingThrows || 'None'}</p>
-                    <p><strong>Skill Proficiencies:</strong> ${pokemon.skills || 'None'}</p>
                 </div>
             </div>
             <div class="expandable-section">
@@ -553,7 +562,7 @@ function toggleMoveDetails(row, move, detailStyle) {
 
 async function loadMoveData() {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbxsSpPMHtVTTZLvHBR7Pat9S2Znqy1gim6bAUu1p2dnUjntxfp6YIU8O9wWQUZDZsfc/exec?action=moves');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbzh3t6AUmCXHzWgAnCVYJW1X5Fc4DyWMo2eHutAz3l9Vg7Ua0qWgF7uk62cvQXKBQTM/exec?action=moves');
         if (!response.ok) {
             throw new Error('Failed to fetch move data');
         }
@@ -724,6 +733,14 @@ async function processPokemonRow(row) {
             level18: sanitizeMoves(row[40], 3)
         },
         movePool: row.slice(41, 62).filter(move => move !== ""),
+        senses: {
+            sight: row[71],
+            hearing: row[72],
+            smell: row[73],
+            tremorsense: row[74],
+            echolocation: row[75],
+            telepathy: row[76]
+        }
     };
 }
 
