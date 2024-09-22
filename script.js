@@ -153,7 +153,7 @@ async function loadPokemonData() {
     try {
         await loadMoveData();
         await fetchRegisteredPokemon();
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzh3t6AUmCXHzWgAnCVYJW1X5Fc4DyWMo2eHutAz3l9Vg7Ua0qWgF7uk62cvQXKBQTM/exec?action=pokemon');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxyw5f5sPKP2cBDk7tnGO3vH-Ql2dRJCxHtu4X7Tdwp-X2VYRnWr-s9IrVXAsAtrCNd/exec?action=pokemon');
         if (!response.ok) throw new Error('Failed to fetch Pokémon data');
         const values = await response.json();
         pokemonData = await Promise.all(values.map(processPokemonRow));
@@ -562,7 +562,7 @@ function toggleMoveDetails(row, move, detailStyle) {
 
 async function loadMoveData() {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzh3t6AUmCXHzWgAnCVYJW1X5Fc4DyWMo2eHutAz3l9Vg7Ua0qWgF7uk62cvQXKBQTM/exec?action=moves');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxyw5f5sPKP2cBDk7tnGO3vH-Ql2dRJCxHtu4X7Tdwp-X2VYRnWr-s9IrVXAsAtrCNd/exec?action=moves');
         if (!response.ok) {
             throw new Error('Failed to fetch move data');
         }
@@ -739,7 +739,10 @@ async function processPokemonRow(row) {
             smell: row[73],
             tremorsense: row[74],
             echolocation: row[75],
-            telepathy: row[76]
+            telepathy: row[76],
+            blindsight: row[77],
+            darkvision: row[78],
+            truesight: row[79]
         }
     };
 }
