@@ -26,7 +26,7 @@ def save_registered_pokemon(pokemon_list):
     print(f"Saved registered Pokémon to {JSON_FILE}: {pokemon_list}")  # Debugging
 
 def fetch_pokemon_from_web_app():
-    url = "https://script.google.com/macros/s/AKfycbz5jkSQ1HuCpCrbg_mePsfLDaoesjCvrX_fCAhJvTC5V3IddYmtjVJnh4_2YaX37Dkj/exec?action=pokemon"
+    url = "https://script.google.com/macros/s/AKfycbxyw5f5sPKP2cBDk7tnGO3vH-Ql2dRJCxHtu4X7Tdwp-X2VYRnWr-s9IrVXAsAtrCNd/exec?action=pokemon"
     
     try:
         response = requests.get(url)
