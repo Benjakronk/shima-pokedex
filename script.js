@@ -28,6 +28,20 @@ let currentResults = [];
 let currentFilteredPage = 1;
 
 // Utility functions
+function toggleSound() {
+    isSoundEnabled = !isSoundEnabled;
+    const soundToggle = document.getElementById('soundToggle');
+    if (isSoundEnabled) {
+        setAudioVolume(0.3);
+        soundToggle.textContent = '🔊 Sound On';
+        soundToggle.classList.remove('sound-off');
+    } else {
+        setAudioVolume(0);
+        soundToggle.textContent = '🔇 Sound Off';
+        soundToggle.classList.add('sound-off');
+    }
+}
+
 function setAudioVolume(volume) {
     const audioElements = document.querySelectorAll('audio');
     audioElements.forEach(audio => {
@@ -909,6 +923,13 @@ window.onload = async function() {
         document.getElementById('pokedex_button').style.display = 'inline-block';
         document.getElementById('move_button').style.display = 'inline-block';
         document.getElementById('item_button').style.display = 'inline-block';
+
+        const soundToggle = document.getElementById('soundToggle');
+            if (soundToggle) {
+                soundToggle.addEventListener('click', toggleSound);
+            } else {
+                console.warn("Sound toggle button not found");
+            }
 
     } catch (error) {
         console.error('Error loading data:', error);
