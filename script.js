@@ -128,6 +128,75 @@ function showMoveSearch() {
     currentPage = 1;
 }
 
+// Global variable for item data
+let itemData = [];
+
+// Function to load item data
+async function loadItemData() {
+    try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbwIT3OS2bdCv2kkDPh6IjRRirv17iPnuttlPcY47LCHBbpNPuHF_IjVq0mCt7TkkWoW/exec?action=items');
+        if (!response.ok) {
+            throw new Error('Failed to fetch item data');
+        }
+        const values = await response.json();
+        itemData = values.map(row => ({
+            name: row[0],
+            type: row[1],
+            effect: row[4],
+            description: row[3],
+            // Add more properties as needed
+        }));
+        console.log('Item data processed:', itemData.length, 'items');
+    } catch (error) {
+        console.error('Error loading item data:', error);
+    }
+}
+
+function showItemSearch() {
+    document.getElementById('pokemonSearch').style.display = 'none';
+    document.getElementById('moveSearch').style.display = 'none';
+    document.getElementById('itemSearch').style.display = 'block';
+    playSearchSelectSound();
+    document.getElementById('results').innerHTML = '';
+    document.getElementById('searchInput').value = '';
+    document.getElementById('moveResults').innerHTML = '';
+    document.getElementById('moveSearchInput').value = '';
+}
+
+function searchItems() {
+    const searchTerm = document.getElementById('itemSearchInput').value.toLowerCase().trim();
+    const results = itemData.filter(item => 
+        item.name.toLowerCase().includes(searchTerm) ||
+        item.type.toLowerCase().includes(searchTerm)
+    );
+    displayItemResults(results);
+}
+
+function displayItemResults(results) {
+    const resultsContainer = document.getElementById('itemResults');
+    resultsContainer.innerHTML = '';
+    
+    if (results.length === 0) {
+        resultsContainer.innerHTML = '<p>No items found. Try a different search term.</p>';
+    } else {
+        results.forEach(item => {
+            const itemCard = document.createElement('div');
+            itemCard.className = 'item-card';
+            
+            itemCard.innerHTML = `
+                <div class="card-content">
+                    <h3>${item.name}</h3>
+                    <p><strong>Type:</strong> ${item.type}</p>
+                    <p><strong>Effect:</strong> ${item.effect}</p>
+                    <p><strong>Description:</strong> ${item.description}</p>
+                </div>
+            `;
+            
+            resultsContainer.appendChild(itemCard);
+        });
+    }
+}
+
 // Pokémon data functions
 async function fetchRegisteredPokemon() {
     const now = Date.now();
@@ -153,7 +222,7 @@ async function loadPokemonData() {
     try {
         await loadMoveData();
         await fetchRegisteredPokemon();
-        const response = await fetch('https://script.google.com/macros/s/AKfycbxyw5f5sPKP2cBDk7tnGO3vH-Ql2dRJCxHtu4X7Tdwp-X2VYRnWr-s9IrVXAsAtrCNd/exec?action=pokemon');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbwIT3OS2bdCv2kkDPh6IjRRirv17iPnuttlPcY47LCHBbpNPuHF_IjVq0mCt7TkkWoW/exec?action=pokemon');
         if (!response.ok) throw new Error('Failed to fetch Pokémon data');
         const values = await response.json();
         pokemonData = await Promise.all(values.map(processPokemonRow));
@@ -562,7 +631,7 @@ function toggleMoveDetails(row, move, detailStyle) {
 
 async function loadMoveData() {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbxyw5f5sPKP2cBDk7tnGO3vH-Ql2dRJCxHtu4X7Tdwp-X2VYRnWr-s9IrVXAsAtrCNd/exec?action=moves');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbwIT3OS2bdCv2kkDPh6IjRRirv17iPnuttlPcY47LCHBbpNPuHF_IjVq0mCt7TkkWoW/exec?action=moves');
         if (!response.ok) {
             throw new Error('Failed to fetch move data');
         }
@@ -781,6 +850,7 @@ function imageExists(url) {
 window.onload = async function() {
     try {
         await loadPokemonData(); // This will also load move data
+        await loadItemData(); // Load item data
         console.log('Data loaded successfully');
         
         setAudioVolume(0.3);
@@ -822,9 +892,23 @@ window.onload = async function() {
             }
         });
 
+        const itemSearchButton = document.getElementById('itemSearchButton');
+        const itemSearchInput = document.getElementById('itemSearchInput');
+        if (itemSearchButton && itemSearchInput) {
+            itemSearchButton.addEventListener('click', searchItems);
+            itemSearchInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    searchItems();
+                }
+            });
+        } else {
+            console.warn("Item search button or input not found");
+        }
+
         // Show the navigation buttons
         document.getElementById('pokedex_button').style.display = 'inline-block';
         document.getElementById('move_button').style.display = 'inline-block';
+        document.getElementById('item_button').style.display = 'inline-block';
 
     } catch (error) {
         console.error('Error loading data:', error);
