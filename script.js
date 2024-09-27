@@ -127,17 +127,23 @@ function hideLoading() {
 function showPokemonSearch() {
     document.getElementById('pokemonSearch').style.display = 'block';
     document.getElementById('moveSearch').style.display = 'none';
+    document.getElementById('itemSearch').style.display = 'none';
     playSearchSelectSound();
     document.getElementById('moveResults').innerHTML = '';
     document.getElementById('moveSearchInput').value = '';
+    document.getElementById('itemResults').innerHTML = '';
+    document.getElementById('itemSearchInput').value = '';
 }
 
 function showMoveSearch() {
     document.getElementById('pokemonSearch').style.display = 'none';
     document.getElementById('moveSearch').style.display = 'block';
+    document.getElementById('itemSearch').style.display = 'none';
     playSearchSelectSound();
     document.getElementById('results').innerHTML = '';
     document.getElementById('searchInput').value = '';
+    document.getElementById('itemResults').innerHTML = '';
+    document.getElementById('itemSearchInput').value = '';
     currentResults = [];
     currentPage = 1;
 }
