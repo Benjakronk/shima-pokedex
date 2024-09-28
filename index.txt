@@ -3,45 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokédex Search</title>
-    <script src="https://apis.google.com/js/api.js"></script>
+    <title>Shima Pokédex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://apis.google.com/js/api.js"></script>
 </head>
 <body>
     <audio id="loadingCompleteSound" src="https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/SFX_TURN_ON_PC.wav" preload="auto"></audio>
     <audio id="searchSelect" src="https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/SFX_PRESS_AB.wav" preload="auto"></audio>
-    <h1>Pokédex Search</h1>
-    <nav>
-        <button id="pokedex_button" onclick="showPokemonSearch()" style="display: none;">Pokédex Search</button>
-        <button id="move_button" onclick="showMoveSearch()" style="display: none;">Move Database</button>
-    </nav>
 
-    <div id="pokemonSearch" style="display: none;">
-        <div id="filters">
-            <select id="typeFilter"><option value="">All Types</option></select>
-            <select id="sizeFilter"><option value="">All Sizes</option></select>
-            <select id="behaviorFilter"><option value="">All Behaviors</option></select>
-            <select id="activityFilter"><option value="">All Activities</option></select>
-            <select id="rarityFilter"><option value="">All Rarities</option></select>
-            <select id="habitatFilter"><option value="">All Habitats</option></select>
+    <div class="pokedex">
+        <h1>Shima Pokédex</h1>
+        <nav>
+            <button id="pokedex_button" onclick="showPokemonSearch()">Pokédex Search</button>
+            <button id="move_button" onclick="showMoveSearch()">Move Database</button>
+            <button id="item_button" onclick="showItemSearch()">Item Database</button>
+            <button id="soundToggle">🔊 Sound On</button>
+        </nav>
+
+        <div class="pokedex-screen">
+            <div id="pokemonSearch">
+                <div id="filters">
+                    <select id="typeFilter"><option value="">All Types</option></select>
+                    <select id="sizeFilter"><option value="">All Sizes</option></select>
+                    <select id="behaviorFilter"><option value="">All Behaviors</option></select>
+                    <select id="activityFilter"><option value="">All Activities</option></select>
+                    <select id="rarityFilter"><option value="">All Rarities</option></select>
+                    <select id="habitatFilter"><option value="">All Habitats</option></select>
+                </div>
+
+                <div id="searchSection">
+                    <input type="text" id="searchInput" placeholder="Search by name, ID, type, or ability...">
+                    <button id="searchButton">Search</button>
+                </div>
+
+                <div id="results"></div>
+            </div>
+
+            <div id="moveSearch" style="display: none;">
+                <h2>Move Database</h2>
+                <div id="searchSection">
+                    <input type="text" id="moveSearchInput" placeholder="Search for a move or Pokémon...">
+                    <input type="number" id="pokemonLevelInput" min="1" max="20" value="20" placeholder="Pokémon Level">
+                    <button id="moveSearchButton">Search Moves</button>
+                </div>
+                <div id="moveResults"></div>
+            </div>
+
+            <div id="itemSearch" style="display: none;">
+                <h2>Item Database</h2>
+                <div id="searchSection">
+                    <input type="text" id="itemSearchInput" placeholder="Search for an item...">
+                    <button id="itemSearchButton">Search Items</button>
+                </div>
+                <div id="itemResults"></div>
+            </div>
         </div>
-
-        <div id="filteredList"></div>
-        
-        <div id="searchSection">
-            <input type="text" id="searchInput" placeholder="Search by name, ID, type, or ability...">
-            <button id="searchButton">Search</button>
-        </div>
-
-        <div id="results"></div>
-    </div>
-
-    <div id="moveSearch" style="display: none;">
-        <h2>Move Database</h2>
-        <input type="text" id="moveSearchInput" placeholder="Search for a move or Pokémon...">
-        <input type="number" id="pokemonLevelInput" min="1" max="20" value="20" placeholder="Pokémon Level">
-        <button id="moveSearchButton">Search Moves</button>
-        <div id="moveResults"></div>
     </div>
 
     <script src="script.js"></script>

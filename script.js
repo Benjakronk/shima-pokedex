@@ -96,10 +96,17 @@ function showError(message) {
     setTimeout(() => errorElement.remove(), 5000);
 }
 
+let loadingProgress = 0;
+
 function showLoading() {
     const loadingIndicator = document.createElement('div');
     loadingIndicator.id = 'loadingIndicator';
-    loadingIndicator.textContent = 'Loading...';
+    loadingIndicator.innerHTML = `
+        <div>Loading... <span id="loadingPercentage">0%</span></div>
+        <div id="progressBarContainer">
+            <div id="progressBar"></div>
+        </div>
+    `;
     loadingIndicator.style.position = 'fixed';
     loadingIndicator.style.top = '50%';
     loadingIndicator.style.left = '50%';
@@ -110,12 +117,45 @@ function showLoading() {
     loadingIndicator.style.borderRadius = '5px';
     loadingIndicator.style.zIndex = '1000';
     document.body.appendChild(loadingIndicator);
+
+    const progressBarContainer = document.getElementById('progressBarContainer');
+    progressBarContainer.style.width = '200px';
+    progressBarContainer.style.height = '20px';
+    progressBarContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+    progressBarContainer.style.borderRadius = '10px';
+    progressBarContainer.style.overflow = 'hidden';
+    progressBarContainer.style.marginTop = '10px';
+
+    const progressBar = document.getElementById('progressBar');
+    progressBar.style.width = '0%';
+    progressBar.style.height = '100%';
+    progressBar.style.backgroundColor = '#4CAF50';
+    progressBar.style.transition = 'width 0.5s';
+}
+
+function updateLoadingProgress(progress) {
+    loadingProgress = progress;
+    const progressBar = document.getElementById('progressBar');
+    const loadingPercentage = document.getElementById('loadingPercentage');
+    if (progressBar && loadingPercentage) {
+        progressBar.style.width = `${progress}%`;
+        loadingPercentage.textContent = `${Math.round(progress)}%`;
+    }
 }
 
 function hideLoading() {
     const loadingIndicator = document.getElementById('loadingIndicator');
     if (loadingIndicator) {
-        loadingIndicator.textContent = 'Loading complete. Click to dismiss.';
+        // Ensure the progress bar is full
+        updateLoadingProgress(100);
+        
+        // Update the loading text
+        const loadingText = loadingIndicator.querySelector('div');
+        if (loadingText) {
+            loadingText.textContent = 'Loading complete! Click here.';
+        }
+        
+        // Make the entire loading indicator clickable
         loadingIndicator.style.cursor = 'pointer';
         loadingIndicator.onclick = function() {
             loadingIndicator.remove();
@@ -240,22 +280,43 @@ async function fetchRegisteredPokemon() {
 async function loadPokemonData() {
     showLoading();
     try {
+        updateLoadingProgress(10);
         await loadMoveData();
+        updateLoadingProgress(30);
         await fetchRegisteredPokemon();
+        updateLoadingProgress(50);
         const response = await fetch('https://script.google.com/macros/s/AKfycbwIT3OS2bdCv2kkDPh6IjRRirv17iPnuttlPcY47LCHBbpNPuHF_IjVq0mCt7TkkWoW/exec?action=pokemon');
         if (!response.ok) throw new Error('Failed to fetch Pokémon data');
         const values = await response.json();
-        pokemonData = await Promise.all(values.map(processPokemonRow));
+        updateLoadingProgress(70);
+        
+        const totalPokemon = values.length;
+        const batchSize = 20; // Process Pokémon in batches
+        pokemonData = [];
+        
+        for (let i = 0; i < totalPokemon; i += batchSize) {
+            const batch = values.slice(i, i + batchSize);
+            const processedBatch = await Promise.all(batch.map(processPokemonRow));
+            pokemonData.push(...processedBatch);
+            
+            // Update progress less frequently
+            if (i % (batchSize * 2) === 0 || i + batchSize >= totalPokemon) {
+                updateLoadingProgress(70 + (30 * (i + batchSize) / totalPokemon));
+            }
+        }
+        
         console.log('Pokémon data processed:', pokemonData.length, 'Pokémon');
     } catch (error) {
         console.error('Error loading Pokémon data:', error);
         showError('Failed to load Pokémon data. Please try again later.');
     } finally {
+        updateLoadingProgress(100);
         hideLoading();
     }
     updateFilterOptions();
     document.getElementById('pokedex_button').style.display = 'inline-block';
     document.getElementById('move_button').style.display = 'inline-block';
+    document.getElementById('item_button').style.display = 'inline-block';
 }
 
 function updateFilterOptions() {
@@ -504,13 +565,16 @@ function createPokemonCard(pokemon) {
                 </tr>
                 ${section.moves.map(moveName => {
                     const move = moveData.find(m => m.name === moveName);
-                    return move ? `
-                        <tr class="move-row" onclick="toggleMoveDetails(this, ${JSON.stringify(move).replace(/"/g, '&quot;')}, '${sectionStyle}')">
+                    if (!move) return '';
+                    const moveTypeColor = getTypeColor(move.type);
+                    const textColor = getBrightness(moveTypeColor) > 128 ? '#000' : '#fff';
+                    return `
+                        <tr class="move-row" onclick="toggleMoveDetails(this, ${JSON.stringify(move).replace(/"/g, '&quot;')}, '${sectionStyle}')" style="background-color: ${moveTypeColor}; color: ${textColor};">
                             <td>${move.name}</td>
                             <td>${move.type}</td>
                             <td>${move.vp}</td>
                         </tr>
-                    ` : '';
+                    `;
                 }).join('')}
             </table>
         `;
@@ -521,7 +585,7 @@ function createPokemonCard(pokemon) {
         .map(([sense, value]) => `<li><strong>${sense.charAt(0).toUpperCase() + sense.slice(1)}:</strong> ${value}</li>`)
         .join('');
 
-    pokemonCard.innerHTML = `
+        pokemonCard.innerHTML = `
         <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
             <h2>${pokemon.name} (#${pokemon.id})</h2>
             ${pokemon.image ? `
@@ -532,45 +596,45 @@ function createPokemonCard(pokemon) {
             <div class="expandable-section">
                 <h3 class="section-toggle" onclick="toggleSection('characteristics_${pokemon.id}')" style="${sectionStyle}">Characteristics ▼</h3>
                 <div id="characteristics_${pokemon.id}" class="section-content" style="display: none;">
-                <p><strong>Classification:</strong> ${pokemon.classification}</p>
-                <p><strong>Description:</strong> ${pokemon.flavorText}</p>
-                <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
+                    <p><strong>Classification:</strong> ${pokemon.classification}</p>
+                    <p><strong>Description:</strong> ${pokemon.flavorText}</p>
+                    <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
                     <p><strong>Size:</strong> ${pokemon.size}</p>
                     <p><strong>Rarity:</strong> ${pokemon.rarity}</p>
                     <p><strong>Behavior:</strong> ${pokemon.behavior}</p>
                     <p><strong>Habitat:</strong> ${pokemon.habitat}</p>
-                    </div>
-                    </div>
-                    <div class="expandable-section">
-                    <h3 class="section-toggle" onclick="toggleSection('abilities_${pokemon.id}')" style="${sectionStyle}">Abilities ▼</h3>
-                    <div id="abilities_${pokemon.id}" class="section-content" style="display: none;">
+                </div>
+            </div>
+            <div class="expandable-section">
+                <h3 class="section-toggle" onclick="toggleSection('abilities_${pokemon.id}')" style="${sectionStyle}">Abilities ▼</h3>
+                <div id="abilities_${pokemon.id}" class="section-content" style="display: none;">
                     <ul>
-                    <li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>
-                    ${pokemon.secondaryAbility ? `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>` : ''}
-                    ${pokemon.hiddenAbility ? `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>` : ''}
+                        <li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>
+                        ${pokemon.secondaryAbility ? `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>` : ''}
+                        ${pokemon.hiddenAbility ? `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>` : ''}
                     </ul>
-                    </div>
-                    </div>
-                    <div class="expandable-section">
-                    <h3 class="section-toggle" onclick="toggleSection('stats_${pokemon.id}')" style="${sectionStyle}">Stats ▼</h3>
-                    <div id="stats_${pokemon.id}" class="section-content" style="display: none;">
+                </div>
+            </div>
+            <div class="expandable-section">
+                <h3 class="section-toggle" onclick="toggleSection('stats_${pokemon.id}')" style="${sectionStyle}">Stats ▼</h3>
+                <div id="stats_${pokemon.id}" class="section-content" style="display: none;">
                     <ul>
-                    <li><strong>AC:</strong> ${pokemon.ac}</li>
-                    <li><strong>Hit Dice:</strong> ${pokemon.hitDice}</li>
-                    <li><strong>Vitality Dice:</strong> ${pokemon.vitalityDice}</li>
-                    <li><strong>Strength:</strong> ${pokemon.strength}</li>
-                    <li><strong>Dexterity:</strong> ${pokemon.dexterity}</li>
-                    <li><strong>Constitution:</strong> ${pokemon.constitution}</li>
-                    <li><strong>Intelligence:</strong> ${pokemon.intelligence}</li>
-                    <li><strong>Wisdom:</strong> ${pokemon.wisdom}</li>
-                    <li><strong>Charisma:</strong> ${pokemon.charisma}</li>
-                    <li><strong>Saving Throw Proficiencies:</strong> ${pokemon.savingThrows || 'None'}</li>
-                    <li><strong>Skill Proficiencies:</strong> ${pokemon.skills || 'None'}</li>
-                    <li><strong>Speed:</strong> ${pokemon.speed}</li>
-                    ${sensesHtml ? `
-                        <li><strong>Senses:</strong></li>
-                        <ul>${sensesHtml}</ul>
-                    ` : ''}
+                        <li><strong>AC:</strong> ${pokemon.ac}</li>
+                        <li><strong>Hit Dice:</strong> ${pokemon.hitDice}</li>
+                        <li><strong>Vitality Dice:</strong> ${pokemon.vitalityDice}</li>
+                        <li><strong>Strength:</strong> ${pokemon.strength}</li>
+                        <li><strong>Dexterity:</strong> ${pokemon.dexterity}</li>
+                        <li><strong>Constitution:</strong> ${pokemon.constitution}</li>
+                        <li><strong>Intelligence:</strong> ${pokemon.intelligence}</li>
+                        <li><strong>Wisdom:</strong> ${pokemon.wisdom}</li>
+                        <li><strong>Charisma:</strong> ${pokemon.charisma}</li>
+                        <li><strong>Saving Throw Proficiencies:</strong> ${pokemon.savingThrows || 'None'}</li>
+                        <li><strong>Skill Proficiencies:</strong> ${pokemon.skills || 'None'}</li>
+                        <li><strong>Speed:</strong> ${pokemon.speed}</li>
+                        ${sensesHtml ? `
+                            <li><strong>Senses:</strong></li>
+                            <ul>${sensesHtml}</ul>
+                        ` : ''}
                     </ul>
                 </div>
             </div>
@@ -637,7 +701,7 @@ function toggleMoveDetails(row, move, detailStyle) {
         newRow.classList.add('move-details');
         const cell = newRow.insertCell();
         cell.colSpan = 3;
-        cell.style = `${detailStyle} background-color: inherit; color: inherit;`;
+        cell.style = `${detailStyle} background-color: ${row.style.backgroundColor}; color: ${row.style.color};`;
         cell.innerHTML = `
             <p><strong>Power:</strong> ${move.power}</p>
             <p><strong>Time:</strong> ${move.time}</p>
@@ -868,12 +932,17 @@ function imageExists(url) {
 
 // Initialize
 window.onload = async function() {
+    const soundToggle = document.getElementById('soundToggle');
+    if (soundToggle) {
+        soundToggle.addEventListener('click', toggleSound);
+    } else {
+        console.warn("Sound toggle button not found");
+    }
+
     try {
         await loadPokemonData(); // This will also load move data
         await loadItemData(); // Load item data
         console.log('Data loaded successfully');
-        
-        setAudioVolume(0.3);
         
         // Add event listeners
         const searchButton = document.getElementById('searchButton');
@@ -926,16 +995,9 @@ window.onload = async function() {
         }
 
         // Show the navigation buttons
-        document.getElementById('pokedex_button').style.display = 'inline-block';
-        document.getElementById('move_button').style.display = 'inline-block';
-        document.getElementById('item_button').style.display = 'inline-block';
-
-        const soundToggle = document.getElementById('soundToggle');
-            if (soundToggle) {
-                soundToggle.addEventListener('click', toggleSound);
-            } else {
-                console.warn("Sound toggle button not found");
-            }
+        // document.getElementById('pokedex_button').style.display = 'inline-block';
+        // document.getElementById('move_button').style.display = 'inline-block';
+        // document.getElementById('item_button').style.display = 'inline-block';
 
     } catch (error) {
         console.error('Error loading data:', error);
