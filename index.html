@@ -14,12 +14,14 @@
     <audio id="searchSelect" src="https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/SFX_PRESS_AB.wav" preload="auto"></audio>
 
     <div class="pokedex">
-        <h1>Shima Pokédex</h1>
+        <div class="pokedex-header">
+            <h1>Shima Pokédex</h1>
+            <button id="soundToggle">🔊 Sound On</button>
+        </div>
         <nav>
             <button id="pokedex_button" onclick="showPokemonSearch()">Pokédex Search</button>
             <button id="move_button" onclick="showMoveSearch()">Move Database</button>
             <button id="item_button" onclick="showItemSearch()">Item Database</button>
-            <button id="soundToggle">🔊 Sound On</button>
         </nav>
 
         <div class="pokedex-screen">

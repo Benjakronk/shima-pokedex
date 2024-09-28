@@ -92,20 +92,27 @@ input[type="text"], select {
 }
 
 .image-container {
-    width: 320px;
-    height: 320px;
+    width: 100%;
+    max-width: 320px;
     margin: 10px auto;
     position: relative;
-    overflow: hidden;
     border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.image-container::before {
+    content: "";
+    display: block;
+    padding-top: 100%; /* This creates a 1:1 aspect ratio */
 }
 
 .image-container img {
-    max-width: calc(100% - 20px);
-    max-height: calc(100% - 20px);
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
     object-fit: contain;
     border-radius: 5px;
 }
@@ -273,20 +280,36 @@ input[type="text"], select {
 
 @media (max-width: 600px) {
     body {
-        padding: 10px;
+        padding: 5px;
     }
 
     .pokedex {
+        padding: 5px;
+        border-radius: 10px;
+    }
+
+    .pokedex-screen {
         padding: 10px;
     }
 
+    .pokemon-card, .move-card, .item-card {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .card-content {
+        padding: 10px;
+        margin: -5px;
+    }
+
     .image-container {
-        width: 100%;
-        height: auto;
+        max-width: 280px;
+        margin: 5px auto;
     }
 
     #filters {
         flex-direction: column;
+        gap: 5px;
     }
 
     #filters select {
@@ -295,9 +318,34 @@ input[type="text"], select {
 
     #searchSection {
         flex-direction: column;
+        gap: 5px;
     }
 
     #searchInput, #searchButton {
         width: 100%;
+    }
+
+    nav {
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    nav button {
+        margin: 5px;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .section-toggle, .section-content {
+        padding: 8px;
+    }
+
+    .moves-table th, .moves-table td {
+        padding: 6px;
+        font-size: 14px;
     }
 }
