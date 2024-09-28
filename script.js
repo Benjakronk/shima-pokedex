@@ -154,19 +154,33 @@ let itemData = [];
 // Function to load item data
 async function loadItemData() {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbwIT3OS2bdCv2kkDPh6IjRRirv17iPnuttlPcY47LCHBbpNPuHF_IjVq0mCt7TkkWoW/exec?action=items');
-        if (!response.ok) {
-            throw new Error('Failed to fetch item data');
+        // Check if we have cached data
+        const cachedData = localStorage.getItem('itemData');
+        const cachedTimestamp = localStorage.getItem('itemDataTimestamp');
+
+        // If we have cached data and it's less than a day old, use it
+        if (cachedData && cachedTimestamp && (Date.now() - parseInt(cachedTimestamp) < 24 * 60 * 60 * 1000)) {
+            itemData = JSON.parse(cachedData);
+            console.log('Using cached item data');
+        } else {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbxyw5f5sPKP2cBDk7tnGO3vH-Ql2dRJCxHtu4X7Tdwp-X2VYRnWr-s9IrVXAsAtrCNd/exec?action=items');
+            if (!response.ok) {
+                throw new Error('Failed to fetch item data');
+            }
+            const values = await response.json();
+            itemData = values.map(row => ({
+                name: row[0],
+                category: row[1],
+                value: row[2],
+                description: row[3],
+                properties: row[4],
+            }));
+            console.log('Item data processed:', itemData.length, 'items');
+
+            // Cache the new data
+            localStorage.setItem('itemData', JSON.stringify(itemData));
+            localStorage.setItem('itemDataTimestamp', Date.now().toString());
         }
-        const values = await response.json();
-        itemData = values.map(row => ({
-            name: row[0],
-            type: row[1],
-            effect: row[4],
-            description: row[3],
-            // Add more properties as needed
-        }));
-        console.log('Item data processed:', itemData.length, 'items');
     } catch (error) {
         console.error('Error loading item data:', error);
     }
@@ -240,13 +254,27 @@ async function fetchRegisteredPokemon() {
 async function loadPokemonData() {
     showLoading();
     try {
-        await loadMoveData();
-        await fetchRegisteredPokemon();
-        const response = await fetch('https://script.google.com/macros/s/AKfycbwIT3OS2bdCv2kkDPh6IjRRirv17iPnuttlPcY47LCHBbpNPuHF_IjVq0mCt7TkkWoW/exec?action=pokemon');
-        if (!response.ok) throw new Error('Failed to fetch Pokémon data');
-        const values = await response.json();
-        pokemonData = await Promise.all(values.map(processPokemonRow));
-        console.log('Pokémon data processed:', pokemonData.length, 'Pokémon');
+        // Check if we have cached data
+        const cachedData = localStorage.getItem('pokemonData');
+        const cachedTimestamp = localStorage.getItem('pokemonDataTimestamp');
+
+        // If we have cached data and it's less than a day old, use it
+        if (cachedData && cachedTimestamp && (Date.now() - parseInt(cachedTimestamp) < 24 * 60 * 60 * 1000)) {
+            pokemonData = JSON.parse(cachedData);
+            console.log('Using cached Pokémon data');
+        } else {
+            await loadMoveData();
+            await fetchRegisteredPokemon();
+            const response = await fetch('https://script.google.com/macros/s/AKfycbxyw5f5sPKP2cBDk7tnGO3vH-Ql2dRJCxHtu4X7Tdwp-X2VYRnWr-s9IrVXAsAtrCNd/exec?action=pokemon');
+            if (!response.ok) throw new Error('Failed to fetch Pokémon data');
+            const values = await response.json();
+            pokemonData = await Promise.all(values.map(processPokemonRow));
+            console.log('Pokémon data processed:', pokemonData.length, 'Pokémon');
+
+            // Cache the new data
+            localStorage.setItem('pokemonData', JSON.stringify(pokemonData));
+            localStorage.setItem('pokemonDataTimestamp', Date.now().toString());
+        }
     } catch (error) {
         console.error('Error loading Pokémon data:', error);
         showError('Failed to load Pokémon data. Please try again later.');
@@ -651,23 +679,37 @@ function toggleMoveDetails(row, move, detailStyle) {
 
 async function loadMoveData() {
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbwIT3OS2bdCv2kkDPh6IjRRirv17iPnuttlPcY47LCHBbpNPuHF_IjVq0mCt7TkkWoW/exec?action=moves');
-        if (!response.ok) {
-            throw new Error('Failed to fetch move data');
+        // Check if we have cached data
+        const cachedData = localStorage.getItem('moveData');
+        const cachedTimestamp = localStorage.getItem('moveDataTimestamp');
+
+        // If we have cached data and it's less than a day old, use it
+        if (cachedData && cachedTimestamp && (Date.now() - parseInt(cachedTimestamp) < 24 * 60 * 60 * 1000)) {
+            moveData = JSON.parse(cachedData);
+            console.log('Using cached move data');
+        } else {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbxyw5f5sPKP2cBDk7tnGO3vH-Ql2dRJCxHtu4X7Tdwp-X2VYRnWr-s9IrVXAsAtrCNd/exec?action=moves');
+            if (!response.ok) {
+                throw new Error('Failed to fetch move data');
+            }
+            const values = await response.json();
+            moveData = values.map(row => ({
+                name: row[0],
+                type: row[1],
+                power: row[2],
+                time: row[3],
+                vp: row[4],
+                duration: row[5],
+                range: row[6],
+                description: row[7],
+                higher: row[8] ? row[8].trim() : '',
+            }));
+            console.log('Move data processed:', moveData.length, 'moves');
+
+            // Cache the new data
+            localStorage.setItem('moveData', JSON.stringify(moveData));
+            localStorage.setItem('moveDataTimestamp', Date.now().toString());
         }
-        const values = await response.json();
-        moveData = values.map(row => ({
-            name: row[0],
-            type: row[1],
-            power: row[2],
-            time: row[3],
-            vp: row[4],
-            duration: row[5],
-            range: row[6],
-            description: row[7],
-            higher: row[8] ? row[8].trim() : '',
-        }));
-        console.log('Move data processed:', moveData.length, 'moves');
     } catch (error) {
         console.error('Error loading move data:', error);
     }
