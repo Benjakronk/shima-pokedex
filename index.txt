@@ -36,7 +36,7 @@
                 </div>
 
                 <div id="searchSection">
-                    <input type="text" id="searchInput" placeholder="Search by name, ID, type, or ability...">
+                    <input type="text" id="searchInput" placeholder="Search by name, type, or ability...">
                     <button id="searchButton">Search</button>
                 </div>
 

@@ -190,6 +190,8 @@ function showMoveSearch() {
 
 // Global variable for item data
 let itemData = [];
+// Global variable for item types
+let itemTypes = new Set();
 
 // Function to load item data
 async function loadItemData() {
@@ -207,9 +209,23 @@ async function loadItemData() {
             // Add more properties as needed
         }));
         console.log('Item data processed:', itemData.length, 'items');
+        
+        // Populate item types
+        itemTypes = new Set(itemData.map(item => item.type));
+        populateItemTypeFilter();
     } catch (error) {
         console.error('Error loading item data:', error);
     }
+}
+
+function populateItemTypeFilter() {
+    const typeFilter = document.getElementById('itemTypeFilter');
+    itemTypes.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type;
+        option.textContent = type;
+        typeFilter.appendChild(option);
+    });
 }
 
 function showItemSearch() {
@@ -225,9 +241,13 @@ function showItemSearch() {
 
 function searchItems() {
     const searchTerm = document.getElementById('itemSearchInput').value.toLowerCase().trim();
+    const typeFilter = document.getElementById('itemTypeFilter').value;
+
     const results = itemData.filter(item => 
-        item.name.toLowerCase().includes(searchTerm) ||
-        item.type.toLowerCase().includes(searchTerm)
+        (typeFilter === '' || item.type === typeFilter) &&
+        (item.name.toLowerCase().includes(searchTerm) ||
+         item.type.toLowerCase().includes(searchTerm) ||
+         item.description.toLowerCase().includes(searchTerm))
     );
     displayItemResults(results);
 }
@@ -237,7 +257,7 @@ function displayItemResults(results) {
     resultsContainer.innerHTML = '';
     
     if (results.length === 0) {
-        resultsContainer.innerHTML = '<p>No items found. Try a different search term.</p>';
+        resultsContainer.innerHTML = '<p>No items found. Try a different search term or type.</p>';
     } else {
         results.forEach(item => {
             const itemCard = document.createElement('div');
@@ -247,8 +267,8 @@ function displayItemResults(results) {
                 <div class="card-content">
                     <h3>${item.name}</h3>
                     <p><strong>Type:</strong> ${item.type}</p>
-                    <p><strong>Effect:</strong> ${item.effect}</p>
                     <p><strong>Description:</strong> ${item.description}</p>
+                    <p><strong>Effect:</strong> ${item.effect}</p>
                 </div>
             `;
             
@@ -983,15 +1003,17 @@ window.onload = async function() {
 
         const itemSearchButton = document.getElementById('itemSearchButton');
         const itemSearchInput = document.getElementById('itemSearchInput');
-        if (itemSearchButton && itemSearchInput) {
+        const itemTypeFilter = document.getElementById('itemTypeFilter');
+        if (itemSearchButton && itemSearchInput && itemTypeFilter) {
             itemSearchButton.addEventListener('click', searchItems);
             itemSearchInput.addEventListener('keyup', function(event) {
                 if (event.key === 'Enter') {
                     searchItems();
                 }
             });
+            itemTypeFilter.addEventListener('change', searchItems);
         } else {
-            console.warn("Item search button or input not found");
+            console.warn("Item search elements not found");
         }
 
         // Show the navigation buttons

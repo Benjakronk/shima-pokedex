@@ -278,6 +278,12 @@ input[type="text"], select {
     z-index: 1000;
 }
 
+#itemTypeFilter {
+    flex: 1;
+    min-width: 120px;
+    margin-right: 10px;
+}
+
 @media (max-width: 600px) {
     body {
         padding: 5px;
@@ -348,5 +354,11 @@ input[type="text"], select {
     .moves-table th, .moves-table td {
         padding: 6px;
         font-size: 14px;
+    }
+
+    #itemTypeFilter {
+        flex: 1;
+        min-width: 120px;
+        margin-right: 10px;
     }
 }
