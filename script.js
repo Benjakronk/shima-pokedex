@@ -1004,16 +1004,6 @@ window.onload = async function() {
             console.warn("Move search button or input not found");
         }
         
-        // Add event listeners for filters
-        ['typeFilter', 'sizeFilter', 'behaviorFilter', 'activityFilter', 'rarityFilter', 'habitatFilter'].forEach(filterId => {
-            const filterElement = document.getElementById(filterId);
-            if (filterElement) {
-                filterElement.addEventListener('change', searchPokemon);
-            } else {
-                console.warn(`Filter element ${filterId} not found`);
-            }
-        });
-
         const itemSearchButton = document.getElementById('itemSearchButton');
         const itemSearchInput = document.getElementById('itemSearchInput');
         const itemTypeFilter = document.getElementById('itemTypeFilter');
@@ -1029,10 +1019,15 @@ window.onload = async function() {
             console.warn("Item search elements not found");
         }
 
-        // Show the navigation buttons
-        // document.getElementById('pokedex_button').style.display = 'inline-block';
-        // document.getElementById('move_button').style.display = 'inline-block';
-        // document.getElementById('item_button').style.display = 'inline-block';
+        // Add event listeners for filters
+        ['typeFilter', 'sizeFilter', 'behaviorFilter', 'activityFilter', 'rarityFilter', 'habitatFilter'].forEach(filterId => {
+            const filterElement = document.getElementById(filterId);
+            if (filterElement) {
+                filterElement.addEventListener('change', searchPokemon);
+            } else {
+                console.warn(`Filter element ${filterId} not found`);
+            }
+        });
 
     } catch (error) {
         console.error('Error loading data:', error);
