@@ -775,9 +775,16 @@ function searchMoves() {
     const pokemon = pokemonData.find(p => p.name.toLowerCase() === searchTerm);
 
     if (pokemon) {
-        // If it's a Pokémon name, get moves up to the specified level
-        const availableMoves = getMovesUpToLevel(pokemon, pokemonLevel);
-        results = moveData.filter(move => availableMoves.includes(move.name));
+        // Check if the Pokémon is registered
+        if (registeredPokemon.names.has(pokemon.name.toLowerCase())) {
+            // If it's a registered Pokémon name, get moves up to the specified level
+            const availableMoves = getMovesUpToLevel(pokemon, pokemonLevel);
+            results = moveData.filter(move => availableMoves.includes(move.name));
+        } else {
+            // If the Pokémon is not registered, show a message
+            displayMoveResults([], pokemon, pokemonLevel, false);
+            return;
+        }
     } else {
         // If it's not a Pokémon name, search all moves
         results = moveData.filter(move => 
@@ -787,7 +794,7 @@ function searchMoves() {
     }
 
     console.log(`Search results for "${searchTerm}":`, results);
-    displayMoveResults(results, pokemon, pokemonLevel);
+    displayMoveResults(results, pokemon, pokemonLevel, true);
 }
 
 function getMovesUpToLevel(pokemon, level) {
@@ -811,7 +818,7 @@ function getMovesUpToLevel(pokemon, level) {
     return Array.from(availableMoves);
 }
 
-function displayMoveResults(results, pokemon = null, level = null) {
+function displayMoveResults(results, pokemon = null, level = null, isRegistered = true) {
     const resultsContainer = document.getElementById('moveResults');
     if (!resultsContainer) {
         console.error("Move results container not found");
@@ -821,7 +828,13 @@ function displayMoveResults(results, pokemon = null, level = null) {
     resultsContainer.innerHTML = '';
     
     if (pokemon) {
-        resultsContainer.innerHTML = `<h3>Moves for ${pokemon.name} (Level ${level})</h3>`;
+        if (isRegistered) {
+            resultsContainer.innerHTML = `<h3>Moves for ${pokemon.name} (Level ${level})</h3>`;
+        } else {
+            resultsContainer.innerHTML = `<h3>${pokemon.name} is not registered in the Pokédex</h3>`;
+            resultsContainer.innerHTML += '<p>Only registered Pokémon can be searched for moves.</p>';
+            return;
+        }
     }
 
     if (results.length === 0) {
