@@ -5,6 +5,8 @@ function doGet(e) {
     return getPokemonData();
   } else if (action == 'moves') {
     return getMoveData();
+  } else if (action == 'items') {
+    return getItemData();
   } else {
     return ContentService.createTextOutput(JSON.stringify({ error: 'Invalid action' }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -22,6 +24,14 @@ function getPokemonData() {
 function getMoveData() {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Move List");
   var data = sheet.getRange("A2:I" + sheet.getLastRow()).getValues();
+  
+  return ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function getItemData() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ItemDex");
+  var data = sheet.getRange("A2:E" + sheet.getLastRow()).getValues();
   
   return ContentService.createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);

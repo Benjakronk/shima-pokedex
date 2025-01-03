@@ -1,0 +1,5864 @@
+{
+  "pokemon": [
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 1,
+      "P_Type": "Octodendron",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 1,
+      "Rarity": "Dryad",
+      "P_Habitat": "Octodendron appear after trees have been cut down or have fallen over. They move slowly, and live off of nutrients and water in the ground.",
+      "Behavior": "Grass",
+      "Activity": "Ghost",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 2,
+      "P_Type": "Octuber",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 2,
+      "Rarity": "Dryad",
+      "P_Habitat": "Octuber are Octodendron that have been around for a while. It begins to grow in size, eventually felling its leaves. The spirit inhabiting it begins emanating cold energy.",
+      "Behavior": "Grass",
+      "Activity": "Ghost",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 3,
+      "P_Type": "Yukinarbor",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 3,
+      "Rarity": "Dryad",
+      "P_Habitat": "In the wild, this Pokémon lives in woods where people sometimes go missing. It thrives in cold climates.",
+      "Behavior": "Grass",
+      "Activity": "Ghost",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 4,
+      "P_Type": "Moltling",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 4,
+      "Rarity": "Flame scarab",
+      "P_Habitat": "Moltling create burrows underground, and pack together to raise temperatures in the nest. Other Pokémon sometimes live near Moltling nests to keep warm.",
+      "Behavior": "Fire",
+      "Activity": "Bug",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 5,
+      "P_Type": "Scorab",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 5,
+      "Rarity": "Flame scarab",
+      "P_Habitat": "Scorab protect the Moltling colony, and in some cases break off from the colony in order to start a new one.",
+      "Behavior": "Fire",
+      "Activity": "Bug",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 6,
+      "P_Type": "Igniscairn",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 6,
+      "Rarity": "Flame scarab",
+      "P_Habitat": "Sometimes a Scorab will burrow near ore deposits, melting them down and incorporating the metal into its own body. They grow in size, and seek out vulnerable Moltling colonies to protect them from harm.",
+      "Behavior": "Fire",
+      "Activity": "Bug",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 7,
+      "P_Type": "Salamandrop",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 7,
+      "Rarity": "Water droplet",
+      "P_Habitat": "Lives inside clouds in the highlands and mountains of Shima. Sometimes these tiny creatures fall to the ground when it rains, and will stay on the ground until it rises with water particles to form new clouds.",
+      "Behavior": "Water",
+      "Activity": null,
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 8,
+      "P_Type": "Hydrasylph",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 8,
+      "Rarity": "Water snake",
+      "P_Habitat": "When Hydrasylph moves through the clouds, it triggers rainy weather.",
+      "Behavior": "Water",
+      "Activity": "Dragon",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 9,
+      "P_Type": "Dracquatic",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 9,
+      "Rarity": "Water dragon",
+      "P_Habitat": "This Pokémon appears in many stories for children. Very few have seen it in the wild.",
+      "Behavior": "Water",
+      "Activity": "Dragon",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 10,
+      "P_Type": "Sandit",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 10,
+      "Rarity": "Sand jackal",
+      "P_Habitat": "Sandit live in packs, and live in burrows. In their burrows, they often accumulate shiny objects stolen from careless travelers.",
+      "Behavior": "Ground",
+      "Activity": "Normal",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 11,
+      "P_Type": "Snift",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 11,
+      "Rarity": "Sand jackal",
+      "P_Habitat": "Snift serve as leaders of a Sandit pack. They are very nimble and stealthy. They can easily get close to their prey unnoticed.",
+      "Behavior": "Ground",
+      "Activity": "Fighting",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 12,
+      "P_Type": "Bedouwara",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 12,
+      "Rarity": "Sand jackal",
+      "P_Habitat": "This Pokémon has been excommunicated from its pack, and roams the landscape, staying briefly in one location before moving on. It can be sometimes be spotted during sandstorms.",
+      "Behavior": "Ground",
+      "Activity": "Fighting",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 13,
+      "P_Type": "Circuitail",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 13,
+      "Rarity": "Charge ferret",
+      "P_Habitat": "Highly curious, they zoom around looking for anything interesting. When threatened, sparks fly from their antlers.",
+      "Behavior": "Electric",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 14,
+      "P_Type": "Amplifuzz",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 14,
+      "Rarity": "Charge ferret",
+      "P_Habitat": "Because of several encounters with danger, Amplifuzz is more cautious. It hunts prey by shocking it, leaving the prey paralyzed.",
+      "Behavior": "Electric",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 15,
+      "P_Type": "Flarelex",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 15,
+      "Rarity": "Charge wolf",
+      "P_Habitat": "Because of its incredible running speed, few see this Pokémon coming before it strikes.",
+      "Behavior": "Electric",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 16,
+      "P_Type": "Toxchick",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 16,
+      "Rarity": "Venom warbler",
+      "P_Habitat": "Hatchlings spend their first months in a nest made of thorns, feeding on poison bugs. This builds resistance to poison, and awakens its own venomous qualities.",
+      "Behavior": "Poison",
+      "Activity": "Flying",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 17,
+      "P_Type": "Toxiclaw",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 17,
+      "Rarity": "Venom raptor",
+      "P_Habitat": "The claw attacks from this Pokémon leaves its targets with a potent poison coursing through their bodies.",
+      "Behavior": "Poison",
+      "Activity": "Flying",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 18,
+      "P_Type": "Toxeak",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 18,
+      "Rarity": "Venom raptor",
+      "P_Habitat": "Toxeak spews poison from its beak in order to incapacitate prey. They also scatter their poisonous feathers to mark their territory.",
+      "Behavior": "Poison",
+      "Activity": "Flying",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 19,
+      "P_Type": "Hatenna",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 19,
+      "Rarity": "Calm",
+      "P_Habitat": "Because the emotions of others constantly flow into its head, this Pokémon prefers environments where no other creatures live.",
+      "Behavior": "Fairy",
+      "Activity": "Psychic",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 20,
+      "P_Type": "Hattrem",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 20,
+      "Rarity": "Serene",
+      "P_Habitat": "To this Pokémon, strong emotions apparently feel like incredibly loud noises—even if the emotions are happy ones.",
+      "Behavior": "Fairy",
+      "Activity": "Psychic",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 21,
+      "P_Type": "Hatterene",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 21,
+      "Rarity": "Silent",
+      "P_Habitat": "Beware of forests that show no signs of living creatures within. You may have wandered into Hatterene's territory.",
+      "Behavior": "Fairy",
+      "Activity": "Psychic",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 22,
+      "P_Type": "Diverigem",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 22,
+      "Rarity": "Aspect",
+      "P_Habitat": "These creatures change color based on which elemental gem they ingest. They will sometimes leave behind evolution stones.",
+      "Behavior": "Rock",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 23,
+      "P_Type": "Elkrince",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 23,
+      "Rarity": "Moose",
+      "P_Habitat": "This Pokémon loves eating fresh shoots off of pine- and spruce trees. They thrive in older forests, dominated by coniferous trees.",
+      "Behavior": "Grass",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 24,
+      "P_Type": "Elking",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 24,
+      "Rarity": "Moose",
+      "P_Habitat": "Dubbed the \"King of the Forest\" for its majesctic and serene appearance. It is highly territorial, protecting its flock fiercely if it is threatened.",
+      "Behavior": "Grass",
+      "Activity": "Rock",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 25,
+      "P_Type": "Elkrincess",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 25,
+      "Rarity": "Moose",
+      "P_Habitat": "Very skittish and agile, this Pokémon quickly runs away drom danger if it is threatened. It sometimes migrates upward to graze in the mountains.",
+      "Behavior": "Grass",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 26,
+      "P_Type": "Elqueen",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 26,
+      "Rarity": "Moose",
+      "P_Habitat": "These Pokémon are very keen senses, and are difficult to catch off-guard. They are very protective of their young.",
+      "Behavior": "Grass",
+      "Activity": "Rock",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 27,
+      "P_Type": "Sandygast",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 27,
+      "Rarity": "Sand cave",
+      "P_Habitat": "This sand spirit forms small structures that it inhabit, luring in prey that mistake it for shelter.",
+      "Behavior": "Ghost",
+      "Activity": "Ground",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 28,
+      "P_Type": "Palossand",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 28,
+      "Rarity": "Sand castle",
+      "P_Habitat": "Palossand create very elaborate sand structures. A common folktale describes a phantom palace in the deep desert, offering respite for weary lost souls.",
+      "Behavior": "Ghost",
+      "Activity": "Ground",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 29,
+      "P_Type": "Boradin",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 29,
+      "Rarity": "Boar",
+      "P_Habitat": "Known for their tenacious spirit, Boradin are often found deep in forests, where they forage for food with their powerful tusks. They are fiercely protective of their territory, and their mighty roars can be heard echoing through the woods, serving as a warning to intruders.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 30,
+      "P_Type": "Tremboar",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 30,
+      "Rarity": "Steel tusk",
+      "P_Habitat": "Tremboar's sturdy steel-plated hide grants it formidable defenses. These Pokémon are often seen leading their herds through treacherous terrain, using their massive tusks to clear paths and protect their companions.",
+      "Behavior": "Normal",
+      "Activity": "Steel",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 31,
+      "P_Type": "Taillow",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 31,
+      "Rarity": "Swallow",
+      "P_Habitat": "It has a gutsy spirit that makes it bravely take on tough foes. It flies in search of warm climates.",
+      "Behavior": "Flying",
+      "Activity": "Normal",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 32,
+      "P_Type": "Swellow",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 32,
+      "Rarity": "Swallow",
+      "P_Habitat": "It circles the sky in search of prey and dives sharply to catch its target.",
+      "Behavior": "Flying",
+      "Activity": "Normal",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 33,
+      "P_Type": "Redent",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 33,
+      "Rarity": "Fuzzy rodent",
+      "P_Habitat": "These Pokémon are often seen darting through grassy fields, their agility allowing them to evade potential threats. They have a knack for uncovering hidden treasures and exploring the world around them with boundless curiosity.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 34,
+      "P_Type": "Sargent",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 34,
+      "Rarity": "Rodent commander",
+      "P_Habitat": "Sargent's red fur conceals its newfound assertiveness and territorial disposition. This Pokémon is quick to defend its chosen domain and can be rather confrontational when provoked.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 35,
+      "P_Type": "Lotad",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 35,
+      "Rarity": "Water weed",
+      "P_Habitat": "Lotad live in ponds and lakes, where they float on the surface. It grows weak if its broad leaf dies. On rare occasions, this Pokémon travels on land in search of clean water.",
+      "Behavior": "Water",
+      "Activity": "Grass",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 36,
+      "P_Type": "Lombre",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 36,
+      "Rarity": "Jolly",
+      "P_Habitat": "Lombre is nocturnal—it will get active after dusk. It is also a mischief maker. When this Pokémon spots anglers, it tugs on their fishing lines from beneath the surface and enjoys their consternation.",
+      "Behavior": "Water",
+      "Activity": "Grass",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 37,
+      "P_Type": "Ludicolo",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 37,
+      "Rarity": "Carefree",
+      "P_Habitat": "Upon hearing an upbeat and cheerful rhythm, the cells in Ludicolo's body become very energetic and active. Even in battle, this Pokémon will exhibit an amazing amount of power.",
+      "Behavior": "Water",
+      "Activity": "Grass",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 38,
+      "P_Type": "Foongus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 38,
+      "Rarity": "Mushroom",
+      "P_Habitat": "This Pokémon prefers damp places. It spurts out poison spores to repel approaching enemies.",
+      "Behavior": "Grass",
+      "Activity": "Poison",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 39,
+      "P_Type": "Amoonguss",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 39,
+      "Rarity": "Mushroom",
+      "P_Habitat": "This Pokémon puffs poisonous spores at its foes. If the spores aren't washed off quickly, they'll grow into mushrooms wherever they land.",
+      "Behavior": "Grass",
+      "Activity": "Poison",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 40,
+      "P_Type": "Larvasp",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 40,
+      "Rarity": "Sting larvae",
+      "P_Habitat": "Larvasp is often found lurking in the shadows, weaving intricate nests while awaiting its transformation. It possesses a potent poison sting that it deploys when threatened. ",
+      "Behavior": "Bug",
+      "Activity": "Poison",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 41,
+      "P_Type": "Vespair",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 41,
+      "Rarity": "Brute hornet",
+      "P_Habitat": "Vespair emerges as a formidable predator with an imposing presence. These Pokémon are known for their sleek, agile flight and their potent stingers, which they use both for hunting and self-defense. ",
+      "Behavior": "Bug",
+      "Activity": "Poison",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 42,
+      "P_Type": "Phobee",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 42,
+      "Rarity": "Hollow hornet",
+      "P_Habitat": "Phobee is said to be the ghostly embodiment of fallen Vespair. It haunts abandoned hives and is known to appear on moonlit nights with an eerie, ethereal glow.",
+      "Behavior": "Bug",
+      "Activity": "Ghost",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 43,
+      "P_Type": "Glovish",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 43,
+      "Rarity": "Angler fish",
+      "P_Habitat": "Glovish possesses bioluminescent organs that emit a soft, captivating glow, mimicking the mesmerizing lights of deep-sea anglerfish. It uses this natural illumination to navigate the dark depths of the ocean and attract prey.",
+      "Behavior": "Water",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 44,
+      "P_Type": "Globyss",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 44,
+      "Rarity": "Angler whale",
+      "P_Habitat": "Globyss has grown substantially in size and has adapted to the extreme pressures of the deep ocean. Its bioluminescent glow serves both as a predatory lure and a means of communication in the pitch-black depths where it resides.",
+      "Behavior": "Water",
+      "Activity": "Dark",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 45,
+      "P_Type": "Glowiathan",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 45,
+      "Rarity": "Angler whale",
+      "P_Habitat": "Its colossal size and luminescent patterns make it an enigmatic and formidable presence in the darkest, most remote ocean depths. Few have witnessed its majesty, as it roams the abyssal realm in silent sovereignty.",
+      "Behavior": "Water",
+      "Activity": "Dark",
+      "Evolution_R": "Gigantic"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 46,
+      "P_Type": "Caterpie",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 46,
+      "Rarity": "Worm",
+      "P_Habitat": "Its short feet are tipped with suction pads that enable it to tirelessly climb slopes and walls.",
+      "Behavior": "Bug",
+      "Activity": null,
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 47,
+      "P_Type": "Metapod",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 47,
+      "Rarity": "Cocoon",
+      "P_Habitat": "A steel-hard shell protects its tender body. The Pokémon quietly endures hardships while awaiting evolution.",
+      "Behavior": "Bug",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 48,
+      "P_Type": "Butterfree",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 48,
+      "Rarity": "Butterfly",
+      "P_Habitat": "It loves the nectar of flowers and can locate flower patches that have even tiny amounts of pollen.",
+      "Behavior": "Bug",
+      "Activity": "Psychic",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 49,
+      "P_Type": "Vulpix",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 49,
+      "Rarity": "Fox",
+      "P_Habitat": "If it is attacked by an enemy that is stronger than itself, it feigns injury to fool the enemy and escapes.",
+      "Behavior": "Fire",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 50,
+      "P_Type": "Ninetales",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 50,
+      "Rarity": "Fox",
+      "P_Habitat": "The coat of gleaming golden fur is quite magnificent. This species is said to store sacred power in its nine long tails and to live for a millennium.",
+      "Behavior": "Fire",
+      "Activity": "Psychic",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 51,
+      "P_Type": "Venomire",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 51,
+      "Rarity": "Snake",
+      "P_Habitat": "These Pokémon are often found in dense undergrowth and swamps, where they lie in wait for unsuspecting prey. The striking pattern on their scales serves as a warning to others of their dangerous nature.",
+      "Behavior": "Poison",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 52,
+      "P_Type": "Venolisk",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 52,
+      "Rarity": "Basilisk",
+      "P_Habitat": "Venolisk is a more formidable and aggressive serpent, with an even deadlier venom. These Pokémon are known to fiercely defend their territory, and their cunning tactics make them feared predators. Their fearsome reputation in the wild is well-earned.",
+      "Behavior": "Poison",
+      "Activity": null,
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 53,
+      "P_Type": "Pikachu",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 53,
+      "Rarity": "Thunder mouse",
+      "P_Habitat": "This region's Pikachu have a slightly different appearance to the Pikachu known from other regions. They love berries, and are adept at finding them.",
+      "Behavior": "Electric",
+      "Activity": null,
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 54,
+      "P_Type": "Raichu",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 54,
+      "Rarity": "Thunder mouse",
+      "P_Habitat": "Raichu use their powerful electric attacks to protect themselves from predators. They are exeptionally quick and agile.",
+      "Behavior": "Electric",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 55,
+      "P_Type": "Hagechu",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 55,
+      "Rarity": "Thunder mouse",
+      "P_Habitat": "Hagechu's distinctive appearance and incredible power make it a true force to be reckoned with, striking awe into the hearts of all who encounter it. When in battle, a thunderstorm often forms above this Pokémon.",
+      "Behavior": "Electric",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 56,
+      "P_Type": "Magikarp",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 56,
+      "Rarity": "Carp",
+      "P_Habitat": "Very weak, this Pokémon often swims in large schools for protection. This regional variant has very sharp points along its fins.",
+      "Behavior": "Water",
+      "Activity": "Normal",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 57,
+      "P_Type": "Gyarados",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 57,
+      "Rarity": "Sea monster",
+      "P_Habitat": "This regional variant of Gyarados does not fly like its brethren in other regions. It makes its home in remote lagoons, feeding mostly on fish.",
+      "Behavior": "Water",
+      "Activity": "Dragon",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 58,
+      "P_Type": "Rockard",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 58,
+      "Rarity": "Hardstone",
+      "P_Habitat": "Rockard is always triaining to become a stronger fighter. They are highly competitive.",
+      "Behavior": "Fighting",
+      "Activity": "Rock",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 59,
+      "P_Type": "Crolder",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 59,
+      "Rarity": "Heavyweight",
+      "P_Habitat": "Crolder are formidable fighters. Because of their sheer strength, they sometimes help with construction and demolition work.",
+      "Behavior": "Fighting",
+      "Activity": "Rock",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 60,
+      "P_Type": "Charachnid",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 60,
+      "Rarity": "Fire spider",
+      "P_Habitat": "Instead of poison, Charachnid uses fire to hunt and kill its prey. It can spin webs of highly flammable silk.",
+      "Behavior": "Fire",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 61,
+      "P_Type": "Lavachnid",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 61,
+      "Rarity": "Lava spider",
+      "P_Habitat": "Lavachnid can swim in lava flows. Their nets not only catch prey; they also burn them to a crisp.",
+      "Behavior": "Fire",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 62,
+      "P_Type": "Poochyena",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 62,
+      "Rarity": "Bite",
+      "P_Habitat": "Poochyena is an omnivore—it will eat anything. A distinguishing feature is how large its fangs are compared to its body. This Pokémon tries to intimidate its foes by making the hair on its tail bristle out.",
+      "Behavior": "Dark",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 63,
+      "P_Type": "Mightyena",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 63,
+      "Rarity": "Crunch",
+      "P_Habitat": "It chases down prey in a pack of around ten. They defeat foes with perfectly coordinated teamwork.",
+      "Behavior": "Dark",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 64,
+      "P_Type": "Chirquill",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 64,
+      "Rarity": "Kingfisher",
+      "P_Habitat": "This bird is very quick and agile. It likes to stay out of sight, and is therefore a rare sight even in environments where it makes its nest.",
+      "Behavior": "Flying",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 65,
+      "P_Type": "Stratosoar",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 65,
+      "Rarity": "Aether",
+      "P_Habitat": "Few people have the privilege of witnessing the majestic form of Stratosoar as it circles the mountains it calls home. Their icy breath freezes and preserves prey to be consumed later.",
+      "Behavior": "Flying",
+      "Activity": "Ice",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 66,
+      "P_Type": "Wormole",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 66,
+      "Rarity": "Earth worm",
+      "P_Habitat": "Wormole burrows incredibly quickly. It is thought that this is because they don't actually burrow all the time, but rather that they use Teleport to move quickly within their lairs.",
+      "Behavior": "Ground",
+      "Activity": "Psychic",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 67,
+      "P_Type": "Jormungandr",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 67,
+      "Rarity": "Earth worm",
+      "P_Habitat": "Folk tales describe this Pokémon as a sea snake. In reality, it lives underground. It can emit waves of energy that make people confused. When it moves, it often causes earthquakes that intensify when it approaches the surface.",
+      "Behavior": "Ground",
+      "Activity": "Psychic",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 68,
+      "P_Type": "Dwebble",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 68,
+      "Rarity": "Rock inn",
+      "P_Habitat": "It makes a hole in a suitable rock. If that rock breaks, the Pokémon remains agitated until it locates a replacement.",
+      "Behavior": "Bug",
+      "Activity": "Rock",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 69,
+      "P_Type": "Crustle",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 69,
+      "Rarity": "Stone home",
+      "P_Habitat": "Competing for territory, Crustle fight viciously. The one whose boulder is broken is the loser of the battle.",
+      "Behavior": "Bug",
+      "Activity": "Rock",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 70,
+      "P_Type": "Mountitan",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 70,
+      "Rarity": "Mountain dwelling",
+      "P_Habitat": "These Pokémon stand as vigilant guardians, with their mountains serving as both armor and shelter for many species that inhabit them. If the Pokémon that live on its back need to move, Mountitan starts migrating.",
+      "Behavior": "Bug",
+      "Activity": "Rock",
+      "Evolution_R": "Gigantic"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 71,
+      "P_Type": "Angish",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 71,
+      "Rarity": "Pike",
+      "P_Habitat": "Typically found in shallow fresh water. It is both territorial and highly aggressive, but prefers to stalk its prey to preserve energy.\nDelicious when grilled on an open flame.",
+      "Behavior": "Water",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 72,
+      "P_Type": "Agonish",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 72,
+      "Rarity": "Pike",
+      "P_Habitat": "Agonish can jump fairly high out of water, sometimes catching small birds to eat. Its bite is vicious.",
+      "Behavior": "Water",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 73,
+      "P_Type": "Frizard",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 73,
+      "Rarity": "Frost lizard",
+      "P_Habitat": "Making its home in cold climates, Frizard has very few natural enemies. It often has trouble finding food, and relies on making foraging runs to warmer areas to store up.",
+      "Behavior": "Ice",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 74,
+      "P_Type": "Savagice",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 74,
+      "Rarity": "Frost demon",
+      "P_Habitat": "It has glands that produce a potent venom that has a much lower freezing point than water. It can survive for very long without food as long as it stays inactive.",
+      "Behavior": "Ice",
+      "Activity": "Poison",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 75,
+      "P_Type": "Salo",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 75,
+      "Rarity": "High potential",
+      "P_Habitat": "Salo is a rare Pokémon with a peculiar DNA profile. Its evolutionary genes are highly active. Because of this, it is very rare to find this Pokémon in the wild.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 76,
+      "P_Type": "Secto",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 76,
+      "Rarity": "Bug lizard",
+      "P_Habitat": "Thrives in damp forests and swamps. It relies on the nectar from certain flowers for sustenance.",
+      "Behavior": "Bug",
+      "Activity": "Poison",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 77,
+      "P_Type": "Umbro",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 77,
+      "Rarity": "Dark lizard",
+      "P_Habitat": "Umbro is a small but scary opponent to face. It stays hidden in the shadows, and rarely leaves the caves it lives in.",
+      "Behavior": "Dark",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 78,
+      "P_Type": "Drago",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 78,
+      "Rarity": "Dragon lizard",
+      "P_Habitat": "Drago looks like a proper dragon, but is very small in size. It lives in caves high up on rock faces.",
+      "Behavior": "Dragon",
+      "Activity": "Flying",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 79,
+      "P_Type": "Volto",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 79,
+      "Rarity": "Electric lizard",
+      "P_Habitat": "Voltos strong electricity can charge a car in minutes. It uses shocks in water to hunt fish.",
+      "Behavior": "Electric",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 80,
+      "P_Type": "Lumo",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 80,
+      "Rarity": "Fairy lizard",
+      "P_Habitat": "Lumo's strange powers allow it to reflect the effect of various moves back on its attackers.",
+      "Behavior": "Fairy",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 81,
+      "P_Type": "Fisto",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 81,
+      "Rarity": "Fighting lizard",
+      "P_Habitat": "This Pokémon has skills equivalent to a black belt in many martial arts. It is fiercely competitive, and will attack anyone it sees on sight.",
+      "Behavior": "Fighting",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 82,
+      "P_Type": "Fuego",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 82,
+      "Rarity": "Fire lizard",
+      "P_Habitat": "At first glance, Fuego may look like Charmander. One difference is that fires run along its back and all of its tail instead of just the tip.",
+      "Behavior": "Fire",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 83,
+      "P_Type": "Aero",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 83,
+      "Rarity": "Flying lizard",
+      "P_Habitat": "Aero make their homes near lakes, where they hunt for fish and bugs.",
+      "Behavior": "Flying",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 84,
+      "P_Type": "Spectro",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 84,
+      "Rarity": "Ghost lizard",
+      "P_Habitat": "Spectro often makes itself invisible to the naked eye. They like playing tricks on travelers that pass through their caves.",
+      "Behavior": "Ghost",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 85,
+      "P_Type": "Seedo",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 85,
+      "Rarity": "Grass lizard",
+      "P_Habitat": "Seedo is a very healthy addition to its ecosystems, as it transports seeds and plants them in places where nature needs to be restored. It has been observed digging small ditches in networks running from nearby lakes.",
+      "Behavior": "Grass",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 86,
+      "P_Type": "Silico",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 86,
+      "Rarity": "Ground lizard",
+      "P_Habitat": "Silico spends most of the day standing still, only to become active in the evening. It stores up heat from the sunlight that it expends while foraging for food.",
+      "Behavior": "Ground",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 87,
+      "P_Type": "Subsiro",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 87,
+      "Rarity": "Ice lizard",
+      "P_Habitat": "Subsiro is cold to the touch, and creates small streaks of rime in its wake. It can freeze the surface of lakes and ponds in order to walk across.",
+      "Behavior": "Ice",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 88,
+      "P_Type": "Psycho",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 88,
+      "Rarity": "Psychic lizard",
+      "P_Habitat": "This Pokémons psychic powers allow it to sense the intent of approaching creatures. People who have seen it, sometimes report hearing a whispering voice calling out to them.",
+      "Behavior": "Psychic",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 89,
+      "P_Type": "Granito",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 89,
+      "Rarity": "Rock lizard",
+      "P_Habitat": "It can hurl rocks twice its size at foes. Granito has a distinct call that sounds like rocks crashing into each other.",
+      "Behavior": "Rock",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 90,
+      "P_Type": "Mekko",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 90,
+      "Rarity": "Steel lizard",
+      "P_Habitat": "With power similar to Psycho, Mekko uses its will to meld together a metal exoskeleton for protection. It spends an immense amount of energy to make its metal suit function like a battle armor.",
+      "Behavior": "Steel",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 91,
+      "P_Type": "Hydro",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 91,
+      "Rarity": "Water lizard",
+      "P_Habitat": "Hydro can take down prey larger than itself by engulfing them in bubbles of water.",
+      "Behavior": "Water",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 92,
+      "P_Type": "Albawk",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 92,
+      "Rarity": "Albatross",
+      "P_Habitat": "A common sight in harbors and along the coast. Albawk are keen fishers, and can often be seen with Stakerel in their beaks.",
+      "Behavior": "Flying",
+      "Activity": "Water",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 93,
+      "P_Type": "Albaross",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 93,
+      "Rarity": "Albatross",
+      "P_Habitat": "Albaross can cover very large distances at sea, and have a layer of subcutaneous fat that allows them to rest in cold waters without risk of hypothermia.",
+      "Behavior": "Flying",
+      "Activity": "Water",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 94,
+      "P_Type": "Stakerel",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 94,
+      "Rarity": "Mackerel",
+      "P_Habitat": "Stakerel is abundant along the coast of the region. They are an essential part of the culture, especially as a source of food.",
+      "Behavior": "Water",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 95,
+      "P_Type": "Shredator",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 95,
+      "Rarity": "Tuna fish",
+      "P_Habitat": "Shredator is a problem for fishermen, as they compete for access to the Stakerel caught in their nets.",
+      "Behavior": "Water",
+      "Activity": "Dark",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 96,
+      "P_Type": "Grypple",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 96,
+      "Rarity": "Crayfish",
+      "P_Habitat": "Grypple has the most powerful grip of any Pokémon. Once its pincers have got a grip, it won't let go unless it faints.",
+      "Behavior": "Fighting",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 97,
+      "P_Type": "Krestler",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 97,
+      "Rarity": "Crayfish",
+      "P_Habitat": "Krestler are fearsome fighters. They are also considered a delicacy, because of their lean meat. You neet to defeat one in order to get a taste.",
+      "Behavior": "Fighting",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 98,
+      "P_Type": "Kroraleef",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 98,
+      "Rarity": "Coral crab",
+      "P_Habitat": "Kroraleef are adept at camouflaging in their natural habitat. The coral on its back serves as a status symbol, and Kroraleef with large unbroken corals have the highest status.",
+      "Behavior": "Water",
+      "Activity": "Rock",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 99,
+      "P_Type": "Krabemone",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 99,
+      "Rarity": "Coral crab",
+      "P_Habitat": "Krabemone defends their home reefs vigorously. Small sea Pokémon really enjoy living in reeves protected by Krabemone.",
+      "Behavior": "Water",
+      "Activity": "Rock",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 100,
+      "P_Type": "Jelleem",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 100,
+      "Rarity": "Jellyfish",
+      "P_Habitat": "Sometimes fishermen have trouble with the waters teeming with Jelleem. This Pokémon has long threats hanging from their bells that can poison creatures that come into contact with it.",
+      "Behavior": "Water",
+      "Activity": "Poison",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 101,
+      "P_Type": "Hugeem",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 101,
+      "Rarity": "Jellyfish",
+      "P_Habitat": "Hugeem are very big, and are seldom found in schools in warm waters. They migrate to arctic waters, where they continue growing.",
+      "Behavior": "Water",
+      "Activity": "Poison",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 102,
+      "P_Type": "Croager",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 102,
+      "Rarity": "Venom amphibian",
+      "P_Habitat": "Croager can catch prey with all of its tentacles, as well as its tongue. Some Croagers have been observed planting themselves on the bottom of shallow swamp ponds, using their tentacles as roots.",
+      "Behavior": "Grass",
+      "Activity": "Poison",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 103,
+      "P_Type": "Clawine",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 103,
+      "Rarity": "Venom vine",
+      "P_Habitat": "Clawine hide on the surface of swamp lakes, stalking their prey. They can strike very quickly, but they can't chase prey over long distances.",
+      "Behavior": "Grass",
+      "Activity": "Poison",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 104,
+      "P_Type": "Delwing",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 104,
+      "Rarity": "Dragonfly",
+      "P_Habitat": "This Pokémon is a common sight in forests and swamps. They find safety in numbers, as they are not very powerful.",
+      "Behavior": "Bug",
+      "Activity": "Flying",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 105,
+      "P_Type": "Agiluzz",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 105,
+      "Rarity": "Dragonfly",
+      "P_Habitat": "What Agiluzz lacks in power, it makes up for in speed and agility. It has special webbing on their feet that allows it to stay afloat on the surface.",
+      "Behavior": "Bug",
+      "Activity": "Flying",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 106,
+      "P_Type": "Prayblade",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 106,
+      "Rarity": "Mantis",
+      "P_Habitat": "It makes deep swamps its home. If Prayblade is stalking you, you better be prepared to fight for your life.",
+      "Behavior": "Bug",
+      "Activity": "Dragon",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 107,
+      "P_Type": "Pebbling",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 107,
+      "Rarity": "Pebble",
+      "P_Habitat": "Believing they are soft and fluffy, they often crash into other creatures with greater force than they mean to, damaging them by mistake.",
+      "Behavior": "Fairy",
+      "Activity": "Rock",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 108,
+      "P_Type": "Promush",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 108,
+      "Rarity": "Trusted",
+      "P_Habitat": "Often utilised as gardeners by wealthy people. These Pokémon swear loyalty to the one they recognise as ruler over a garden, and serve them faithfully all their lives.",
+      "Behavior": "Grass",
+      "Activity": "Steel",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 109,
+      "P_Type": "Underoath",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 109,
+      "Rarity": "Bound",
+      "P_Habitat": "Underoath have taken on an important mission from their ruler, and can travel quite far away in order to complete tasks such as finding a special kind of berry or seed.",
+      "Behavior": "Grass",
+      "Activity": "Steel",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 110,
+      "P_Type": "Mossworn",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 110,
+      "Rarity": "Solemn vow",
+      "P_Habitat": "With age and experience, Underoath come to a point where they make a decision based on their loyalty to their Trainers whether to stay as Mossworn, or to abandon them. Trainers with a Mossworn have a powerful ally that will never leave their side.",
+      "Behavior": "Grass",
+      "Activity": "Steel",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 111,
+      "P_Type": "Felichim",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 111,
+      "Rarity": "Sunrise",
+      "P_Habitat": "This Pokémon is said to appear briefly at first light of dawn. Its majestic appearance lasts only for a moment, before it blinks out of existence again.",
+      "Behavior": "Fairy",
+      "Activity": "Flying",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 112,
+      "P_Type": "Tigriffon",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 112,
+      "Rarity": "Sunrise",
+      "P_Habitat": "An ancient story tells of a hero who rode a Tigriffon to battle against a great evil. This mystical Pokémon appears in both ancient and modern art.",
+      "Behavior": "Fairy",
+      "Activity": "Flying",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 113,
+      "P_Type": "Swarmy",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 113,
+      "Rarity": "House spider",
+      "P_Habitat": "Thriving in dark, dusty places, Swarmy live inside walls and in unused rooms. They can seem harmless on their own, but find safety in numbers.",
+      "Behavior": "Normal",
+      "Activity": "Bug",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 114,
+      "P_Type": "Ordus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 114,
+      "Rarity": "Dust spider",
+      "P_Habitat": "Due to their size, Ordus are more active at night to avoid being seen. It acts as a Swarmy colony leader, and its minions often bring it food from nooks and crannies it can't access itself.",
+      "Behavior": "Normal",
+      "Activity": "Bug",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 115,
+      "P_Type": "Blizzgarr",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 115,
+      "Rarity": "Ice titan",
+      "P_Habitat": "This titan dominates the polar regions, its crystalline body glowing with an inner electrical storm. Blizzgarr's roars summon blizzards that can last for weeks, while bolts of frozen lightning from its antlers reshape the landscape. It slumbers within ancient glaciers, awakening when the balance of the world is threatened. Legends tell of Blizzgarr creating entire ice caps to cool the planet in times of global warming, its actions preserving life even as they transform continents.",
+      "Behavior": "Ice",
+      "Activity": "Electric",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 116,
+      "P_Type": "Seraphlyte",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 116,
+      "Rarity": "Guardian angel",
+      "P_Habitat": "An ancient protector, Seraphlyte's graceful flight and ethereal plumage embody its role as a guardian spirit. Revered for its power to ward off calamity, it is a symbol of hope and safeguarding",
+      "Behavior": "Psychic",
+      "Activity": "Flying",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 117,
+      "P_Type": "Razard",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 117,
+      "Rarity": "Crystal dragon",
+      "P_Habitat": "Razard's scales have many of the same qualities as diamonds. It can create prisms and lenses with its wings to focus light. In ancient times, it is said that Razard calmed three titans after they went on a rampage.",
+      "Behavior": "Dragon",
+      "Activity": "Rock",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 118,
+      "P_Type": "Conflagirant",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 118,
+      "Rarity": "Mantle",
+      "P_Habitat": "This Pokémon lies dormant in the core of the earth. Not much is known about it. In ancient times, it is said that this Pokémon caused a great catastrophe.",
+      "Behavior": "Dark",
+      "Activity": "Ground",
+      "Evolution_R": "Gigantic"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 119,
+      "P_Type": "Groudon",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 119,
+      "Rarity": "Continent",
+      "P_Habitat": "Groudon is said to be the personification of the land itself. Legends tell of its many clashes against Kyogre, as each sought to gain the power of nature.",
+      "Behavior": "Ground",
+      "Activity": null,
+      "Evolution_R": "Gigantic"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 120,
+      "P_Type": "Kyogre",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 120,
+      "Rarity": "Sea basin",
+      "P_Habitat": "Kyogre is said to be the personification of the sea itself. Legends tell of its many clashes against Groudon, as each sought to gain the power of nature.",
+      "Behavior": "Water",
+      "Activity": null,
+      "Evolution_R": "Gigantic"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 121,
+      "P_Type": "Rayquaza",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 121,
+      "Rarity": "Sky high",
+      "P_Habitat": "It lives in the ozone layer far above the clouds and cannot be seen from the ground.",
+      "Behavior": "Dragon",
+      "Activity": "Flying",
+      "Evolution_R": "Gigantic"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 122,
+      "P_Type": "Caredevil",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 122,
+      "Rarity": "Bat",
+      "P_Habitat": "Caredevil often form close-knit colonies, and their tight social bonds make them excellent communicators. Their acrobatic flight skills and keen senses allow them to navigate even the darkest of caves with precision.",
+      "Behavior": "Dark",
+      "Activity": "Psychic",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 123,
+      "P_Type": "Faredevil",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 123,
+      "Rarity": "Bat",
+      "P_Habitat": "It's said that Faredevil's crystal-clear eyes can see into the hearts of the departed, guiding them to their final destination. In return for their services, they collect 'fares,' symbolic offerings from those they assist in their spiritual journeys.",
+      "Behavior": "Dark",
+      "Activity": "Psychic",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 124,
+      "P_Type": "Infernity",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 124,
+      "Rarity": "Fiend",
+      "P_Habitat": "Infernity is often depicted as a wise and benevolent guide, upholding the balance between the two realms. It is said that its mere presence can offer solace to those in grief, as it watches over the souls of the departed and ensures their safe passage.",
+      "Behavior": "Dark",
+      "Activity": "Psychic",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 125,
+      "P_Type": "Magmoar",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 125,
+      "Rarity": "Fire titan",
+      "P_Habitat": "This colossal titan roams volcanic regions, its body a fusion of molten rock and crackling energy. Magmoar's mere presence can trigger eruptions and lightning storms, yet it's known to quell natural disasters to protect inhabited lands. Ancient legends speak of its battles against catastrophic forces, leaving behind obsidian plains scarred with fulgurite formations.",
+      "Behavior": "Fire",
+      "Activity": "Electric",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 126,
+      "P_Type": "Ferrarg",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 126,
+      "Rarity": "Iron titan",
+      "P_Habitat": "A living fortress of magnetized steel, Ferrarg stands sentinel over metallic mountain ranges. Its body generates powerful electromagnetic fields, manipulating the very earth around it. In times of great peril, Ferrarg is said to awaken from millennia-long slumbers, its thunderous steps and corona of electric arcs heralding its arrival to defend the land.\"",
+      "Behavior": "Steel",
+      "Activity": "Electric",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 127,
+      "P_Type": "Triceros",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 127,
+      "Rarity": "Golden horn",
+      "P_Habitat": "Its golden horn has been highly valued on the black market. Because of this, Triceros have been hunted almost to extinction. Even though the species has recovered, they remain cautious.",
+      "Behavior": "Normal",
+      "Activity": "Electric",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 128,
+      "P_Type": "Rhinaurus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 128,
+      "Rarity": "Golden horn",
+      "P_Habitat": "Rhinaurus serve as protectors of herds of Triceros. Their iron hide give them incredible defense. Their golden horns conduct large amounts of electricity.",
+      "Behavior": "Steel",
+      "Activity": "Electric",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 129,
+      "P_Type": "Pixee",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 129,
+      "Rarity": "Relieving",
+      "P_Habitat": "Pixee can sense emotions, and have the power to ease pain and neutralize poison. It appears to comfort those who are in pain.",
+      "Behavior": "Fairy",
+      "Activity": "Grass",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 130,
+      "P_Type": "Wispee",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 130,
+      "Rarity": "Restoring",
+      "P_Habitat": "Wispee are very rarely seen in the wild, as they are rumored to appear only to people and Pokémon at the brink of death. It has immense healing powers.",
+      "Behavior": "Fairy",
+      "Activity": "Grass",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 131,
+      "P_Type": "Flignit",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 131,
+      "Rarity": "Flint rock",
+      "P_Habitat": "Flignit can generate immense heat within their rocky bodies. When tracking this Pokémon in caves, look for scorchmarks. It sometimes emits an eerie laughter-like sound.",
+      "Behavior": "Rock",
+      "Activity": "Ghost",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 132,
+      "P_Type": "Flareblit",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 132,
+      "Rarity": "Fireball",
+      "P_Habitat": "The metabolic process of Flareblit leads to a dangerous build-up of explosive gases that might ignite if it feels threatened. Caves where this Pokémon is found are often marked by piles of rubble left behind from its explosions.",
+      "Behavior": "Rock",
+      "Activity": "Ghost",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 133,
+      "P_Type": "Platypara",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 133,
+      "Rarity": "Platypus",
+      "P_Habitat": "This Pokémon is thought to be a relative of Psyduck, a Kanto native. They seem harmless, but carry a potent venom that they use to defend themselves.",
+      "Behavior": "Psychic",
+      "Activity": "Poison",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 134,
+      "P_Type": "Platypulse",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 134,
+      "Rarity": "Platypus",
+      "P_Habitat": "Platypulse use their psychic abilities to confuse attackers, leaving them open to its deadly sting.",
+      "Behavior": "Psychic",
+      "Activity": "Poison",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 135,
+      "P_Type": "Snarepent",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 135,
+      "Rarity": "Liana snake",
+      "P_Habitat": "A master at camouflage, Snarepent hide from their prey by blending in with dense forest vegetation. They often nest near Tangela.",
+      "Behavior": "Grass",
+      "Activity": null,
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 136,
+      "P_Type": "Tangela",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 136,
+      "Rarity": "Vine",
+      "P_Habitat": "Lives in symbiosis with Snarepent. In this region, Tangela is known for hiding in cave ceilings, using its long vines to ensnare unsuspecting prey on the ground.",
+      "Behavior": "Grass",
+      "Activity": "Dark",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 137,
+      "P_Type": "Serony",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 137,
+      "Rarity": "Unicorn",
+      "P_Habitat": "If you hear static in the forest at night, Serony isn't far away. It is highly cautious, and will avoid human contact if possible. Strong electric currents are generated in its horn.",
+      "Behavior": "Electric",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 138,
+      "P_Type": "Surgasus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 138,
+      "Rarity": "Pegasus",
+      "P_Habitat": "It is said that the gods rode Surgasus when crossing over to the human world from the clouds above. Is is a majestic creature to behold, and dangerous to provoke.",
+      "Behavior": "Electric",
+      "Activity": "Flying",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 139,
+      "P_Type": "Veerum",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 139,
+      "Rarity": "Virus",
+      "P_Habitat": "This Pokémon has been essential in reseach on various diseases and development of cures. It can process RNA to create antibodies, making it highly resistant to infections.",
+      "Behavior": "Normal",
+      "Activity": "Poison",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 140,
+      "P_Type": "Veerulent",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 140,
+      "Rarity": "Infectous",
+      "P_Habitat": "An experimental Pokémon created by splicing Veerum DNA with that of a Prayblade. It transmits a dangerous disease through its bite, claws, stinger and spikes.",
+      "Behavior": "Bug",
+      "Activity": "Poison",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 141,
+      "P_Type": "Pathoplague",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 141,
+      "Rarity": "Gain of function",
+      "P_Habitat": "This mutated Pokémon has escaped its lab environment. We don't know much about it, save for it being highly aggressive and dangerous.",
+      "Behavior": "Dark",
+      "Activity": "Poison",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 142,
+      "P_Type": "Vaxicure",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 142,
+      "Rarity": "Immunity",
+      "P_Habitat": "Researchers found a way to neutralize the aggressiveness and pathological elements of Veerulent. This Pokémon carries potent antibodies to many diseases, and is one of the best countermeasures for Pathoplague.",
+      "Behavior": "Psychic",
+      "Activity": "Poison",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 143,
+      "P_Type": "Ditto",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 143,
+      "Rarity": "Mimic",
+      "P_Habitat": "This shapeshifting Pokémon can mimic other living creatures with uncanny accuracy. This allows it to cohabit with various species for a time. It transforms into strong-looking Pokémon to scare potential predators.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 144,
+      "P_Type": "Socroach",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 144,
+      "Rarity": "Landfill",
+      "P_Habitat": "A common sight in landfills, named after its tendency to use discarded clothing for extra protection. This Pokémon has an exceptional ability to survive in harsh conditions. Dislikes sunlight.",
+      "Behavior": "Ground",
+      "Activity": "Poison",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 145,
+      "P_Type": "Datagus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 145,
+      "Rarity": "Digital",
+      "P_Habitat": "This Pokémon assists in storing and analyzing vast amounts of data. It can interact with computers, and travels along wires at the speed of light.",
+      "Behavior": "Psychic",
+      "Activity": "Electric",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 146,
+      "P_Type": "Compizard",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 146,
+      "Rarity": "Genius",
+      "P_Habitat": "Computer developers rely on Compizard for troubleshooting and cyber protection. Trainers with malicious intent sometimes use this Pokémon to infiltrate restricted computer systems. Because of this, trainers need a license to carry this Pokémon.",
+      "Behavior": "Psychic",
+      "Activity": "Electric",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 147,
+      "P_Type": "Didoss",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 147,
+      "Rarity": "Admin",
+      "P_Habitat": "Didoss is often used as the hub in a super computer, where it acts as a defence against malware and cyber attacks. It is very efficient at what it does, defying even the most intelligent scientist's understanding.",
+      "Behavior": "Psychic",
+      "Activity": "Electric",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 148,
+      "P_Type": "Terratops",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 148,
+      "Rarity": "Prehistoric",
+      "P_Habitat": "Despite its intimidating appearance, Terratops is a creature of balance, harmonizing its imposing strength with the delicate ecosystems of the desert.",
+      "Behavior": "Ground",
+      "Activity": "Dragon",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 149,
+      "P_Type": "Terrarex",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 149,
+      "Rarity": "Prehistoric",
+      "P_Habitat": "Terrarex represents the enduring spirit of life in the desert and serves as a guardian of the land. It is known to possess a sense of responsibility for maintaining the balance of the ecosystem within its domain, even as it stands as a symbol of raw, untamed power.",
+      "Behavior": "Ground",
+      "Activity": "Dragon",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 150,
+      "P_Type": "Terradon",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 150,
+      "Rarity": "Prehistoric",
+      "P_Habitat": "The very presence of Terradon is seen as a blessing, a symbol of the enduring spirit of life in the harshest of landscapes. Those who earn its trust find not only a powerful ally but a ruler and protector of the desert itself.",
+      "Behavior": "Ground",
+      "Activity": "Dragon",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 151,
+      "P_Type": "Oasand",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 151,
+      "Rarity": "Sandhorse",
+      "P_Habitat": "Oasand is thought to be related to Horsea. It is often found near oases in the desert. They remain still during the day, but become highly active at night.",
+      "Behavior": "Ground",
+      "Activity": "Grass",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 152,
+      "P_Type": "Oasylph",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 152,
+      "Rarity": "Sandhorse",
+      "P_Habitat": "Oasylph care greatly for the oasis they call home, and thus all life dependent on it. It will quickly come to the aid of those it deems as part of its oasis family.",
+      "Behavior": "Ground",
+      "Activity": "Grass",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 153,
+      "P_Type": "Armles",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 153,
+      "Rarity": "Serpent",
+      "P_Habitat": "This snake Pokémon has no venom, and struggles to capture and subdue prey. Armles has a powerful drive towards evolving limbs in order to become better hunters.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 154,
+      "P_Type": "Armful",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 154,
+      "Rarity": "Prowling",
+      "P_Habitat": "Growing strong legs and claws, Armful is a highly successful predator where it is found. The amount of food suddenly available to Armful causes it to grow large in size.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 155,
+      "P_Type": "Grostarch",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 155,
+      "Rarity": "Potato",
+      "P_Habitat": "The growths this Pokémon generate can be planted in soil, and will multiply. Grostarch is known to have saved people during times of starvation.",
+      "Behavior": "Grass",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 156,
+      "P_Type": "Caloburn",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 156,
+      "Rarity": "Potato",
+      "P_Habitat": "Being submerged in deep frying oil has provoked this Pokémon to evolve. Its hair has become a popular treat in the region since its discovery.",
+      "Behavior": "Grass",
+      "Activity": "Fire",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 157,
+      "P_Type": "Maiskern",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 157,
+      "Rarity": "Corn",
+      "P_Habitat": "This Pokémon, together with Grostarch, was introduced by travelers returning to the region. Maiskerns grain kernels have since become a staple of a healthy diet for the region's inhabitants.",
+      "Behavior": "Grass",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 158,
+      "P_Type": "Popkern",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 158,
+      "Rarity": "Pop corn",
+      "P_Habitat": "Exposed to immense heat, Maiskern emit a strange noise as their podies \"pop\". It can shave off parts of its body that grow back. These are thought of as a delicious treat, served in both sweet and salty variations.",
+      "Behavior": "Grass",
+      "Activity": "Fairy",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 159,
+      "P_Type": "Grell",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 159,
+      "Rarity": "Grunt",
+      "P_Habitat": "This Pokémon prowls the woods at night, looking for food. It scares off potentital threats with its hideous appearance and gnarly voice.",
+      "Behavior": "Dark",
+      "Activity": "Fighting",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 160,
+      "P_Type": "Groll",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 160,
+      "Rarity": "Brunt",
+      "P_Habitat": "Few dare to approach this behemoth as it roams the highland forests and valleys. If you are in its territory, it knows because the trees talk to it.",
+      "Behavior": "Dark",
+      "Activity": "Fighting",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 161,
+      "P_Type": "Heimskroll",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 161,
+      "Rarity": "Troll king",
+      "P_Habitat": "Heimskrolls are leaders of their packs of Grells and Grolls. They reside in caves that they make into royal halls, decorated with antlers and furs. They like shiny objects, and often have a stash of treasure somewhere.",
+      "Behavior": "Dark",
+      "Activity": "Fairy",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 162,
+      "P_Type": "Broosbuck",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 162,
+      "Rarity": "Trickster",
+      "P_Habitat": "A natural enemy of Groll, Broosbuck roam the mountains foraging for good grazing areas. They can grow very powerful with time, and are very intelligent.",
+      "Behavior": "Normal",
+      "Activity": "Fighting",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 163,
+      "P_Type": "Gildrake",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 163,
+      "Rarity": "Gilded hatchling",
+      "P_Habitat": "This ancient Pokémon species collect and hoard treasures in their nests. They are highly intelligent, and can learn to speak human languages. The black variant of these dragons covet gold.",
+      "Behavior": "Dragon",
+      "Activity": "Fire",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 164,
+      "P_Type": "Plundrake",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 164,
+      "Rarity": "Black dragon",
+      "P_Habitat": "These large dragons are rarely sighted in the wild, as they hide away in deep caves, guarding their treasure. They may leave their caves if they are sufficiently provoked.",
+      "Behavior": "Dragon",
+      "Activity": "Fire",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 165,
+      "P_Type": "Treasuroth",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 165,
+      "Rarity": "Gilded hatchling",
+      "P_Habitat": "This ancient Pokémon species collect and hoard treasures in their nests. They are highly intelligent, and can learn to speak human languages. The white variant of these dragons covet silver.",
+      "Behavior": "Dragon",
+      "Activity": "Ice",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 166,
+      "P_Type": "Silvaroth",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 166,
+      "Rarity": "White dragon",
+      "P_Habitat": "These large dragons are rarely sighted in the wild, as they hide away in deep caves, guarding their treasure. They may leave their caves if they are sufficiently provoked.",
+      "Behavior": "Dragon",
+      "Activity": "Ice",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 167,
+      "P_Type": "Falinks",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 167,
+      "Rarity": "Formation",
+      "P_Habitat": "The leader, known as the brass, uses its extendible horn to issue orders to the others when it's time to change formation.",
+      "Behavior": "Fighting",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 168,
+      "P_Type": "Testurion",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 168,
+      "Rarity": "Legionnaire",
+      "P_Habitat": "The brass that are most successfull among the Falinks continue to grow into this alpha variant. It has very strong armor.",
+      "Behavior": "Fighting",
+      "Activity": "Steel",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 169,
+      "P_Type": "Gladirena",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 169,
+      "Rarity": "Gladiator",
+      "P_Habitat": "Sometimes Testurion have dominance competitions that work much like gladiatorial matches. The victor of such a tournament evolves into Gladirena.",
+      "Behavior": "Fighting",
+      "Activity": "Steel",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 170,
+      "P_Type": "Turmerald",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 170,
+      "Rarity": "Sea turtle",
+      "P_Habitat": "Young Turmeralds are very vulnerable when they hatch, as they have to make a dash for the sea across the beach sand where their nest was.",
+      "Behavior": "Water",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 171,
+      "P_Type": "Shelmerald",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 171,
+      "Rarity": "Sea turtle",
+      "P_Habitat": "Shelerald have been used by people as a means of ocean traveling for hundreds of years. It can continue swimming for days without the need for sleep.",
+      "Behavior": "Water",
+      "Activity": null,
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 172,
+      "P_Type": "Mograyn",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 172,
+      "Rarity": "Moray",
+      "P_Habitat": "It sends tiny psychic shocks towards smaller prey when it hunts. It can often be found stalking Kroraleef among the corals.",
+      "Behavior": "Water",
+      "Activity": "Psychic",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 173,
+      "P_Type": "Hedeikeel",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 173,
+      "Rarity": "Moray",
+      "P_Habitat": "Divers who encounter this Pokémon often report having a mild headache. Be careful if you feel it coming on while underwater, and don't stay there for too long.",
+      "Behavior": "Water",
+      "Activity": "Psychic",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 174,
+      "P_Type": "Kraqua",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 174,
+      "Rarity": "Admiral",
+      "P_Habitat": "Kraqua can become almost completely invisible underwater. It can create strong currents by swinging its tentacles.",
+      "Behavior": "Water",
+      "Activity": null,
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 175,
+      "P_Type": "Feyer",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 175,
+      "Rarity": "Living flame",
+      "P_Habitat": "This Pokémon looks like a living flame when it moves. It heats up the air surrounding it to unbearable temperatures, setting fire to anything that burns.",
+      "Behavior": "Fire",
+      "Activity": null,
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 176,
+      "P_Type": "Monstearth",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 176,
+      "Rarity": "Healing sap",
+      "P_Habitat": "Since ancient times, Monstearth have been thought of as bearers of a life giving sap that can heal almost any ailment. It has a gentle nature.",
+      "Behavior": "Grass",
+      "Activity": null,
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 177,
+      "P_Type": "Bolking",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 177,
+      "Rarity": "Storm cloud",
+      "P_Habitat": "Bolking can move with lightning speed within a layer of clouds. It rarely leaves the cave system it calls home.",
+      "Behavior": "Electric",
+      "Activity": null,
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 178,
+      "P_Type": "Milkattle",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 178,
+      "Rarity": "Cow",
+      "P_Habitat": "Milkattle is a common sight on farms and ranches. Their milk is highly nutritious.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 179,
+      "P_Type": "Kobull",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 179,
+      "Rarity": "Kobeef",
+      "P_Habitat": "Kobulls are known for their immense strength. Their large muscles allow it to pull immense weight. These same muscles are considered the best beef in the world. Some farmers feed their Kobull a pure berry diet to augment the taste of the meat.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 180,
+      "P_Type": "Woolworth",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 180,
+      "Rarity": "Alpaca",
+      "P_Habitat": "The wool from Woolworth is of such a high quality that it is exported to far away regions. While weak, this Pokémon is considered very valuable to the economy.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 181,
+      "P_Type": "Spoolworth",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 181,
+      "Rarity": "Alpaca",
+      "P_Habitat": "Spoolworth produce enormous amounts of thick wool. It can survive in extreme cold and heat due to the insulating effect of its layers of wool.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 182,
+      "P_Type": "Werewool",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 182,
+      "Rarity": "Feral beast",
+      "P_Habitat": "Exposure to a moon stone has caused this Pokémon to mutate into a feral beast. It hunts at night, and is surprisingly good at not being noticed despite its white woolly hide and large size.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 183,
+      "P_Type": "Redoute",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 183,
+      "Rarity": "Dream eater",
+      "P_Habitat": "This Pokémon is very difficult to encounter, because it flawlessly copies objects in its environment in order to camouflage itself.",
+      "Behavior": "Ghost",
+      "Activity": "Dark",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 184,
+      "P_Type": "Fantome",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 184,
+      "Rarity": "Pure dread",
+      "P_Habitat": "Fantôme is said to draw near to people who are greedy, disguising itself as desirable objects in order to lure in prey. It is extremely adept at deception.",
+      "Behavior": "Ghost",
+      "Activity": "Dark",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 185,
+      "P_Type": "Vamprat",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 185,
+      "Rarity": "Life stealer",
+      "P_Habitat": "It comes out of its nest at night to hunt for small prey. It sucks the blood of its prey by first immobilizing them. It prefers to leave their prey alive so it can return for more food later.",
+      "Behavior": "Fairy",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 186,
+      "P_Type": "Vladacabra",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 186,
+      "Rarity": "Smoke and mirrors",
+      "P_Habitat": "Vladacabra can create illusions that are so life-like its impossible to detect what is real, except the illusions don't cast reflections.",
+      "Behavior": "Fairy",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 187,
+      "P_Type": "Shimmeral",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 187,
+      "Rarity": "Rock heap",
+      "P_Habitat": "Shimmeral enjoys dancing in rushing water. Over time, it erodes and shapes the rocks that form its body. If it finds a pretty rock, it may fuse it to its body.",
+      "Behavior": "Rock",
+      "Activity": "Fighting",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 188,
+      "P_Type": "Dansaic",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 188,
+      "Rarity": "Rehearsal",
+      "P_Habitat": "Years of dancing in rivers and creeks have honed Dansaics' skills. It fights with gracious but powerful movements.",
+      "Behavior": "Rock",
+      "Activity": "Fighting",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 189,
+      "P_Type": "Brillore",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 189,
+      "Rarity": "Water dancer",
+      "P_Habitat": "Brillore spends lots of time recomposing its body in order to maximize mobility and strength. Its rocky body shimmers and glitters in sunlight. It travels with troupes of Dansaic.",
+      "Behavior": "Rock",
+      "Activity": "Fighting",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 190,
+      "P_Type": "Hadean",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 190,
+      "Rarity": "Ancient bones",
+      "P_Habitat": "No one knows why Hadean reanimate, but in ancient texts, these creatures are described as guardians of the land of the dead.",
+      "Behavior": "Ground",
+      "Activity": "Ghost",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 191,
+      "P_Type": "Styxxil",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 191,
+      "Rarity": "Ancient menace",
+      "P_Habitat": "Styxxil are generals among the Hadean army. They are considerably more powerful.",
+      "Behavior": "Ground",
+      "Activity": "Ghost",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 192,
+      "P_Type": "Barron",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 192,
+      "Rarity": "Fossil dragon",
+      "P_Habitat": "Barron are the remains of great dragons that lived in the desert in ancient times. They are very rarely spotted, and those who do may not live to tell the tale. It is said that they protect their resting place with sandstorms.",
+      "Behavior": "Ground",
+      "Activity": "Ghost",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 193,
+      "P_Type": "Dumplood",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 193,
+      "Rarity": "Delicacy",
+      "P_Habitat": "This Pokémon is fairly weak, but likeable. It eats vegetables and fruit, which are brought to a boil inside its body.",
+      "Behavior": "Fairy",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 194,
+      "P_Type": "Ponster",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 194,
+      "Rarity": "Spaghetti monster",
+      "P_Habitat": "Ponster stalks at night, being drawn to greed. It is considered very dangerous to encounter this creature.",
+      "Behavior": "Fairy",
+      "Activity": "Dark",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 195,
+      "P_Type": "Beorkub",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 195,
+      "Rarity": "Bear cub",
+      "P_Habitat": "Beorkub uses its psychic powers to read the minds of other Pokémon in order to find sources of food. It prefers berries most of all, but is very partial to fish as well.",
+      "Behavior": "Normal",
+      "Activity": "Psychic",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 196,
+      "P_Type": "Grizzerker",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 196,
+      "Rarity": "Grizzled",
+      "P_Habitat": "Its immense psychic abilities evolve very quickly as Beorkub goes into adolescence, overwhelming its mind. Therefore it becomes highly aggressive. Encounters with this Pokémon should be avoided.",
+      "Behavior": "Normal",
+      "Activity": "Psychic",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 197,
+      "P_Type": "Quetzalair",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 197,
+      "Rarity": "Rainmaker",
+      "P_Habitat": "This legendary Pokémon is said to watch over the creatures of the jungle.",
+      "Behavior": "Grass",
+      "Activity": "Flying",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 198,
+      "P_Type": "Quetzatlas",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 198,
+      "Rarity": "Rainmaker",
+      "P_Habitat": "Ancient legends talk of a great war in which people relied on Quetzatlas for protection.",
+      "Behavior": "Grass",
+      "Activity": "Flying",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 199,
+      "P_Type": "Heliosun",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 199,
+      "Rarity": "Shining",
+      "P_Habitat": "This legendary Pokémon is said to watch over the creatures of the desert.",
+      "Behavior": "Ground",
+      "Activity": "Flying",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 200,
+      "P_Type": "Horusun",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 200,
+      "Rarity": "Shining",
+      "P_Habitat": "Ancient legends talk of a great war in which people relied on Horusun for protection.",
+      "Behavior": "Ground",
+      "Activity": "Flying",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 201,
+      "P_Type": "Ananansi",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 201,
+      "Rarity": "Mischievous",
+      "P_Habitat": "Ananansi disguises itself as fruits and berries to lure in its prey.",
+      "Behavior": "Dark",
+      "Activity": "Bug",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 202,
+      "P_Type": "Loreleaf",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 202,
+      "Rarity": "Nettle dragon",
+      "P_Habitat": "This Pokémon has existed for a very long time, and is important in the folklore of Mystaura. The presence of Loreleaf is thought to cause mystical visions and dreams.",
+      "Behavior": "Dragon",
+      "Activity": "Poison",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 203,
+      "P_Type": "Foliarch",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 203,
+      "Rarity": "Nettle dragon",
+      "P_Habitat": "The mist it generates causes hallucinations if inhaled. Makes its home deep in the jungle, and creates a protective cloud of mist in order to confuse intruders.",
+      "Behavior": "Dragon",
+      "Activity": "Poison",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 204,
+      "P_Type": "Gabyz",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 204,
+      "Rarity": "Beholder",
+      "P_Habitat": "Inside the comfortable confines of its subterranean lair, a Gabyz is nearly unassailable thanks to the combination of its peerless intellect and the brutal effects of its eye rays.",
+      "Behavior": "Psychic",
+      "Activity": "Dark",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 205,
+      "P_Type": "Gabyztare",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 205,
+      "Rarity": "Beholder",
+      "P_Habitat": "It believes that it is superior to every other creature, even including other of its kind.",
+      "Behavior": "Psychic",
+      "Activity": "Dark",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 206,
+      "P_Type": "Finchap",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 206,
+      "Rarity": "Finch",
+      "P_Habitat": "This bird is not migratory in the milder parts of its range, but vacates the colder regions in winter. It occasionally strays to the western Shima, although some sightings may be escapees.",
+      "Behavior": "Flying",
+      "Activity": "Normal",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 207,
+      "P_Type": "Falcinch",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 207,
+      "Rarity": "Finch",
+      "P_Habitat": "Although its diet consists almost exclusively of medium-sized birds, Falcinch will sometimes hunt small mammals, small reptiles, or even insects.",
+      "Behavior": "Flying",
+      "Activity": "Normal",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 208,
+      "P_Type": "Raptinch",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 208,
+      "Rarity": "Finch",
+      "P_Habitat": "The beak is heavier than that of most other birds of prey. Raptinch normally build their nests in tall trees or on high cliffs. Many lay two eggs, but the older chick frequently kills its younger sibling once it has hatched.",
+      "Behavior": "Flying",
+      "Activity": "Normal",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 209,
+      "P_Type": "Laborant",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 209,
+      "Rarity": "Colony",
+      "P_Habitat": "Laborant form colonies that range in size from a few dozen predatory individuals living in small natural cavities to highly organised colonies that may occupy large territories.",
+      "Behavior": "Bug",
+      "Activity": "Steel",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 210,
+      "P_Type": "Solidant",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 210,
+      "Rarity": "Colony",
+      "P_Habitat": "Laborant societies have division of labour, communication between individuals, and an ability to solve complex problems. Some Laborant evolve into stronger Solidants that protect the colony from intruders.",
+      "Behavior": "Bug",
+      "Activity": "Steel",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 211,
+      "P_Type": "Reginant",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 211,
+      "Rarity": "Colony",
+      "P_Habitat": "The Reginant queens can live for up to 30 years. Males, however, are more transitory, being quite short-lived. Reginant are estimated to live 100 times as long as solitary insects of a similar size.",
+      "Behavior": "Bug",
+      "Activity": "Steel",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 212,
+      "P_Type": "Osphrone",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 212,
+      "Rarity": "Fighting Fish",
+      "P_Habitat": "Osphrone are well known for being highly territorial, with males prone to attacking each other if housed in the same tank; without a means of escape, this will usually result in the death of one or both fish.",
+      "Behavior": "Water",
+      "Activity": "Fighting",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 213,
+      "P_Type": "Osphronent",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 213,
+      "Rarity": "Fighting Fish",
+      "P_Habitat": "Osphronent are exceptionally tolerant of low oxygen levels and poor water quality, owing to their special labyrinth organ that allows for the intake of surface air.",
+      "Behavior": "Water",
+      "Activity": "Fighting",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 214,
+      "P_Type": "Plankril",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 214,
+      "Rarity": "Krill",
+      "P_Habitat": "Plankril are considered an important trophic level connection – near the bottom of the food chain.",
+      "Behavior": "Water",
+      "Activity": "Grass",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 215,
+      "P_Type": "Shkril",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 215,
+      "Rarity": "Shrimp",
+      "P_Habitat": "Shkril can be found feeding near the seafloor on most coasts and estuaries, as well as in rivers and lakes.",
+      "Behavior": "Water",
+      "Activity": "Grass",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 216,
+      "P_Type": "Gaupus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 216,
+      "Rarity": "Lynx",
+      "P_Habitat": "Gaupus is usually solitary, although a small group of lynx may travel and hunt together occasionally.",
+      "Behavior": "Ice",
+      "Activity": "Electric",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 217,
+      "P_Type": "Vargpus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 217,
+      "Rarity": "Lynx",
+      "P_Habitat": "It often climbs onto high rocks or fallen trees to scan the surrounding area. It is a powerful predator that has killed Elkrince weighing at least 150 kg (330 lb).",
+      "Behavior": "Ice",
+      "Activity": "Electric",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 218,
+      "P_Type": "Gulorine",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 218,
+      "Rarity": "Wolverine",
+      "P_Habitat": "Gulorines are primarily scavengers. Most of their food is carrion, especially in winter and early spring.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 219,
+      "P_Type": "Felverine",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 219,
+      "Rarity": "Wolverine",
+      "P_Habitat": "Felverine is a powerful and versatile predator. Its prey mainly consists of small to medium-sized mammals, but wolverines have been recorded killing prey many times larger than itself.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 220,
+      "P_Type": "Equitrix",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 220,
+      "Rarity": "Horse",
+      "P_Habitat": "Equitrix are able to sleep both standing up and lying down, with younger horses tending to sleep significantly more than adults.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 221,
+      "P_Type": "Destrix",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 221,
+      "Rarity": "Warhorse",
+      "P_Habitat": "Destrix were historically used in warfare, from which a wide variety of riding and driving techniques developed.",
+      "Behavior": "Steel",
+      "Activity": "Normal",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 222,
+      "P_Type": "Ohmen",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 222,
+      "Rarity": "Violent",
+      "P_Habitat": "Legends tell of a great mountain that floats in the sky where Ohmen resides. It is said to control the rain and hail, and delight in fighting and deeds of greatness.",
+      "Behavior": "Dragon",
+      "Activity": "Electric",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 223,
+      "P_Type": "Nemeon",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 223,
+      "Rarity": "Chimera",
+      "P_Habitat": "When it hunts, Nemeon looks for easy ways to amuse itself. It enjoys the fear and suffering of weaker creatures.",
+      "Behavior": "Fairy",
+      "Activity": null,
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 224,
+      "P_Type": "Lodoth",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 224,
+      "Rarity": "Mammoth",
+      "P_Habitat": "Lodoth inhabit a wide range of climates, from subarctic to subtropical.",
+      "Behavior": "Ice",
+      "Activity": null,
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 225,
+      "P_Type": "Pelsdoth",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 225,
+      "Rarity": "Mammoth",
+      "P_Habitat": "If given the option, Pelsdoth prefers to fight with their herd and not in isolation, though a larger bull male might be an exception.",
+      "Behavior": "Ice",
+      "Activity": null,
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 226,
+      "P_Type": "Thornug",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 226,
+      "Rarity": "Thorn Bug",
+      "P_Habitat": "The species is restricted to warmer climates where temperatures stay, on average, above zero. This limits the species to the tropical regions.",
+      "Behavior": "Bug",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 227,
+      "P_Type": "Thohorn",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 227,
+      "Rarity": "Thorn Bug",
+      "P_Habitat": "Thohorn communicate through chemically triggered vibrations. The main reason for these vibrational signals is in response to predators.",
+      "Behavior": "Bug",
+      "Activity": "Flying",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 228,
+      "P_Type": "Pelagos",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 228,
+      "Rarity": "Tenacious",
+      "P_Habitat": "An ancient pokémon that still lives in the waters along the coast of Shima. The young mostly feed off of the local plant life.",
+      "Behavior": "Water",
+      "Activity": "Ground",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 229,
+      "P_Type": "Archilagos",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 229,
+      "Rarity": "Tenacious",
+      "P_Habitat": "When developing into adolescents, Archilagos begin to hunt in packs. They are known to take down prey significantly larger than themselves.",
+      "Behavior": "Water",
+      "Activity": "Ground",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 230,
+      "P_Type": "Pelarchilagos",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 230,
+      "Rarity": "Tenacious",
+      "P_Habitat": "The fully grown Pelarchilagos is very large, with the largest recorded specimen qualifying as huge in size. They protect their territory in order to ensure their kind has enough food for themselves.",
+      "Behavior": "Water",
+      "Activity": "Ground",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 231,
+      "P_Type": "Chicklet",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 231,
+      "Rarity": "Chick",
+      "P_Habitat": "Highly competitive, but also very weak, these chickens are usually bred for food. Some trainers are very fond of its cute appearance and steadfast nature.",
+      "Behavior": "Flying",
+      "Activity": "Normal",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 232,
+      "P_Type": "Clucky",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 232,
+      "Rarity": "Hen",
+      "P_Habitat": "Clucky lay eggs that are a staple in the diet across the continent. They are a treasured resource for that reason.",
+      "Behavior": "Flying",
+      "Activity": "Normal",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 233,
+      "P_Type": "Noirow",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 233,
+      "Rarity": "Rooster",
+      "P_Habitat": "On the rare occasion of a male Chicklet being hatched, they grow up to evolve into Noirow. Significantly stronger than the others of its kind, these Pokémon are fiercely aggressive.",
+      "Behavior": "Flying",
+      "Activity": "Normal",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 234,
+      "P_Type": "Solatrice",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 234,
+      "Rarity": "Cockatrice",
+      "P_Habitat": "Very few have seen this pokémon in the wild. Rumors say that Solatrice are sometimes hatched from Chicklet eggs.",
+      "Behavior": "Flying",
+      "Activity": "Fairy",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 235,
+      "P_Type": "Lunatrice",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 235,
+      "Rarity": "Cockatrice",
+      "P_Habitat": "A majestic bird pokémon known mostly from old myths and fairy tales. According to legend, encountering a Lunatrice on a full moon will reveal your destiny.",
+      "Behavior": "Flying",
+      "Activity": "Fairy",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 236,
+      "P_Type": "Nepto",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 236,
+      "Rarity": "Avatar",
+      "P_Habitat": "Nepto is a Gladirena that has harnessed the divine power of water. An avatar of the god of the sea.",
+      "Behavior": "Fighting",
+      "Activity": "Water",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 237,
+      "P_Type": "Jupitus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 237,
+      "Rarity": "Avatar",
+      "P_Habitat": "Jupitus is a Gladirena that has harnessed the divine power of light. An avatar of the god of the sky.",
+      "Behavior": "Fighting",
+      "Activity": "Electric",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 238,
+      "P_Type": "Marsum",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 238,
+      "Rarity": "Avatar",
+      "P_Habitat": "Marsum is a Gladirena that has harnessed the divine power of fire. An avatar of the god of war.",
+      "Behavior": "Fighting",
+      "Activity": "Fire",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 239,
+      "P_Type": "Venutius",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 239,
+      "Rarity": "Avatar",
+      "P_Habitat": "Venutius is a Gladirena that has harnessed the divine power of poison. An avatar for the goddess of love and beauty.",
+      "Behavior": "Fighting",
+      "Activity": "Poison",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 240,
+      "P_Type": "Swinicorn",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 240,
+      "Rarity": "Pig",
+      "P_Habitat": "Its meat is very popular, and a central part of the diet of central Shima. Swinicorn's horns are considered magical.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 241,
+      "P_Type": "Porque",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 241,
+      "Rarity": "Pig",
+      "P_Habitat": "Porque are very strong. Their meat is leaner, due to their stronger muscles. In the north, it's oftentimes served up as a holiday dish.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 242,
+      "P_Type": "Sparcupine",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 242,
+      "Rarity": "Porcupine",
+      "P_Habitat": "These tiny critters use their electric quills to generate static fields that act as a defense against predators.",
+      "Behavior": "Electric",
+      "Activity": null,
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 243,
+      "P_Type": "Erethizic",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 243,
+      "Rarity": "Porcupine",
+      "P_Habitat": "Erethizic are territorial, but quite small for their aggressivity towards intruders. It relies on scaring off predators by creating electric crackling noises.",
+      "Behavior": "Electric",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 244,
+      "P_Type": "Lunus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 244,
+      "Rarity": "Frost Wolf",
+      "P_Habitat": "Lunus hunts in packs of up to 25 individuals. They are becoming more scarce, but can still be found roaming the Driftlands.",
+      "Behavior": "Ice",
+      "Activity": "Dark",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 245,
+      "P_Type": "Umbrost",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 245,
+      "Rarity": "Lone Wolf",
+      "P_Habitat": "Umbrost are fearsome beasts to encounter. They dominate their packs with an iron fist, and get first pick whenever the pack fells prey.",
+      "Behavior": "Ice",
+      "Activity": "Dark",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 246,
+      "P_Type": "Rifractal",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 246,
+      "Rarity": "Stained Glass",
+      "P_Habitat": "It takes a lot of energy and an efficient circulatory system to work the flight muscles of Rifractal. They often roost near sources of hear.",
+      "Behavior": "Rock",
+      "Activity": "Flying",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 247,
+      "P_Type": "Sheenat",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 247,
+      "Rarity": "Stained Glass",
+      "P_Habitat": "The wing membrane of Sheenat filters light like a stained glass window. A cave inhabited by a colony of Sheenat feels like the inside of a cathedral.",
+      "Behavior": "Rock",
+      "Activity": "Flying",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 248,
+      "P_Type": "Heatike",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 248,
+      "Rarity": "Hot Core",
+      "P_Habitat": "The crystals on its back are sharp and brimming with fire energy. These pokémon have been hunted for materials to make weaponry and jewelry since ancient times.",
+      "Behavior": "Fire",
+      "Activity": "Rock",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 249,
+      "P_Type": "Heataze",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 249,
+      "Rarity": "Molten Core",
+      "P_Habitat": "The air around Heataze can be so hot that creatures that come near it become severely burned. It regulates this at will.",
+      "Behavior": "Fire",
+      "Activity": "Rock",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 250,
+      "P_Type": "Blazion",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 250,
+      "Rarity": "Magma Scorpion",
+      "P_Habitat": "Large lava cave systems that are otherwise void of life, might be home to Blazion. It drinks flowing lava for sustenance.",
+      "Behavior": "Fire",
+      "Activity": "Rock",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 251,
+      "P_Type": "Asfire",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 251,
+      "Rarity": "Flame Aspis",
+      "P_Habitat": "Its scalding breath ignites the air, incinerating all in its path. Asfire seeks worthy adversaries, its intense flames sparing only those who match its relentless might.",
+      "Behavior": "Fire",
+      "Activity": "Poison",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 252,
+      "P_Type": "Aspyre",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 252,
+      "Rarity": "Flame Wyvern",
+      "P_Habitat": "Its roar echoes like crackling embers, heralding a tempest of fire. Aspyre descends upon challengers, a majestic force leaving trails of smoldering awe in its wake.",
+      "Behavior": "Fire",
+      "Activity": "Poison",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 253,
+      "P_Type": "Charmander",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 253,
+      "Rarity": "Lizard",
+      "P_Habitat": "The flame that burns at the tip of its tail is an indication of its emotions. The flame wavers when Charmander is enjoying itself. If the Pokémon becomes enraged, the flame burns fiercely.",
+      "Behavior": "Dragon",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 254,
+      "P_Type": "Charmeleon",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 254,
+      "Rarity": "Lizard",
+      "P_Habitat": "Charmeleon mercilessly destroys its foes using its sharp claws. If it encounters a strong foe, it turns aggressive. In this excited state, the flame at the tip of its tail flares with a bluish white color.",
+      "Behavior": "Dragon",
+      "Activity": "Flying",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 255,
+      "P_Type": "Charizard",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 255,
+      "Rarity": "Lizard",
+      "P_Habitat": "Charizard flies around the sky in search of powerful opponents. It breathes fire of such great heat that it melts anything. However, it never turns its fiery breath on any opponent weaker than itself.",
+      "Behavior": "Dragon",
+      "Activity": "Flying",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 256,
+      "P_Type": "Pollish",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 256,
+      "Rarity": "Parrotfish",
+      "P_Habitat": "This Pokémon thrives in shoals and coral reefs along the southern coast. Its electric power causes it to glow when it exerts strength.",
+      "Behavior": "Water",
+      "Activity": "Electric",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 257,
+      "P_Type": "Wandrish",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 257,
+      "Rarity": "Salmon",
+      "P_Habitat": "Wandrish can swim for very long distances, migrating along the coast to the northern sea in the summer season, returning southward and up river streams by autumn.",
+      "Behavior": "Water",
+      "Activity": "Electric",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 258,
+      "P_Type": "Cherpish",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 258,
+      "Rarity": "Angelfish",
+      "P_Habitat": "The peculiar sheen of Cherpish's scales is marvelous to behold in the moonlight. Divers report hearing an \"angel choir\" underwater when a school of Cherpish are near.",
+      "Behavior": "Water",
+      "Activity": "Fairy",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 259,
+      "P_Type": "Scalareph",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 259,
+      "Rarity": "Angelfish",
+      "P_Habitat": "Its frilly fins glow in low lighting. Scalareph are rare in the wild. They communicate by singing, and can use their voice as a weapon.",
+      "Behavior": "Water",
+      "Activity": "Fairy",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 260,
+      "P_Type": "Carvechno",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 260,
+      "Rarity": "Sophisticated",
+      "P_Habitat": "A relative of Carvanha. An ancient civilization domesticated and augmented these pokémon using the power of Water Stones.",
+      "Behavior": "Water",
+      "Activity": "Steel",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 261,
+      "P_Type": "Techedo",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 261,
+      "Rarity": "Refined",
+      "P_Habitat": "A relative of Sharpedo. An ancient civilization domesticated and augmented these pokémon using the power of Water Stones.",
+      "Behavior": "Water",
+      "Activity": "Steel",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 262,
+      "P_Type": "Mallusk",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 262,
+      "Rarity": "Mollusk",
+      "P_Habitat": "Mallusk are highly aggressive towards potential predators. Inside their territories, they fight fiercely amongst themselves for the right to eat.",
+      "Behavior": "Water",
+      "Activity": "Dark",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 263,
+      "P_Type": "Conchail",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 263,
+      "Rarity": "Sea snail",
+      "P_Habitat": "Because it loses movement speed on evolving, Conchail relies on disguising itself as a coral reef to catch prey.",
+      "Behavior": "Water",
+      "Activity": "Dark",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 264,
+      "P_Type": "Corshail",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 264,
+      "Rarity": "Buccaneer",
+      "P_Habitat": "Nicknamed \"The Scourge of the Seas\", Corchail is a force to be reckoned with. It is a capable hunter, and will attack most creatures without hesitation. This Pokémon has a strange fascination with shiny objects.",
+      "Behavior": "Water",
+      "Activity": "Dark",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 265,
+      "P_Type": "Ailorance",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 265,
+      "Rarity": "Red panda",
+      "P_Habitat": "Ailorance were believed to be extinct in the wild, but they do in fact exist in numbers. They prefer to stay away from humans, and are wary of their presence.",
+      "Behavior": "Fighting",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 266,
+      "P_Type": "Fulgironce",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 266,
+      "Rarity": "Red panda",
+      "P_Habitat": "Though it will only confront humans as a last resort, they are highly territorial, and will go to great lengths to keep humans away from their habitats.",
+      "Behavior": "Fighting",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 267,
+      "P_Type": "Ferrem",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 267,
+      "Rarity": "Iron golem",
+      "P_Habitat": "Ferrem are giant hulking monsters roaming deep dark caves. They are made of iron ore, and can create magnetic force fields in battle.",
+      "Behavior": "Rock",
+      "Activity": "Steel",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 268,
+      "P_Type": "Energem",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 268,
+      "Rarity": "Crystal golem",
+      "P_Habitat": "The crystals embedded in the rocky body of Energem gives it life. These pokémon have been hunted for materials to make weaponry and jewelry since ancient times.",
+      "Behavior": "Rock",
+      "Activity": "Electric",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 269,
+      "P_Type": "Sandem",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 269,
+      "Rarity": "Sandstone golem",
+      "P_Habitat": "Can sometimes be found near ancient ruins, or patrolling underground cave systems. According to ancient texts, Sandem were created as protectors by an ancient civilization.",
+      "Behavior": "Rock",
+      "Activity": null,
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 270,
+      "P_Type": "Cirrux",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 270,
+      "Rarity": "Cloud",
+      "P_Habitat": "This Pokémon makes its home in the clouds. It has a highly volatile composition, causing it to adapt to the current weather at all times.",
+      "Behavior": "Normal",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 271,
+      "P_Type": "Frosticle",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 271,
+      "Rarity": "Icicle",
+      "P_Habitat": "It lodges itself in frosty cave ceilings, waiting for prey to walk underneath it. If it fails the initial attack, it still has a fearsome arsenal at its disposal.",
+      "Behavior": "Ice",
+      "Activity": "Psychic",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 272,
+      "P_Type": "Glacicle",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 272,
+      "Rarity": "Glacier",
+      "P_Habitat": "These fearsome ice were the carriers of winter in old legends. Offerings of food were placed along the paths they walked, because of the belief that it would shorten the winter.",
+      "Behavior": "Ice",
+      "Activity": "Psychic",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 273,
+      "P_Type": "Chronix",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 273,
+      "Rarity": "Time warp",
+      "P_Habitat": "The avatar of the god of time. Chronix can observe the time stream, and is able to warp time and space.",
+      "Behavior": "Psychic",
+      "Activity": null,
+      "Evolution_R": "Gigantic"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 274,
+      "P_Type": "Labbit",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 274,
+      "Rarity": "Bunny rabbit",
+      "P_Habitat": "Native to Eastern Shima, Labbit are rumored to bring good luck if spotted. Its gold star glows in the moonlight.",
+      "Behavior": "Fairy",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 275,
+      "P_Type": "Rappid",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 275,
+      "Rarity": "Hare",
+      "P_Habitat": "Rappid are usually very difficult to catch because of their immense speed. It is rumored that a Rappid with a silver colored star has a special ability.",
+      "Behavior": "Fairy",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 276,
+      "P_Type": "Snogon",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 276,
+      "Rarity": "Boreal dragon",
+      "P_Habitat": "Snogon are difficult to encounter, as their habitat is often highly inaccessible. On nights with northern lights, it sometimes soars high in the atmosphere to feed on solar energy.",
+      "Behavior": "Dragon",
+      "Activity": "Ice",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 277,
+      "P_Type": "Avalgon",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 277,
+      "Rarity": "Boreal dragon",
+      "P_Habitat": "The very air around Avalgon is freezing. Coming into contact with its skin without proper equipment will cause damage.",
+      "Behavior": "Dragon",
+      "Activity": "Ice",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 278,
+      "P_Type": "Veraptini",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 278,
+      "Rarity": "Velociraptor",
+      "P_Habitat": "These ancient Pokémon are known to hunt in packs. They are quick, and surprisingly well coordinated.",
+      "Behavior": "Dragon",
+      "Activity": "Grass",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 279,
+      "P_Type": "Velociroar",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 279,
+      "Rarity": "Velociraptor",
+      "P_Habitat": "The alphas of a Veraptini pack are called Velociroar. They have a distinct set of red horns in place of their smaller underlings.",
+      "Behavior": "Dragon",
+      "Activity": "Grass",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 280,
+      "P_Type": "Bulbasaur",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 280,
+      "Rarity": "Seed",
+      "P_Habitat": "Bulbasaur have a Shiman strand, primarily found in the swamps far western parts of Shima. The bulb on its back contains a very potent poison.",
+      "Behavior": "Grass",
+      "Activity": "Poison",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 281,
+      "P_Type": "Ivysaur",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 281,
+      "Rarity": "Seed",
+      "P_Habitat": "When they mature, Ivysaur grow long vines that can double as roots, allowing it to ingrain itself and feed on nutrients and minerals in the soil.",
+      "Behavior": "Grass",
+      "Activity": "Poison",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 282,
+      "P_Type": "Venusaur",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 282,
+      "Rarity": "Seed",
+      "P_Habitat": "The purple mist Venusaur breathe create a toxic environment in their territory. Because of this, it is often difficult to approach their wild habitats.",
+      "Behavior": "Grass",
+      "Activity": "Poison",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 283,
+      "P_Type": "Squirtle",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 283,
+      "Rarity": "Turtle",
+      "P_Habitat": "Squirtle are born in the south, and spend their early years in the shoals along the Libra Coast. When they mature, they begin migrating north.",
+      "Behavior": "Water",
+      "Activity": "Ice",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 284,
+      "P_Type": "Wartortle",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 284,
+      "Rarity": "Turtle",
+      "P_Habitat": "These are not often seen in the southern parts of Shima outside of mating season. It is recognized as a symbol of longevity. If its shell has algae on it, that Wartortle is very old.",
+      "Behavior": "Water",
+      "Activity": "Ice",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 285,
+      "P_Type": "Blastoise",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 285,
+      "Rarity": "Turtle",
+      "P_Habitat": "Blastoise prefer cold ocean water. It crushes its foe under its heavy body to cause fainting. In a pinch, it will withdraw inside its shell.",
+      "Behavior": "Water",
+      "Activity": "Ice",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 286,
+      "P_Type": "Fricub",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 286,
+      "Rarity": "Polar bear",
+      "P_Habitat": "These cubs make their home in snow burrows. They feed mostly off of fish, and are not aggressive.",
+      "Behavior": "Ice",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 287,
+      "P_Type": "Ursnow",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 287,
+      "Rarity": "Polar bear",
+      "P_Habitat": "Once Fricub evolves into Ursnow, the hormone balance inside its body changes drastically. This forces it into a frenzy that will not end.",
+      "Behavior": "Ice",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 288,
+      "P_Type": "Glaciear",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 288,
+      "Rarity": "Polar bear",
+      "P_Habitat": "Native to the coldest reaches of the world, this Pokémon is known to migrate southward during ice ages, when the sea freezes over.",
+      "Behavior": "Ice",
+      "Activity": null,
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 289,
+      "P_Type": "Hydling",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 289,
+      "Rarity": "Hydra",
+      "P_Habitat": "Should you come across an unprotected Hydling nest, you may find these hatchling worms feeding off the leftover nourishment in their eggs. Normally, Hydling stay in their nests for quite some time before beginning to hunt for their own food.",
+      "Behavior": "Dragon",
+      "Activity": null,
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 290,
+      "P_Type": "Pluraling",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 290,
+      "Rarity": "Hydra",
+      "P_Habitat": "Once Hydling has developed its red skin, multiple new heads begin to develop along its neck. These continue growing with the Pokémon as it matures.",
+      "Behavior": "Dragon",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 291,
+      "P_Type": "Plurorm",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 291,
+      "Rarity": "Hydra",
+      "P_Habitat": "Plurorm possesses remarkable regenerative abilities and six autonomous heads. Swift and agile in water, it is an intriguing subject for aquatic biology research. Its heads have the following type affinities: Fire, Water, Grass, Electric, Ice, Poison",
+      "Behavior": "Dragon",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 292,
+      "P_Type": "Plurydra",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 292,
+      "Rarity": "Hydra",
+      "P_Habitat": "Plurydra further enhances its regenerative prowess and multi-headed adaptability. A swift and agile predator in aquatic environments. Its heads have the following type affinities: Fire, Water, Grass, Electric, Ice, Poison",
+      "Behavior": "Dragon",
+      "Activity": null,
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 293,
+      "P_Type": "Plurofera",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 293,
+      "Rarity": "Hydra",
+      "P_Habitat": "Plurofera is a truly fearsome beast. According to legend, a hero who had to slay it as part of a trial set forth by the gods of Shima. It has 18 autonomous heads, with type affinities for all move types.",
+      "Behavior": "Dragon",
+      "Activity": null,
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 294,
+      "P_Type": "Fryoon",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 294,
+      "Rarity": "Freon",
+      "P_Habitat": "These Pokémon make their home in arctic waters. They are renowned for their crystalline horns, that seem to hold magical powers.",
+      "Behavior": "Fairy",
+      "Activity": "Ice",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 295,
+      "P_Type": "Froscyyr",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 295,
+      "Rarity": "Freon",
+      "P_Habitat": "Froscyyr embodies the sinister chill of the abyss, its icy aura suffused with shadows. It prowls frozen wastelands, freezing the souls of those who dare cross its path, leaving behind a trail of frost and despair.",
+      "Behavior": "Fairy",
+      "Activity": "Ice",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 296,
+      "P_Type": "Wryggle",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 296,
+      "Rarity": "Milk snake",
+      "P_Habitat": "They are primarily terrestrial and attempt to blend in with ground litter. These snakes tend to be secretive and remain hidden.",
+      "Behavior": "Ground",
+      "Activity": "Poison",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 297,
+      "P_Type": "Slythir",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 297,
+      "Rarity": "Milk snake",
+      "P_Habitat": "Unless frightened, Slythir move slowly. They are often fairly docile.",
+      "Behavior": "Ground",
+      "Activity": "Poison",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 298,
+      "P_Type": "Vyphyss",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 298,
+      "Rarity": "Milk snake",
+      "P_Habitat": "This snake is known to be a powerful constrictor; its diet consists of mostly mice if domestic, and other rodents if wild. It also can feed on reptile eggs detected beneath the surface via smell.",
+      "Behavior": "Ground",
+      "Activity": "Poison",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 299,
+      "P_Type": "Scarpea",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 299,
+      "Rarity": "Searing Sting",
+      "P_Habitat": "Its crystalline carapace has made Scarpea a prized trophy for hunters: The dark energy and heat resistance capabilities has been used to craft powerful armor and weaponry since ancient times.",
+      "Behavior": "Dark",
+      "Activity": "Fire",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 300,
+      "P_Type": "Cruscarex",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 300,
+      "Rarity": "Searing Sting",
+      "P_Habitat": "Cruscarex can lie dormant for long periods of time, preferring to nest in superheated volcanic caves.",
+      "Behavior": "Dark",
+      "Activity": "Fire",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 301,
+      "P_Type": "Silian",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 301,
+      "Rarity": "Soil Gorilla",
+      "P_Habitat": "These infants are often kept in communal care, close to some form of shelter. From a very early age, Silians learn to hurl rocks at birds for entertainment.",
+      "Behavior": "Ground",
+      "Activity": "Fighting",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 302,
+      "P_Type": "Groundilla",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 302,
+      "Rarity": "Soil Gorilla",
+      "P_Habitat": "Groundillas mostly eat foliage, such as leaves, stems, pith, and shoots, while fruit makes up a very small part of their diets. They can also digest rocks, and get a fair amount of their minerals from these.",
+      "Behavior": "Ground",
+      "Activity": "Fighting",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 303,
+      "P_Type": "Terrilla",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 303,
+      "Rarity": "Soil Gorilla",
+      "P_Habitat": "Terrillas are very strong, and have trouble handling their young without damaging them if they have grown up without sufficient amounts of playfighting in order to learn restraint.",
+      "Behavior": "Ground",
+      "Activity": "Fighting",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 304,
+      "P_Type": "Onix",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 304,
+      "Rarity": "Rock Snake",
+      "P_Habitat": "Onix is a Pokémon composed of a giant chain of gray boulders that become smaller towards the tail. Its length makes it one of the largest Rock-type Pokémon. It grows in size as it ages.",
+      "Behavior": "Ground",
+      "Activity": "Rock",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 305,
+      "P_Type": "Granix",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 305,
+      "Rarity": "Rock Worm",
+      "P_Habitat": "Legends speak of Granix's ability to shape mountains and reshape landscapes with its colossal strength. Despite its formidable appearance, Granix is known to possess a protective nature towards its offspring.",
+      "Behavior": "Ground",
+      "Activity": "Rock",
+      "Evolution_R": "Gigantic"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 306,
+      "P_Type": "Steelix",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 306,
+      "Rarity": "Steel Worm",
+      "P_Habitat": "A mature Onix may evolve into Steelix after consuming large amounts of metal ore. Steelix's immense size and metallic sheen strike fear into the hearts of its adversaries, as it glides effortlessly through the earth's crust.",
+      "Behavior": "Ground",
+      "Activity": "Steel",
+      "Evolution_R": "Gigantic"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 307,
+      "P_Type": "Vaultile",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 307,
+      "Rarity": "Safe guardian",
+      "P_Habitat": "Within its vault-like shell, it stores a treasure trove of valuable items it has collected. The shell's thick metal plating provides protection for both the Pokémon and its precious cargo. Despite its cumbersome appearance,Vaultile moves with surprising agility.",
+      "Behavior": "Steel",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 308,
+      "P_Type": "Vaultargo",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 308,
+      "Rarity": "Vault guardian",
+      "P_Habitat": "Vaultargo's massive frame is adorned with a colossal vault-like shell that serves as a fortress of protection. Within the depths of its shell, it safeguards an cache of treasures amassed over its lifetime.",
+      "Behavior": "Steel",
+      "Activity": null,
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 309,
+      "P_Type": "Skarling",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 309,
+      "Rarity": "Armor bird",
+      "P_Habitat": "Despite its youth, this chick's steel wings show signs of wear from frequent battles. However, once a year, they undergo a remarkable renewal. During a special molting cycle, the battered wings shed their worn edges and grow back completely.",
+      "Behavior": "Steel",
+      "Activity": "Flying",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 310,
+      "P_Type": "Skarmory",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 310,
+      "Rarity": "Armor bird",
+      "P_Habitat": "Its steel wings become tattered and bashed in from repeated battles, but once a year the battered wings grow back completely. This process restores the cutting edges of its feathers, which are sharp enough to be used as blades.",
+      "Behavior": "Steel",
+      "Activity": "Flying",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 311,
+      "P_Type": "Custospirit",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 311,
+      "Rarity": "Guardian spirit",
+      "P_Habitat": "These spirits are bound to ancient locations that they consider under their protection. They are fiercely loyal to their trainers.",
+      "Behavior": "Ghost",
+      "Activity": null,
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 312,
+      "P_Type": "Protecter",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 312,
+      "Rarity": "Warden spirit",
+      "P_Habitat": "Ruins and relics are sometimes guarded by Protecter. These wardens are closely bound to their object of protection, and will rarely stray far from it.",
+      "Behavior": "Ghost",
+      "Activity": null,
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 313,
+      "P_Type": "Wecter",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 313,
+      "Rarity": "Haunting warden",
+      "P_Habitat": "Wecter is an evil spirit, known for causing people who venture into its territory to vanish. It can create portals to the netherworld.",
+      "Behavior": "Ghost",
+      "Activity": "Dark",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 314,
+      "P_Type": "Veerulent (Stable Form)",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 314,
+      "Rarity": "Hybridized",
+      "P_Habitat": "This is the mature stage of the hybridization experiment. It poses great danger to its opponents, capitalizing on its incredible speed and mobility as well as a fearsome arsenal of attacks.",
+      "Behavior": "Bug",
+      "Activity": "Poison",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 315,
+      "P_Type": "Aurus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 315,
+      "Rarity": "Dino",
+      "P_Habitat": "Dwelling in caves with few real threats to its existense, this Pokémon feeds on a diet of metal ore and subterranean plants.",
+      "Behavior": "Steel",
+      "Activity": "Dragon",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 316,
+      "P_Type": "Aroarus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 316,
+      "Rarity": "Dino",
+      "P_Habitat": "Highly protective of its young, Aroarus goes to great lengths to secure its lair againts threats. It is known ",
+      "Behavior": "Steel",
+      "Activity": "Dragon",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 317,
+      "P_Type": "Beluhe",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 317,
+      "Rarity": "Whale",
+      "P_Habitat": "At birth, they still loom large. Beluhe are known for their peculiar way of using their voice to locate prey.",
+      "Behavior": "Water",
+      "Activity": "Fairy",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 318,
+      "P_Type": "Whail",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 318,
+      "Rarity": "Whale",
+      "P_Habitat": "Whail's song can be heard underwater for miles. Because of this, they remain social creatures that have groups that spread very far.",
+      "Behavior": "Water",
+      "Activity": "Fairy",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 319,
+      "P_Type": "Whailossus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 319,
+      "Rarity": "Wind Fish",
+      "P_Habitat": "Whailossus dwells in the deep ocean, rarely coming to the surface. When it sings, it enthralls those who hear its song.",
+      "Behavior": "Water",
+      "Activity": "Fairy",
+      "Evolution_R": "Gigantic"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 320,
+      "P_Type": "Leefdot",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 320,
+      "Rarity": "Kiwibat",
+      "P_Habitat": "Thrives in the Mystauran tropical forest. They feed mostly on fruit, but also use their vicious fangs to attack.",
+      "Behavior": "Grass",
+      "Activity": "Flying",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 321,
+      "P_Type": "Bigleef",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 321,
+      "Rarity": "Kiwibat",
+      "P_Habitat": "Adept at hiding, Bigleef are often undetected. It sometimes nests near fruit orchards, sneaking food.",
+      "Behavior": "Grass",
+      "Activity": "Flying",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 322,
+      "P_Type": "Hugleef",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 322,
+      "Rarity": "Kiwibat",
+      "P_Habitat": "This Pokémon prefers fruit, but also frequently attacks people and Pokemon that wander into its territory. It stalks its prey by campuflaging as vegetation.",
+      "Behavior": "Grass",
+      "Activity": "Flying",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 323,
+      "P_Type": "Tecturrow",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 323,
+      "Rarity": "Burrow Fox",
+      "P_Habitat": "Tecturrow foxes are quite nimble, and adept at hiding in tall grass. They are social, living in packs of up to 15 individuals.",
+      "Behavior": "Ground",
+      "Activity": "Rock",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 324,
+      "P_Type": "Minerox",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 324,
+      "Rarity": "Burrow Fox",
+      "P_Habitat": "It creates networks of burrows that can go quite far down into the soil. It prefers warmer climates, where the ground doesn't freeze solid.",
+      "Behavior": "Ground",
+      "Activity": "Rock",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 325,
+      "P_Type": "Tangela (Stalker Form)",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 325,
+      "Rarity": "Devil's Weed",
+      "P_Habitat": "After a long time of symbiotic existence between Snarepent and Tangela, the Tangela connects its tendrils to the Snarepent's brain, merging the two into a single organism. Researchers have dubbed this new form the Stalker Form, due to its more active hunting behavior.",
+      "Behavior": "Grass",
+      "Activity": "Dark",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 326,
+      "P_Type": "Tangrowth",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 326,
+      "Rarity": "Devil's Weed",
+      "P_Habitat": "If a Tangela in its Stalker Form begins to subdue several more Snarepent into its servitude, it may eventually evolve into Tangrowth. This massive Pokémon can use its long vines to extend its reach, reducing its need to move.",
+      "Behavior": "Grass",
+      "Activity": "Dark",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 327,
+      "P_Type": "Wyngir",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 327,
+      "Rarity": "Sprite",
+      "P_Habitat": "This winged serpent is known for its insatiable curiosity. Wyngir's delicate wings produce a shimmering dust that confuses predators, allowing it to safely explore even the most dangerous territories.",
+      "Behavior": "Fairy",
+      "Activity": "Bug",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 328,
+      "P_Type": "Faevern",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 328,
+      "Rarity": "Sprite",
+      "P_Habitat": "Faevern's vibrant wings can generate powerful gusts, scattering its venomous scales over a wide area. Its aggressive nature and territorial behavior make it a formidable guardian of fairy glades.",
+      "Behavior": "Fairy",
+      "Activity": "Bug",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 329,
+      "P_Type": "Stellavorii",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 329,
+      "Rarity": "Meteorite",
+      "P_Habitat": "This extraterrestrial Pokémon arrived on meteorites, carrying cosmic energy within its core. Stellavorii's metallic interior allows it to manipulate magnetic fields, baffling researchers with its otherworldly abilities.",
+      "Behavior": "Psychic",
+      "Activity": "Steel",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 330,
+      "P_Type": "Stellarchon",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 330,
+      "Rarity": "Comet",
+      "P_Habitat": "Ancient legends speak of Stellarchon as a celestial titan. Formed by the fusion of multiple Stellavorii over centuries, its immense psychic power is said to be capable of moving continents and altering the very fabric of space.",
+      "Behavior": "Psychic",
+      "Activity": "Steel",
+      "Evolution_R": "Gigantic"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 331,
+      "P_Type": "Equilibrax",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 331,
+      "Rarity": "Balance",
+      "P_Habitat": "Equilibrax was once part of the same primordial force that split into Groudon, Kyogre, and Rayquaza. While the others embodied primal forces of nature, Equilibrax represented the delicate balance between them. It's said to appear when the balance of power in the world is at a critical point, either to restore equilibrium or to catalyze necessary change.",
+      "Behavior": "Psychic",
+      "Activity": null,
+      "Evolution_R": "Gigantic"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 332,
+      "P_Type": "Stelluna",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 332,
+      "Rarity": "Light Vine",
+      "P_Habitat": "This small, star-shaped flower Pokémon glows softly in the moonlight. Its petals absorb lunar energy, which it uses to survive in harsh environments.",
+      "Behavior": "Grass",
+      "Activity": "Fairy",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 333,
+      "P_Type": "Stellumina",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 333,
+      "Rarity": "Light Vine",
+      "P_Habitat": "Evolved from Stelluna, this massive flower Pokémon towers over the landscape. Its enormous petals radiate stored moonlight, creating a beacon visible for miles.",
+      "Behavior": "Grass",
+      "Activity": "Fairy",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 334,
+      "P_Type": "Reagle",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 334,
+      "Rarity": "Sea Eagle",
+      "P_Habitat": "A majestic coastal eagle Pokémon with water-resistant feathers. It's an expert fisher, diving into the sea to catch its prey with remarkable precision.",
+      "Behavior": "Flying",
+      "Activity": "Water",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 335,
+      "P_Type": "Argonael",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 335,
+      "Rarity": "Sea Eagle",
+      "P_Habitat": "The evolved form of Reagle, known for its incredible speed. Its aerodynamic body and powerful wings allow it to create miniature hurricanes during flight.",
+      "Behavior": "Flying",
+      "Activity": "Water",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 336,
+      "P_Type": "Crystamel",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 336,
+      "Rarity": "Camel",
+      "P_Habitat": "This desert-dwelling camel Pokémon has shimmering water crystals growing from its back. It can survive long periods without water by slowly absorbing moisture from its crystals.",
+      "Behavior": "Ground",
+      "Activity": "Water",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 337,
+      "P_Type": "Quamel",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 337,
+      "Rarity": "Camel",
+      "P_Habitat": "Crystamel's evolved form, Quamel has larger, more developed water crystals. It can release stored water as high-pressure jets, creating oases in the desert.",
+      "Behavior": "Ground",
+      "Activity": "Water",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 338,
+      "P_Type": "Evaptor",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 338,
+      "Rarity": "Mist Raptor",
+      "P_Habitat": "This remarkable predator uses the extreme temperature variations of the desert to its advantage. By rapidly evaporating moisture from the air, it can create intense pockets of freezing air. Evaptor hunt in coordinated packs during dawn and dusk, when temperature differentials are most extreme. Their distinctive cry sounds like cracking ice.",
+      "Behavior": "Flying",
+      "Activity": "Ice",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 339,
+      "P_Type": "Scaracross",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 339,
+      "Rarity": "Desert Gladiator",
+      "P_Habitat": "This powerful Pokémon has evolved to thrive in the harshest desert environments. Its thick, sandy-colored carapace reflects intense sunlight and retains moisture, allowing Scaracross to survive long periods without water. The large, shovel-like horn on its head serves multiple purposes: digging for underground water sources, unearthing buried plant roots for food, and engaging in fierce battles with rivals.",
+      "Behavior": "Bug",
+      "Activity": "Ground",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 340,
+      "P_Type": "Dragem",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 340,
+      "Rarity": "Primordial Dragon",
+      "P_Habitat": "This rare Dragon-type Pokémon possesses a unique ability to absorb elemental energies. Its body is covered in shimmering scales that change color based on the type of energy it has recently consumed. Dragem is often found near areas rich in elemental stones, feeding on their latent power. Researchers are fascinated by its capacity to temporarily alter its elemental affinity, making it a highly adaptable battler. Despite its small size, trainers prize Dragem for its potential to overcome a wide variety of opponents.",
+      "Behavior": "Dragon",
+      "Activity": "Normal",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 341,
+      "P_Type": "Zoragon",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 341,
+      "Rarity": "Primordial Dragon",
+      "P_Habitat": "Zoragon has mastered the art of elemental manipulation. Its body radiates with power, and the crown-like horns on its head glow with the energy of its current secondary type. Zoragon can consume various type gems to change its elemental affinity at will, allowing it to adapt to any battle situation. The molten-like cracks along its body shift color to match its current elemental type.",
+      "Behavior": "Dragon",
+      "Activity": "Normal",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 342,
+      "P_Type": "Flintle",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 342,
+      "Rarity": "Magma Shell",
+      "P_Habitat": "Born near volcanic vents, Flintle's shell is formed from cooling magma. When threatened, it retreats into its shell, which releases waves of intense heat. Groups of Flintle can often be found basking on sun-warmed volcanic rocks.",
+      "Behavior": "Fire",
+      "Activity": "Rock",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 343,
+      "P_Type": "Flaretortle",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 343,
+      "Rarity": "Lava Shell",
+      "P_Habitat": "Its shell contains pockets of magma that it can pressurize and release as defensive blasts. The ridges on its shell grow more pronounced with age, developing heat-radiating spikes. Flaretortle are known to patrol the coastlines of volcanic islands.",
+      "Behavior": "Fire",
+      "Activity": "Rock",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 344,
+      "P_Type": "Eruptoise",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 344,
+      "Rarity": "Volcano Shell",
+      "P_Habitat": "Ancient sailors used Eruptoise's distinctive silhouette to navigate near volcanic islands. The chambers within its massive shell can generate enough pressure to launch superheated rocks over vast distances. Despite its fearsome appearance, it often acts as a guardian to smaller Fire-type Pokémon.",
+      "Behavior": "Fire",
+      "Activity": "Rock",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 345,
+      "P_Type": "Fluffire",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 345,
+      "Rarity": "Spirit Flame",
+      "P_Habitat": "This tiny spirit takes the form of a rabbit made of flickering flames and glowing fur. Despite its adorable appearance, ancient texts warn of its immense magical potential. Fluffire appears in places where hope and warmth are needed, often comforting lost children.",
+      "Behavior": "Fire",
+      "Activity": "Fairy",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 346,
+      "P_Type": "Pyronimbus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 346,
+      "Rarity": "Sacred Flame",
+      "P_Habitat": "Legends say that Pyronimbus appears during times of great darkness, its mystical flames capable of banishing evil. While its physical form remains delicate, its magical powers can rival those of legendary Pokémon. The patterns in its flame-like fur are said to tell prophecies.",
+      "Behavior": "Fire",
+      "Activity": "Fairy",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 347,
+      "P_Type": "Totodile",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 347,
+      "Rarity": "Big Jaw",
+      "P_Habitat": "This nocturnal variant of Totodile lurks in the murky swamps of Shima. Its scales have developed a darker hue, allowing it to blend seamlessly with the shadows. Unlike its counterparts in other regions, Shiman Totodile hunts primarily at night, using its powerful jaws to ambush unsuspecting prey. Trainers are advised to exercise caution, as even at this young stage, its bite can be surprisingly dangerous.",
+      "Behavior": "Water",
+      "Activity": "Dark",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 348,
+      "P_Type": "Croconaw",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 348,
+      "Rarity": "Big Jaw",
+      "P_Habitat": "As it evolves, the Shiman Croconaw becomes even more adapted to its swampy habitat. Its eyes have developed excellent night vision, and its scales now possess a slick, oily texture that helps it glide silently through murky waters. This Pokémon is known for its patient hunting style, often lying in wait for hours before striking with lightning speed. Its powerful tail can create waves to disorient prey or potential threats.",
+      "Behavior": "Water",
+      "Activity": "Dark",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 349,
+      "P_Type": "Feraligatr",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 349,
+      "Rarity": "Big Jaw",
+      "P_Habitat": "The apex predator of Shima's swamps, this variant of Feraligatr is feared even by experienced trainers. Its massive form is rarely seen, as it prefers to stay submerged, with only its eyes above the water's surface. Shiman Feraligatr has developed the ability to emit a low-frequency growl that can paralyze prey with fear. Its pitch-black scales absorb light, making it nearly invisible in its dark, swampy territory. Wild Feraligatr are extremely territorial and should only be approached with utmost caution.",
+      "Behavior": "Water",
+      "Activity": "Dark",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 350,
+      "P_Type": "Noctugatr",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 350,
+      "Rarity": "Swamp Menace",
+      "P_Habitat": "This Pokémon has developed a frightening intelligence, often using complex strategies to hunt or defend its territory. It can control the water pressure in its habitat, creating sudden whirlpools or geysers to disorient intruders.\nDue to its size, power, and rarity, Noctugatr is often treated as a legendary Pokémon in Shiman folklore, with some cultures venerating it as a deity of the swamps.",
+      "Behavior": "Water",
+      "Activity": "Dark",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 351,
+      "P_Type": "Lumorm",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 351,
+      "Rarity": "Luminous Urchin",
+      "P_Habitat": "This large serpentine Pokémon is covered in bioluminescent spines that pulse with a gentle, mesmerizing light. Found in deep ocean trenches, Lumorm uses its beautiful glow to attract small prey and communicate with others of its kind. Its spines contain a mild toxin that causes drowsiness rather than harm.",
+      "Behavior": "Water",
+      "Activity": "Fairy",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 352,
+      "P_Type": "Shadorm",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 352,
+      "Rarity": "Abyssal Crown",
+      "P_Habitat": "The crown-like arrangement of glowing spines around Shadorm's head pulses with mysterious power. This huge creature is known to protect coral reefs and underwater ruins. Ancient sailors believed seeing its ethereal glow from the surface brought good fortune. The toxin in its spines has evolved to induce a deep, peaceful sleep.",
+      "Behavior": "Water",
+      "Activity": "Fairy",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 353,
+      "P_Type": "Scrollix",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 353,
+      "Rarity": "Record",
+      "P_Habitat": "A peculiar Pokémon that takes the form of an animate scroll. Scrollix constantly records information about moves it witnesses, though it often loses parts of its knowledge when damaged. Ancient scholars used to keep these Pokémon in their libraries, where they would transcribe important texts.",
+      "Behavior": "Normal",
+      "Activity": "Psychic",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 354,
+      "P_Type": "Codex",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 354,
+      "Rarity": "Archive",
+      "P_Habitat": "Within its pages, Codex stores vast knowledge of moves and techniques. While physically frail, its mastery over many different types of moves makes it a valuable ally. In ancient times, these Pokémon were considered sacred repositories of knowledge, and stealing one was punishable by death.",
+      "Behavior": "Normal",
+      "Activity": "Psychic",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 355,
+      "P_Type": "Honedge",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 355,
+      "Rarity": "Gladius",
+      "P_Habitat": "A shortsword possessed by the spirit of an ancient Shiman legionnaire. The blade maintains its military discipline even in death, seeking worthy wielders to serve. Its hilt is adorned with the markings of old Shiman legions.",
+      "Behavior": "Steel",
+      "Activity": "Ghost",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 356,
+      "P_Type": "Duoblade",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 356,
+      "Rarity": "Sword",
+      "P_Habitat": "The blade grows longer and broader, taking the form of a classic Shiman legion sword. Ancient military insignias become more prominent, and a spectral cape occasionally manifests behind the wielder.",
+      "Behavior": "Steel",
+      "Activity": "Ghost",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 357,
+      "P_Type": "Aegislash",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 357,
+      "Rarity": "Spatha",
+      "P_Habitat": "The ultimate form of the legion blade, now resembling the ceremonial sword of a Shiman general. Golden decorations and ghostly legionnaire symbols orbit the blade when drawn.",
+      "Behavior": "Steel",
+      "Activity": "Ghost",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 358,
+      "P_Type": "Vultear",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 358,
+      "Rarity": "Scavenger",
+      "P_Habitat": "A clever scavenger that begins learning to crack bones by dropping them from heights. The distinctive tuft of feathers beneath its beak is already visible from birth. Vultear prefers to feed on the remains of prey abandoned by other predators.",
+      "Behavior": "Ground",
+      "Activity": "Flying",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 359,
+      "P_Type": "Gyptor",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 359,
+      "Rarity": "Bone Hunter",
+      "P_Habitat": "Known for its precise dropping technique, Gyptor can crack open the hardest bones by dropping them on specific rocks from great heights. Its feathers contain traces of iron, giving them their distinctive rust-red coloration.",
+      "Behavior": "Ground",
+      "Activity": "Flying",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 360,
+      "P_Type": "Barbature",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 360,
+      "Rarity": "Marrow King",
+      "P_Habitat": "The 'beard' of specialized feathers beneath its beak contain nutrition from bones. Ancient cultures revered Barbature as a sacred creature that carried the spirits of the dead to the afterlife. A single Barbature may claim a territory of over 100 square miles.",
+      "Behavior": "Ground",
+      "Activity": "Flying",
+      "Evolution_R": "Large"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 361,
+      "P_Type": "Denarius",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 361,
+      "Rarity": "Gold Coin",
+      "P_Habitat": "A living coin that brings good fortune. Ancient merchants would keep one in their coin purses to attract wealth.",
+      "Behavior": "Steel",
+      "Activity": "Fairy",
+      "Evolution_R": "Tiny"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 362,
+      "P_Type": "Aureus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 362,
+      "Rarity": "Treasury",
+      "P_Habitat": "Aureus radiates an aura of prosperity. In ancient times, they were considered sacred to the god of commerce. Some say they can multiply themselves, though this has never been proven.",
+      "Behavior": "Steel",
+      "Activity": "Fairy",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 363,
+      "P_Type": "Krassemoth",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 363,
+      "Rarity": "Wealth Titan",
+      "P_Habitat": "Ancient texts speak of these creatures being used to guard vast imperial treasuries, though most were lost in the collapse of the civilization. Stories tell of greedy emperors who tried to create Krassemoth artificially by amassing vast wealth. Their treasuries often became tombs, as the awakened creatures proved uncontrollable in their hunger for more riches.",
+      "Behavior": "Steel",
+      "Activity": "Fairy",
+      "Evolution_R": "Huge"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 364,
+      "P_Type": "Corscout",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 364,
+      "Rarity": "Messenger",
+      "P_Habitat": "Young birds trained by the ancient armies as messengers. Their light armor allows them to fly swiftly between outposts. The red trim on their armor designates them as military couriers.",
+      "Behavior": "Steel",
+      "Activity": "Flying",
+      "Evolution_R": "Small"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 365,
+      "P_Type": "Centurvus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 365,
+      "Rarity": "Officer",
+      "P_Habitat": "Bearing the marks of rank on its armor, Centurvus command small flocks of Corscout. Their distinctive cry can be heard coordinating aerial formations above ancient battlefields.",
+      "Behavior": "Steel",
+      "Activity": "Flying",
+      "Evolution_R": "Medium"
+    },
+    {
+      "Species": {
+        "valueType": "IMAGE"
+      },
+      "Description": 366,
+      "P_Type": "Praetorvus",
+      "S_Type": {
+        "valueType": "IMAGE"
+      },
+      "Size": 366,
+      "Rarity": "Imperial Guard",
+      "P_Habitat": "Elite guardians of the ancient empire, Praetorvus were feared for their combination of military might and political influence. Their purple-trimmed armor marked them as extensions of imperial authority.",
+      "Behavior": "Steel",
+      "Activity": "Flying",
+      "Evolution_R": "Large"
+    }
+  ],
+  "metadata": {
+    "generated_at": "2024-12-30T01:22:51.712909",
+    "data_version": "1.0"
+  }
+}
