@@ -1,4 +1,12 @@
-// Constants
+// ============================================
+// SHIMA POKÉDEX - MAIN SCRIPT v2
+// With caching, admin mode, and visibility controls
+// ============================================
+
+// ===========================================
+// CONSTANTS
+// ===========================================
+
 const TYPE_COLORS = {
     normal: '#A8A878', fire: '#F08030', water: '#6890F0', electric: '#F8D030',
     grass: '#78C850', ice: '#98D8D8', fighting: '#C03028', poison: '#A040A0',
@@ -6,529 +14,78 @@ const TYPE_COLORS = {
     rock: '#B8A038', ghost: '#705898', dragon: '#7038F8', dark: '#705848',
     steel: '#B8B8D0', fairy: '#EE99AC', cosmic: '#2E1F5E'
 };
+
 const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/images/';
+const SPLASH_BASE_URL = 'https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/images/splashes/';
+const DEFAULT_SPLASH_COUNT = 9; // Fallback if not in config
 const IMAGE_FORMATS = ['png', 'jpg', 'jpeg', 'jfif'];
-const REGISTERED_POKEMON_URL = 'https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/registered_pokemon.json';
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
-const ITEMS_PER_PAGE = 5;
-const RESULTS_PER_PAGE = 5;
+const CONFIG_URL = 'https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/pokedex_config.json';
 
-// Global variables
-let isSoundEnabled = true;
-let pokemonData = [];
-let moveData = [];
-let registeredPokemon = { names: new Set(), lastFetched: 0 };
-let filterOptions = {
-    types: new Set(), sizes: new Set(), behaviors: new Set(),
-    activities: new Set(), rarities: new Set(), habitats: new Set()
+const CACHE_KEYS = {
+    POKEMON_DATA: 'shima_pokemon_data',
+    MOVE_DATA: 'shima_move_data',
+    CONFIG: 'shima_pokedex_config',
+    CACHE_TIME: 'shima_cache_timestamp',
+    ADMIN_SESSION: 'shima_admin_session'
 };
-let filteredPokemon = [];
-let currentPage = 1;
-let currentResults = [];
-let currentFilteredPage = 1;
 
-// Utility functions
-function toggleSound() {
-    isSoundEnabled = !isSoundEnabled;
-    const soundToggle = document.getElementById('soundToggle');
-    if (isSoundEnabled) {
-        setAudioVolume(0.3);
-        soundToggle.textContent = '🔊 Sound On';
-        soundToggle.classList.remove('sound-off');
-    } else {
-        setAudioVolume(0);
-        soundToggle.textContent = '🔇 Sound Off';
-        soundToggle.classList.add('sound-off');
-    }
-}
+const DATA_CACHE_DURATION = 24 * 60 * 60 * 1000;
+const CONFIG_CACHE_DURATION = 5 * 60 * 1000;
+const RESULTS_PER_PAGE = 5;
+const ADMIN_PASSWORD = 'shimamaster';
 
-function setAudioVolume(volume) {
-    const audioElements = document.querySelectorAll('audio');
-    audioElements.forEach(audio => {
-        audio.volume = volume;
-    });
-}
+const DEFAULT_VISIBILITY = {
+    types: true,
+    description: true,
+    characteristics: true,
+    primaryAbility: false,
+    secondaryAbility: false,
+    hiddenAbility: false,
+    stats: false,
+    senses: false,
+    evolution: false,
+    moves: false,
+    movesMaxLevel: 1,
+    extraVisibleMoves: []
+};
+
+// Default config structure
+const DEFAULT_CONFIG = {
+    registered: [],
+    visibility: {},
+    defaults: { ...DEFAULT_VISIBILITY },
+    extraSearchableMoves: [],
+    splashCount: DEFAULT_SPLASH_COUNT
+};
+
+// ===========================================
+// GLOBAL STATE
+// ===========================================
+
+let state = {
+    pokemonData: [],
+    moveData: [],
+    config: {
+        registered: [],
+        visibility: {},
+        defaults: { ...DEFAULT_VISIBILITY },
+        extraSearchableMoves: [],
+        splashCount: DEFAULT_SPLASH_COUNT
+    },
+    isAdminMode: false,
+    currentView: 'pokedex',
+    currentResults: [],
+    currentPage: 1,
+    editingPokemonName: null,
+    expandedAdminRows: new Set()
+};
+
+// ===========================================
+// UTILITY FUNCTIONS
+// ===========================================
 
 function getTypeColor(type) {
-    return TYPE_COLORS[type.toLowerCase()] || '#68A090';
-}
-
-function playLoadingCompleteSound() {
-    if (isSoundEnabled) {
-        const sound = document.getElementById('loadingCompleteSound');
-        if (sound) {
-            sound.play()
-                .then(() => {
-                    console.log('Sound played successfully');
-                })
-                .catch(error => console.error('Error playing sound:', error));
-        } else {
-            console.warn('Loading complete sound element not found');
-        }
-    }
-}
-
-function playSearchSelectSound() {
-    if (isSoundEnabled) {
-        const sound = document.getElementById('searchSelect');
-        if (sound) {
-            sound.play()
-                .then(() => {
-                    console.log('Sound played successfully');
-                })
-                .catch(error => console.error('Error playing sound:', error));
-        } else {
-            console.warn('Search select sound element not found');
-        }
-    }
-}
-
-function sanitizeFileName(name) {
-    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-}
-
-function showError(message) {
-    const errorElement = document.createElement('div');
-    errorElement.textContent = `Error: ${message}`;
-    errorElement.style.color = 'red';
-    errorElement.style.marginTop = '10px';
-    document.body.appendChild(errorElement);
-    setTimeout(() => errorElement.remove(), 5000);
-}
-
-let loadingProgress = 0;
-
-function showLoading() {
-    const loadingIndicator = document.createElement('div');
-    loadingIndicator.id = 'loadingIndicator';
-    loadingIndicator.innerHTML = `
-        <div>Loading... <span id="loadingPercentage">0%</span></div>
-        <div id="progressBarContainer">
-            <div id="progressBar"></div>
-        </div>
-    `;
-    loadingIndicator.style.position = 'fixed';
-    loadingIndicator.style.top = '50%';
-    loadingIndicator.style.left = '50%';
-    loadingIndicator.style.transform = 'translate(-50%, -50%)';
-    loadingIndicator.style.padding = '20px';
-    loadingIndicator.style.background = 'rgba(0, 0, 0, 0.7)';
-    loadingIndicator.style.color = 'white';
-    loadingIndicator.style.borderRadius = '5px';
-    loadingIndicator.style.zIndex = '1000';
-    document.body.appendChild(loadingIndicator);
-
-    const progressBarContainer = document.getElementById('progressBarContainer');
-    progressBarContainer.style.width = '200px';
-    progressBarContainer.style.height = '20px';
-    progressBarContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
-    progressBarContainer.style.borderRadius = '10px';
-    progressBarContainer.style.overflow = 'hidden';
-    progressBarContainer.style.marginTop = '10px';
-
-    const progressBar = document.getElementById('progressBar');
-    progressBar.style.width = '0%';
-    progressBar.style.height = '100%';
-    progressBar.style.backgroundColor = '#4CAF50';
-    progressBar.style.transition = 'width 0.5s';
-}
-
-function updateLoadingProgress(progress) {
-    loadingProgress = progress;
-    const progressBar = document.getElementById('progressBar');
-    const loadingPercentage = document.getElementById('loadingPercentage');
-    if (progressBar && loadingPercentage) {
-        progressBar.style.width = `${progress}%`;
-        loadingPercentage.textContent = `${Math.round(progress)}%`;
-    }
-}
-
-function hideLoading() {
-    const loadingIndicator = document.getElementById('loadingIndicator');
-    if (loadingIndicator) {
-        // Ensure the progress bar is full
-        updateLoadingProgress(100);
-        
-        // Update the loading text
-        const loadingText = loadingIndicator.querySelector('div');
-        if (loadingText) {
-            loadingText.textContent = 'Loading complete! Click here.';
-        }
-        
-        // Make the entire loading indicator clickable
-        loadingIndicator.style.cursor = 'pointer';
-        loadingIndicator.onclick = function() {
-            loadingIndicator.remove();
-            playLoadingCompleteSound();
-        };
-    }
-}
-
-function showPokemonSearch() {
-    document.getElementById('pokemonSearch').style.display = 'block';
-    document.getElementById('moveSearch').style.display = 'none';
-    document.getElementById('itemSearch').style.display = 'none';
-    playSearchSelectSound();
-    document.getElementById('moveResults').innerHTML = '';
-    document.getElementById('moveSearchInput').value = '';
-    document.getElementById('itemResults').innerHTML = '';
-    document.getElementById('itemSearchInput').value = '';
-}
-
-function showMoveSearch() {
-    document.getElementById('pokemonSearch').style.display = 'none';
-    document.getElementById('moveSearch').style.display = 'block';
-    document.getElementById('itemSearch').style.display = 'none';
-    playSearchSelectSound();
-    document.getElementById('results').innerHTML = '';
-    document.getElementById('searchInput').value = '';
-    document.getElementById('itemResults').innerHTML = '';
-    document.getElementById('itemSearchInput').value = '';
-    currentResults = [];
-    currentPage = 1;
-}
-
-// Global variable for item data
-let itemData = [];
-// Global variable for item types
-let itemTypes = new Set();
-
-// Function to load item data
-async function loadItemData() {
-    try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbwIT3OS2bdCv2kkDPh6IjRRirv17iPnuttlPcY47LCHBbpNPuHF_IjVq0mCt7TkkWoW/exec?action=items');
-        if (!response.ok) {
-            throw new Error('Failed to fetch item data');
-        }
-        const values = await response.json();
-        itemData = values.map(row => ({
-            name: row[0],
-            type: row[1],
-            effect: row[4],
-            description: row[3],
-            // Add more properties as needed
-        }));
-        console.log('Item data processed:', itemData.length, 'items');
-        
-        // Populate item types
-        itemTypes = new Set(itemData.map(item => item.type));
-        populateItemTypeFilter();
-    } catch (error) {
-        console.error('Error loading item data:', error);
-    }
-}
-
-function populateItemTypeFilter() {
-    const typeFilter = document.getElementById('itemTypeFilter');
-    itemTypes.forEach(type => {
-        const option = document.createElement('option');
-        option.value = type;
-        option.textContent = type;
-        typeFilter.appendChild(option);
-    });
-}
-
-function showItemSearch() {
-    document.getElementById('pokemonSearch').style.display = 'none';
-    document.getElementById('moveSearch').style.display = 'none';
-    document.getElementById('itemSearch').style.display = 'block';
-    playSearchSelectSound();
-    document.getElementById('results').innerHTML = '';
-    document.getElementById('searchInput').value = '';
-    document.getElementById('moveResults').innerHTML = '';
-    document.getElementById('moveSearchInput').value = '';
-}
-
-function searchItems() {
-    const searchTerm = document.getElementById('itemSearchInput').value.toLowerCase().trim();
-    const typeFilter = document.getElementById('itemTypeFilter').value;
-
-    const results = itemData.filter(item => 
-        (typeFilter === '' || item.type === typeFilter) &&
-        (item.name.toLowerCase().includes(searchTerm) ||
-         item.type.toLowerCase().includes(searchTerm) ||
-         item.description.toLowerCase().includes(searchTerm))
-    );
-    displayItemResults(results);
-}
-
-function displayItemResults(results) {
-    const resultsContainer = document.getElementById('itemResults');
-    resultsContainer.innerHTML = '';
-    
-    if (results.length === 0) {
-        resultsContainer.innerHTML = '<p>No items found. Try a different search term or type.</p>';
-    } else {
-        results.forEach(item => {
-            const itemCard = document.createElement('div');
-            itemCard.className = 'item-card';
-            
-            itemCard.innerHTML = `
-                <div class="card-content">
-                    <h3>${item.name}</h3>
-                    <p><strong>Type:</strong> ${item.type}</p>
-                    <p><strong>Description:</strong> ${item.description}</p>
-                    <p><strong>Effect:</strong> ${item.effect}</p>
-                </div>
-            `;
-            
-            resultsContainer.appendChild(itemCard);
-        });
-    }
-}
-
-// Pokémon data functions
-async function fetchRegisteredPokemon() {
-    const now = Date.now();
-    if (now - registeredPokemon.lastFetched < CACHE_DURATION) {
-        console.log('Using cached registered Pokémon');
-        return;
-    }
-
-    try {
-        const response = await fetch(REGISTERED_POKEMON_URL);
-        if (!response.ok) throw new Error('Failed to fetch registered Pokémon');
-        const data = await response.json();
-        registeredPokemon.names = new Set(data.registered.map(name => name.toLowerCase()));
-        registeredPokemon.lastFetched = now;
-    } catch (error) {
-        console.error('Error fetching registered Pokémon:', error);
-    }
-    updateFilterOptions();
-}
-
-async function loadPokemonData() {
-    showLoading();
-    try {
-        updateLoadingProgress(10);
-        await loadMoveData();
-        updateLoadingProgress(30);
-        await fetchRegisteredPokemon();
-        updateLoadingProgress(50);
-        const response = await fetch('https://script.google.com/macros/s/AKfycbwIT3OS2bdCv2kkDPh6IjRRirv17iPnuttlPcY47LCHBbpNPuHF_IjVq0mCt7TkkWoW/exec?action=pokemon');
-        if (!response.ok) throw new Error('Failed to fetch Pokémon data');
-        const values = await response.json();
-        updateLoadingProgress(70);
-        
-        const totalPokemon = values.length;
-        const batchSize = 20; // Process Pokémon in batches
-        pokemonData = [];
-        
-        for (let i = 0; i < totalPokemon; i += batchSize) {
-            const batch = values.slice(i, i + batchSize);
-            const processedBatch = await Promise.all(batch.map(processPokemonRow));
-            pokemonData.push(...processedBatch);
-            
-            // Update progress less frequently
-            if (i % (batchSize * 2) === 0 || i + batchSize >= totalPokemon) {
-                updateLoadingProgress(70 + (30 * (i + batchSize) / totalPokemon));
-            }
-        }
-        
-        console.log('Pokémon data processed:', pokemonData.length, 'Pokémon');
-    } catch (error) {
-        console.error('Error loading Pokémon data:', error);
-        showError('Failed to load Pokémon data. Please try again later.');
-    } finally {
-        updateLoadingProgress(100);
-        hideLoading();
-    }
-    updateFilterOptions();
-    document.getElementById('pokedex_button').style.display = 'inline-block';
-    document.getElementById('move_button').style.display = 'inline-block';
-    document.getElementById('item_button').style.display = 'inline-block';
-}
-
-function updateFilterOptions() {
-    filterOptions = {
-        types: new Set(), sizes: new Set(), behaviors: new Set(),
-        activities: new Set(), rarities: new Set(), habitats: new Set()
-    };
-
-    pokemonData.forEach(pokemon => {
-        if (registeredPokemon.names.has(pokemon.name.toLowerCase())) {
-            filterOptions.types.add(pokemon.primaryType);
-            if (pokemon.secondaryType) filterOptions.types.add(pokemon.secondaryType);
-            filterOptions.sizes.add(pokemon.size);
-            filterOptions.behaviors.add(pokemon.behavior);
-            filterOptions.activities.add(pokemon.activityTime);
-            filterOptions.rarities.add(pokemon.rarity);
-            filterOptions.habitats.add(pokemon.habitat);
-        }
-    });
-
-    populateFilterDropdowns();
-}
-
-function populateFilterDropdowns() {
-    populateSelect('typeFilter', filterOptions.types);
-    populateSelect('sizeFilter', filterOptions.sizes);
-    populateSelect('behaviorFilter', filterOptions.behaviors);
-    populateSelect('activityFilter', filterOptions.activities);
-    populateSelect('rarityFilter', filterOptions.rarities);
-    populateSelect('habitatFilter', filterOptions.habitats);
-}
-
-function populateSelect(id, options) {
-    const select = document.getElementById(id);
-    let allText = `All ${id.replace('Filter', 's')}`;
-    if (id === 'rarityFilter') allText = 'All rarities';
-    else if (id === 'activityFilter') allText = 'All activities';
-    select.innerHTML = `<option value="">${allText}</option>`;
-    options.forEach(option => {
-        const optionElement = document.createElement('option');
-        optionElement.value = option;
-        optionElement.textContent = option;
-        select.appendChild(optionElement);
-    });
-}
-
-function applyFilters() {
-    // This function will now trigger the search
-    searchPokemon();
-}
-
-function createFilterPaginationControls(totalItems, itemsPerPage, currentPage, onPageChange) {
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    const controls = document.createElement('div');
-    controls.className = 'pagination-controls';
-    
-    const prevButton = document.createElement('button');
-    prevButton.textContent = 'Previous';
-    prevButton.onclick = () => {
-        if (currentPage > 1) {
-            onPageChange(currentPage - 1);
-        }
-    };
-    prevButton.disabled = currentPage === 1;
-    
-    const nextButton = document.createElement('button');
-    nextButton.textContent = 'Next';
-    nextButton.onclick = () => {
-        if (currentPage < totalPages) {
-            onPageChange(currentPage + 1);
-        }
-    };
-    nextButton.disabled = currentPage === totalPages;
-    
-    const pageInfo = document.createElement('span');
-    pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-    
-    controls.appendChild(prevButton);
-    controls.appendChild(pageInfo);
-    controls.appendChild(nextButton);
-    
-    return controls;
-}
-
-function searchPokemon() {
-    const searchTerm = document.getElementById('searchInput').value.trim();
-    
-    // Get filter values
-    const typeFilter = document.getElementById('typeFilter').value;
-    const sizeFilter = document.getElementById('sizeFilter').value;
-    const behaviorFilter = document.getElementById('behaviorFilter').value;
-    const activityFilter = document.getElementById('activityFilter').value;
-    const rarityFilter = document.getElementById('rarityFilter').value;
-    const habitatFilter = document.getElementById('habitatFilter').value;
-
-    currentResults = pokemonData.filter(pokemon => {
-        if (!pokemon || typeof pokemon !== 'object') return false;
-
-        const isRegistered = registeredPokemon.names.has(pokemon.name.toLowerCase());
-        if (!isRegistered) return false;
-
-        // Apply filters
-        if (typeFilter && pokemon.primaryType !== typeFilter && pokemon.secondaryType !== typeFilter) return false;
-        if (sizeFilter && pokemon.size !== sizeFilter) return false;
-        if (behaviorFilter && pokemon.behavior !== behaviorFilter) return false;
-        if (activityFilter && pokemon.activityTime !== activityFilter) return false;
-        if (rarityFilter && pokemon.rarity !== rarityFilter) return false;
-        if (habitatFilter && pokemon.habitat !== habitatFilter) return false;
-
-        // If searchTerm is empty, return true to show all filtered results
-        if (!searchTerm) return true;
-
-        // If searchTerm is a number, treat it as an exact ID match
-        if (!isNaN(searchTerm) && searchTerm !== "") {
-            return pokemon.id === searchTerm;
-        }
-
-        // Otherwise, search across name, type, and abilities
-        const lowerSearchTerm = searchTerm.toLowerCase();
-        return pokemon.name.toLowerCase().includes(lowerSearchTerm) || 
-            pokemon.primaryType.toLowerCase().includes(lowerSearchTerm) ||
-            (pokemon.secondaryType && pokemon.secondaryType.toLowerCase().includes(lowerSearchTerm)) ||
-            pokemon.primaryAbility.name.toLowerCase().includes(lowerSearchTerm) ||
-            (pokemon.secondaryAbility && pokemon.secondaryAbility.name.toLowerCase().includes(lowerSearchTerm)) ||
-            (pokemon.hiddenAbility && pokemon.hiddenAbility.name.toLowerCase().includes(lowerSearchTerm));
-    });
-
-    currentPage = 1;
-    displayResults();
-}
-
-function displayResults() {
-    const resultsContainer = document.getElementById('results');
-    resultsContainer.innerHTML = '';
-    
-    if (currentResults.length === 0) {
-        resultsContainer.innerHTML = '<p>No Pokémon found. Try different search terms or filters.</p>';
-    } else {
-        const totalPages = Math.ceil(currentResults.length / RESULTS_PER_PAGE);
-        const startIndex = (currentPage - 1) * RESULTS_PER_PAGE;
-        const endIndex = Math.min(startIndex + RESULTS_PER_PAGE, currentResults.length);
-        
-        const resultsInfo = document.createElement('p');
-        resultsInfo.textContent = `Showing ${startIndex + 1}-${endIndex} of ${currentResults.length} results`;
-        resultsContainer.appendChild(resultsInfo);
-        
-        for (let i = startIndex; i < endIndex; i++) {
-            const pokemonCard = createPokemonCard(currentResults[i]);
-            resultsContainer.appendChild(pokemonCard);
-        }
-        
-        if (currentResults.length > RESULTS_PER_PAGE) {
-            resultsContainer.appendChild(createPaginationControls());
-        }
-    }
-}
-
-function createPaginationControls() {
-    const totalPages = Math.ceil(currentResults.length / RESULTS_PER_PAGE);
-    const controls = document.createElement('div');
-    controls.className = 'pagination-controls';
-    
-    const prevButton = document.createElement('button');
-    prevButton.textContent = 'Previous';
-    prevButton.onclick = () => {
-        if (currentPage > 1) {
-            currentPage--;
-            displayResults();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    };
-    prevButton.disabled = currentPage === 1;
-    
-    const nextButton = document.createElement('button');
-    nextButton.textContent = 'Next';
-    nextButton.onclick = () => {
-        if (currentPage < totalPages) {
-            currentPage++;
-            displayResults();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    };
-    nextButton.disabled = currentPage === totalPages;
-    
-    const pageInfo = document.createElement('span');
-    pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-    
-    controls.appendChild(prevButton);
-    controls.appendChild(pageInfo);
-    controls.appendChild(nextButton);
-    
-    return controls;
+    return TYPE_COLORS[type?.toLowerCase()] || '#68A090';
 }
 
 function getBrightness(color) {
@@ -539,340 +96,291 @@ function getBrightness(color) {
     return (r * 299 + g * 587 + b * 114) / 1000;
 }
 
-function createPokemonCard(pokemon) {
-    const pokemonCard = document.createElement('div');
-    pokemonCard.className = 'pokemon-card';
-    
-    const primaryColor = getTypeColor(pokemon.primaryType);
-    const secondaryColor = pokemon.secondaryType ? getTypeColor(pokemon.secondaryType) : primaryColor;
-    
-    let backgroundStyle = pokemon.secondaryType 
-        ? `linear-gradient(135deg, ${primaryColor} 50%, ${secondaryColor} 50%)`
-        : primaryColor;
-    
-    pokemonCard.style.background = backgroundStyle;
-    
-    const brightness = getBrightness(primaryColor);
-    const textColor = brightness > 128 ? '#000' : '#fff';
-    const boxColor = brightness > 128 ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
-    
-    // Styles for expandable sections
-    const sectionStyle = brightness > 128 ? 
-        'background-color: rgba(255,255,255,0.7); color: #000;' :
-        'background-color: transparent; color: #fff;';
-    const tableHeaderStyle = brightness > 128 ?
-        'background-color: rgba(0,0,0,0.1); color: #000;' :
-        'background-color: rgba(255,255,255,0.2); color: #fff;';
-    
-    const moveSections = [
-        { level: 1, title: "Starting Moves", moves: pokemon.moves.starting.split(', ').filter(move => move !== '') },
-        { level: 2, title: "Level 2 Moves", moves: pokemon.moves.level2.split(', ').filter(move => move !== '') },
-        { level: 6, title: "Level 6 Moves", moves: pokemon.moves.level6.split(', ').filter(move => move !== '') },
-        { level: 10, title: "Level 10 Moves", moves: pokemon.moves.level10.split(', ').filter(move => move !== '') },
-        { level: 14, title: "Level 14 Moves", moves: pokemon.moves.level14.split(', ').filter(move => move !== '') },
-        { level: 18, title: "Level 18 Moves", moves: pokemon.moves.level18.split(', ').filter(move => move !== '') }
-    ];
-
-    let moveListHTML = moveSections.map(section => {
-        if (section.moves.length === 0) return '';
-        return `
-            <h4 style="${sectionStyle}">${section.title}</h4>
-            <table class="moves-table" style="color: inherit; background-color: inherit;">
-                <tr>
-                    <th>Move</th>
-                    <th>Type</th>
-                    <th>VP Cost</th>
-                </tr>
-                ${section.moves.map(moveName => {
-                    const move = moveData.find(m => m.name === moveName);
-                    if (!move) return '';
-                    const moveTypeColor = getTypeColor(move.type);
-                    const textColor = getBrightness(moveTypeColor) > 128 ? '#000' : '#fff';
-                    return `
-                        <tr class="move-row" onclick="toggleMoveDetails(this, ${JSON.stringify(move).replace(/"/g, '&quot;')}, '${sectionStyle}')" style="background-color: ${moveTypeColor}; color: ${textColor};">
-                            <td>${move.name}</td>
-                            <td>${move.type}</td>
-                            <td>${move.vp}</td>
-                        </tr>
-                    `;
-                }).join('')}
-            </table>
-        `;
-    }).join('');
-
-    const sensesHtml = Object.entries(pokemon.senses)
-        .filter(([_, value]) => value && value !== "0" && value.toLowerCase() !== "no" && value !== "-")
-        .map(([sense, value]) => `<li><strong>${sense.charAt(0).toUpperCase() + sense.slice(1)}:</strong> ${value}</li>`)
-        .join('');
-
-        pokemonCard.innerHTML = `
-        <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
-            <h2>${pokemon.name} (#${pokemon.id})</h2>
-            ${pokemon.image ? `
-                <div class="image-container" style="background: ${backgroundStyle};">
-                    <img src="${pokemon.image}" alt="${pokemon.name}">
-                </div>
-            ` : ''}
-            <div class="expandable-section">
-                <h3 class="section-toggle" onclick="toggleSection('characteristics_${pokemon.id}')" style="${sectionStyle}">Characteristics ▼</h3>
-                <div id="characteristics_${pokemon.id}" class="section-content" style="display: none;">
-                    <p><strong>Classification:</strong> ${pokemon.classification}</p>
-                    <p><strong>Description:</strong> ${pokemon.flavorText}</p>
-                    <p><strong>Types:</strong> ${pokemon.primaryType}${pokemon.secondaryType ? '/' + pokemon.secondaryType : ''}</p>
-                    <p><strong>Size:</strong> ${pokemon.size}</p>
-                    <p><strong>Rarity:</strong> ${pokemon.rarity}</p>
-                    <p><strong>Behavior:</strong> ${pokemon.behavior}</p>
-                    <p><strong>Habitat:</strong> ${pokemon.habitat}</p>
-                </div>
-            </div>
-            <div class="expandable-section">
-                <h3 class="section-toggle" onclick="toggleSection('abilities_${pokemon.id}')" style="${sectionStyle}">Abilities ▼</h3>
-                <div id="abilities_${pokemon.id}" class="section-content" style="display: none;">
-                    <ul>
-                        <li><strong>${pokemon.primaryAbility.name}:</strong> ${pokemon.primaryAbility.description}</li>
-                        ${pokemon.secondaryAbility ? `<li><strong>${pokemon.secondaryAbility.name}:</strong> ${pokemon.secondaryAbility.description}</li>` : ''}
-                        ${pokemon.hiddenAbility ? `<li><strong>${pokemon.hiddenAbility.name} (Hidden):</strong> ${pokemon.hiddenAbility.description}</li>` : ''}
-                    </ul>
-                </div>
-            </div>
-            <div class="expandable-section">
-                <h3 class="section-toggle" onclick="toggleSection('stats_${pokemon.id}')" style="${sectionStyle}">Stats ▼</h3>
-                <div id="stats_${pokemon.id}" class="section-content" style="display: none;">
-                    <ul>
-                        <li><strong>AC:</strong> ${pokemon.ac}</li>
-                        <li><strong>Hit Dice:</strong> ${pokemon.hitDice}</li>
-                        <li><strong>Vitality Dice:</strong> ${pokemon.vitalityDice}</li>
-                        <li><strong>Strength:</strong> ${pokemon.strength}</li>
-                        <li><strong>Dexterity:</strong> ${pokemon.dexterity}</li>
-                        <li><strong>Constitution:</strong> ${pokemon.constitution}</li>
-                        <li><strong>Intelligence:</strong> ${pokemon.intelligence}</li>
-                        <li><strong>Wisdom:</strong> ${pokemon.wisdom}</li>
-                        <li><strong>Charisma:</strong> ${pokemon.charisma}</li>
-                        <li><strong>Saving Throw Proficiencies:</strong> ${pokemon.savingThrows || 'None'}</li>
-                        <li><strong>Skill Proficiencies:</strong> ${pokemon.skills || 'None'}</li>
-                        <li><strong>Speed:</strong> ${pokemon.speed}</li>
-                        ${sensesHtml ? `
-                            <li><strong>Senses:</strong></li>
-                            <ul>${sensesHtml}</ul>
-                        ` : ''}
-                    </ul>
-                </div>
-            </div>
-            <div class="expandable-section">
-                <h3 class="section-toggle" onclick="toggleSection('moves_${pokemon.id}')" style="${sectionStyle}">Available Moves ▼</h3>
-                <div id="moves_${pokemon.id}" class="section-content" style="display: none;">
-                    ${moveListHTML}
-                </div>
-            </div>
-        </div>
-    `;
-    
-    return pokemonCard;
+function sanitizeFileName(name) {
+    return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
-// Add this new function to handle toggling sections
-function toggleSection(sectionId) {
-    const section = document.getElementById(sectionId);
-    const toggle = section.previousElementSibling;
-    if (section.style.display === 'none') {
-        section.style.display = 'block';
-        toggle.innerHTML = toggle.innerHTML.replace('▼', '▲');
-    } else {
-        section.style.display = 'none';
-        toggle.innerHTML = toggle.innerHTML.replace('▲', '▼');
+function showToast(message, type = 'info') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = `toast ${type} visible`;
+    setTimeout(() => toast.classList.remove('visible'), 3000);
+}
+
+function formatDate(timestamp) {
+    if (!timestamp) return 'Never';
+    return new Date(timestamp).toLocaleString();
+}
+
+// ===========================================
+// EVOLUTION PARSER
+// ===========================================
+
+function parseEvolutionData(evolutionReq) {
+    if (!evolutionReq || evolutionReq === '-' || evolutionReq.trim() === '') {
+        return { evolvesTo: [], evolvesFrom: null };
     }
-}
-
-// Update the existing toggleMoveList function to use the new toggleSection function
-function toggleMoveList(pokemonId) {
-    toggleSection(`moves_${pokemonId}`);
-}
-
-function getLevelAppropriateMoves(pokemon, level) {
-    const availableMoves = new Set();
-
-    Object.entries(pokemon.moves).forEach(([moveLevel, moves]) => {
-        if (level >= parseInt(moveLevel)) {
-            moves.split(', ').forEach(move => availableMoves.add(move));
+    
+    const result = { evolvesTo: [], evolvesFrom: null };
+    const parts = evolutionReq.split(';').map(p => p.trim()).filter(p => p);
+    
+    for (const part of parts) {
+        // Check for "Evolves: TARGET @ REQUIREMENT"
+        const evolvesMatch = part.match(/^Evolves:\s*(.+?)\s*@\s*(.+)$/i);
+        if (evolvesMatch) {
+            result.evolvesTo.push({
+                target: evolvesMatch[1].trim(),
+                requirement: evolvesMatch[2].trim()
+            });
+            continue;
         }
-    });
-
-    return Array.from(availableMoves).filter(move => move !== '');
+        
+        // Check for "From: PREV + OTHER @ REQUIREMENT" (fusion)
+        const fusionMatch = part.match(/^From:\s*(.+?)\s*\+\s*(.+?)\s*@\s*(.+)$/i);
+        if (fusionMatch) {
+            result.evolvesFrom = {
+                type: 'fusion',
+                pokemon1: fusionMatch[1].trim(),
+                pokemon2: fusionMatch[2].trim(),
+                requirement: fusionMatch[3].trim()
+            };
+            continue;
+        }
+        
+        // Check for simple "From: PREVIOUS"
+        const fromMatch = part.match(/^From:\s*(.+)$/i);
+        if (fromMatch) {
+            result.evolvesFrom = {
+                type: 'standard',
+                pokemon: fromMatch[1].trim()
+            };
+            continue;
+        }
+    }
+    
+    return result;
 }
 
-function toggleMoveList(pokemonId) {
-    const moveList = document.getElementById(`moveList_${pokemonId}`);
-    const toggleButton = moveList.previousElementSibling;
-    if (moveList.style.display === 'none') {
-        moveList.style.display = 'block';
-        toggleButton.innerHTML = 'Available Moves ▲';
-    } else {
-        moveList.style.display = 'none';
-        toggleButton.innerHTML = 'Available Moves ▼';
+// ===========================================
+// LOADING SCREEN
+// ===========================================
+
+function setRandomSplash() {
+    // Try to get splash count from cached config, fall back to default
+    const cachedConfig = getCachedData(CACHE_KEYS.CONFIG);
+    const splashCount = cachedConfig?.splashCount || DEFAULT_SPLASH_COUNT;
+    
+    // Get or initialize the splash bag (shuffle bag approach)
+    let splashBag = JSON.parse(localStorage.getItem('shimaSplashBag') || '[]');
+    const savedCount = parseInt(localStorage.getItem('shimaSplashCount') || '0');
+    
+    // Reset bag if splash count changed or bag is empty
+    if (splashBag.length === 0 || savedCount !== splashCount) {
+        splashBag = Array.from({ length: splashCount }, (_, i) => i + 1);
+        localStorage.setItem('shimaSplashCount', splashCount.toString());
+    }
+    
+    // Pick random index from remaining bag
+    const randomIndex = Math.floor(Math.random() * splashBag.length);
+    const splashNumber = splashBag[randomIndex];
+    
+    // Remove selected splash from bag and save
+    splashBag.splice(randomIndex, 1);
+    localStorage.setItem('shimaSplashBag', JSON.stringify(splashBag));
+    
+    const splashUrl = `${SPLASH_BASE_URL}splash-${splashNumber}.png`;
+    const splashEl = document.getElementById('splashImage');
+    if (splashEl) {
+        splashEl.style.backgroundImage = `url('${splashUrl}')`;
     }
 }
 
-function toggleMoveDetails(row, move, detailStyle) {
-    const detailsRow = row.nextElementSibling;
-    if (detailsRow && detailsRow.classList.contains('move-details')) {
-        detailsRow.remove();
+function updateLoadingProgress(percent, text) {
+    const progressBar = document.getElementById('progressBar');
+    const loadingText = document.getElementById('loadingText');
+    const loadingPercent = document.getElementById('loadingPercent');
+    
+    if (progressBar) progressBar.style.width = `${percent}%`;
+    if (loadingText && text) loadingText.textContent = text;
+    if (loadingPercent) loadingPercent.textContent = `${Math.round(percent)}%`;
+}
+
+function isMobileDevice() {
+    return window.innerWidth <= 768 || 'ontouchstart' in window;
+}
+
+function hideLoading() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (!overlay) return;
+    
+    updateLoadingProgress(100, 'Ready!');
+    
+    if (isMobileDevice()) {
+        // On mobile, wait for user tap
+        setTimeout(() => {
+            const loadingText = document.getElementById('loadingText');
+            if (loadingText) loadingText.textContent = 'Tap to enter';
+            
+            overlay.classList.add('ready');
+            overlay.addEventListener('click', dismissLoading, { once: true });
+        }, 300);
     } else {
-        const newRow = row.parentNode.insertRow(row.rowIndex + 1);
-        newRow.classList.add('move-details');
-        const cell = newRow.insertCell();
-        cell.colSpan = 3;
-        cell.style = `${detailStyle} background-color: ${row.style.backgroundColor}; color: ${row.style.color};`;
-        cell.innerHTML = `
-            <p><strong>Power:</strong> ${move.power}</p>
-            <p><strong>Time:</strong> ${move.time}</p>
-            <p><strong>Duration:</strong> ${move.duration}</p>
-            <p><strong>Range:</strong> ${move.range}</p>
-            <p><strong>Description:</strong> ${move.description}</p>
-            ${move.higher ? `<p><strong>Higher Levels:</strong> ${move.higher}</p>` : ''}
-        `;
+        // On desktop, auto-hide after short delay
+        setTimeout(() => overlay.classList.add('hidden'), 300);
     }
+}
+
+function dismissLoading() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+        overlay.classList.add('hidden');
+    }
+}
+
+// ===========================================
+// CACHING SYSTEM
+// ===========================================
+
+function getCachedData(key) {
+    try {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : null;
+    } catch (e) {
+        console.warn('Cache read error:', e);
+        return null;
+    }
+}
+
+function setCachedData(key, data) {
+    try {
+        localStorage.setItem(key, JSON.stringify(data));
+    } catch (e) {
+        console.warn('Cache write error:', e);
+    }
+}
+
+function isCacheValid(key, duration) {
+    const timestamp = getCachedData(CACHE_KEYS.CACHE_TIME);
+    if (!timestamp || !timestamp[key]) return false;
+    return (Date.now() - timestamp[key]) < duration;
+}
+
+function updateCacheTimestamp(key) {
+    let timestamps = getCachedData(CACHE_KEYS.CACHE_TIME) || {};
+    timestamps[key] = Date.now();
+    setCachedData(CACHE_KEYS.CACHE_TIME, timestamps);
+}
+
+function clearCacheAndReload() {
+    Object.values(CACHE_KEYS).forEach(key => localStorage.removeItem(key));
+    showToast('Cache cleared, reloading...', 'success');
+    setTimeout(() => location.reload(), 1000);
+}
+
+function updateLastCacheTime() {
+    const timestamps = getCachedData(CACHE_KEYS.CACHE_TIME);
+    const lastTime = timestamps ? Math.max(...Object.values(timestamps)) : null;
+    const el = document.getElementById('lastCacheTime');
+    if (el) el.textContent = formatDate(lastTime);
+}
+
+// ===========================================
+// DATA LOADING
+// ===========================================
+
+async function loadPokemonData() {
+    if (isCacheValid(CACHE_KEYS.POKEMON_DATA, DATA_CACHE_DURATION)) {
+        const cached = getCachedData(CACHE_KEYS.POKEMON_DATA);
+        if (cached?.length > 0) {
+            console.log('Using cached Pokémon data');
+            return cached;
+        }
+    }
+
+    console.log('Fetching fresh Pokémon data...');
+    const response = await fetch('https://script.google.com/macros/s/AKfycbwIT3OS2bdCv2kkDPh6IjRRirv17iPnuttlPcY47LCHBbpNPuHF_IjVq0mCt7TkkWoW/exec?action=pokemon');
+    if (!response.ok) throw new Error('Failed to fetch Pokémon data');
+    
+    const values = await response.json();
+    const processed = await Promise.all(values.map(processPokemonRow));
+    
+    setCachedData(CACHE_KEYS.POKEMON_DATA, processed);
+    updateCacheTimestamp(CACHE_KEYS.POKEMON_DATA);
+    
+    return processed;
 }
 
 async function loadMoveData() {
-    try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbwIT3OS2bdCv2kkDPh6IjRRirv17iPnuttlPcY47LCHBbpNPuHF_IjVq0mCt7TkkWoW/exec?action=moves');
-        if (!response.ok) {
-            throw new Error('Failed to fetch move data');
-        }
-        const values = await response.json();
-        moveData = values.map(row => ({
-            name: row[0],
-            type: row[1],
-            power: row[2],
-            time: row[3],
-            vp: row[4],
-            duration: row[5],
-            range: row[6],
-            description: row[7],
-            higher: row[8] ? row[8].trim() : '',
-        }));
-        console.log('Move data processed:', moveData.length, 'moves');
-    } catch (error) {
-        console.error('Error loading move data:', error);
-    }
-}
-
-function searchMoves() {
-    const searchInput = document.getElementById('moveSearchInput');
-    const pokemonLevelInput = document.getElementById('pokemonLevelInput');
-
-    if (!searchInput || !pokemonLevelInput) {
-        console.error("Move search input elements not found");
-        return;
-    }
-
-    const searchTerm = searchInput.value.toLowerCase().trim();
-    const pokemonLevel = parseInt(pokemonLevelInput.value) || 20;
-
-    let results = [];
-
-    // Check if the search term matches a Pokémon name
-    const pokemon = pokemonData.find(p => p.name.toLowerCase() === searchTerm);
-
-    if (pokemon) {
-        // Check if the Pokémon is registered
-        if (registeredPokemon.names.has(pokemon.name.toLowerCase())) {
-            // If it's a registered Pokémon name, get moves up to the specified level
-            const availableMoves = getMovesUpToLevel(pokemon, pokemonLevel);
-            results = moveData.filter(move => availableMoves.includes(move.name));
-        } else {
-            // If the Pokémon is not registered, show a message
-            displayMoveResults([], pokemon, pokemonLevel, false);
-            return;
-        }
-    } else {
-        // If it's not a Pokémon name, search all moves
-        results = moveData.filter(move => 
-            move.name.toLowerCase().includes(searchTerm) ||
-            move.type.toLowerCase().includes(searchTerm)
-        );
-    }
-
-    console.log(`Search results for "${searchTerm}":`, results);
-    displayMoveResults(results, pokemon, pokemonLevel, true);
-}
-
-function getMovesUpToLevel(pokemon, level) {
-    const moveLevels = {
-        1: pokemon.moves.starting.split(', ').filter(move => move !== ''),
-        2: pokemon.moves.level2.split(', ').filter(move => move !== ''),
-        6: pokemon.moves.level6.split(', ').filter(move => move !== ''),
-        10: pokemon.moves.level10.split(', ').filter(move => move !== ''),
-        14: pokemon.moves.level14.split(', ').filter(move => move !== ''),
-        18: pokemon.moves.level18.split(', ').filter(move => move !== '')
-    };
-
-    let availableMoves = new Set();
-
-    for (let [moveLevel, moves] of Object.entries(moveLevels)) {
-        if (level >= parseInt(moveLevel)) {
-            moves.forEach(move => availableMoves.add(move));
+    if (isCacheValid(CACHE_KEYS.MOVE_DATA, DATA_CACHE_DURATION)) {
+        const cached = getCachedData(CACHE_KEYS.MOVE_DATA);
+        if (cached?.length > 0) {
+            console.log('Using cached Move data');
+            return cached;
         }
     }
 
-    return Array.from(availableMoves);
-}
-
-function displayMoveResults(results, pokemon = null, level = null, isRegistered = true) {
-    const resultsContainer = document.getElementById('moveResults');
-    if (!resultsContainer) {
-        console.error("Move results container not found");
-        return;
-    }
-
-    resultsContainer.innerHTML = '';
+    console.log('Fetching fresh Move data...');
+    const response = await fetch('https://script.google.com/macros/s/AKfycbwIT3OS2bdCv2kkDPh6IjRRirv17iPnuttlPcY47LCHBbpNPuHF_IjVq0mCt7TkkWoW/exec?action=moves');
+    if (!response.ok) throw new Error('Failed to fetch Move data');
     
-    if (pokemon) {
-        if (isRegistered) {
-            resultsContainer.innerHTML = `<h3>Moves for ${pokemon.name} (Level ${level})</h3>`;
-        } else {
-            resultsContainer.innerHTML = `<h3>${pokemon.name} is not registered in the Pokédex</h3>`;
-            resultsContainer.innerHTML += '<p>Only registered Pokémon can be searched for moves.</p>';
-            return;
-        }
-    }
+    const values = await response.json();
+    const processed = values.map(row => ({
+        name: row[0],
+        type: row[1],
+        power: row[2],
+        time: row[3],
+        vp: row[4],
+        duration: row[5],
+        range: row[6],
+        description: row[7],
+        higher: row[8] ? row[8].trim() : ''
+    }));
+    
+    setCachedData(CACHE_KEYS.MOVE_DATA, processed);
+    updateCacheTimestamp(CACHE_KEYS.MOVE_DATA);
+    
+    return processed;
+}
 
-    if (results.length === 0) {
-        resultsContainer.innerHTML += '<p>No moves found. Try a different search term or level.</p>';
-    } else {
-        results.forEach(move => {
-            const moveCard = document.createElement('div');
-            moveCard.className = 'move-card';
-            
-            const moveColor = getTypeColor(move.type);
-            moveCard.style.backgroundColor = moveColor;
-            
-            const brightness = getBrightness(moveColor);
-            const textColor = brightness > 128 ? '#000' : '#fff';
-            const boxColor = brightness > 128 ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
-            
-            let higherLevelsHtml = '';
-            if (move.higher && move.higher.trim() !== '') {
-                higherLevelsHtml = `<p><strong>Higher Levels:</strong> ${move.higher}</p>`;
-            }
-            
-            moveCard.innerHTML = `
-                <div class="card-content" style="color: ${textColor}; background-color: ${boxColor};">
-                    <h3>${move.name}</h3>
-                    <p><strong>Type:</strong> ${move.type}</p>
-                    <p><strong>VP Cost:</strong> ${move.vp}</p>
-                    <p><strong>Move Power:</strong> ${move.power}</p>
-                    <p><strong>Time:</strong> ${move.time}</p>
-                    <p><strong>Duration:</strong> ${move.duration}</p>
-                    <p><strong>Range:</strong> ${move.range}</p>
-                    <p><strong>Effect:</strong> ${move.description}</p>
-                    ${higherLevelsHtml}
-                </div>
-            `;
-            
-            resultsContainer.appendChild(moveCard);
-        });
+async function loadConfig() {
+    // Always try to fetch fresh config from GitHub first
+    try {
+        const response = await fetch(CONFIG_URL + '?t=' + Date.now());
+        if (response.ok) {
+            const config = await response.json();
+            // Ensure all required fields exist
+            const fullConfig = {
+                registered: config.registered || [],
+                visibility: config.visibility || {},
+                defaults: config.defaults || { ...DEFAULT_VISIBILITY },
+                extraSearchableMoves: config.extraSearchableMoves || [],
+                splashCount: config.splashCount || DEFAULT_SPLASH_COUNT
+            };
+            setCachedData(CACHE_KEYS.CONFIG, fullConfig);
+            updateCacheTimestamp(CACHE_KEYS.CONFIG);
+            console.log('Loaded config from GitHub');
+            return fullConfig;
+        }
+    } catch (e) {
+        console.warn('Could not fetch remote config:', e);
     }
+    
+    // Fall back to cached config if GitHub fetch fails
+    const cached = getCachedData(CACHE_KEYS.CONFIG);
+    if (cached) {
+        console.log('Using cached config');
+        return {
+            registered: cached.registered || [],
+            visibility: cached.visibility || {},
+            defaults: cached.defaults || { ...DEFAULT_VISIBILITY },
+            extraSearchableMoves: cached.extraSearchableMoves || [],
+            splashCount: cached.splashCount || DEFAULT_SPLASH_COUNT
+        };
+    }
+    
+    // Return default config if nothing else available
+    console.log('Using default config');
+    return { ...DEFAULT_CONFIG };
 }
 
 async function processPokemonRow(row) {
@@ -934,28 +442,24 @@ async function processPokemonRow(row) {
 }
 
 function sanitizeMoves(moveString, maxMoves) {
-    return moveString.split(',')
-                    .map(move => move.trim())
-                    .filter(move => move !== '')
-                    .slice(0, maxMoves)
-                    .join(', ');
+    if (!moveString) return '';
+    return moveString.split(',').map(m => m.trim()).filter(m => m).slice(0, maxMoves).join(', ');
 }
 
 async function getImageUrl(pokemonName, pokemonId) {
     const paddedId = pokemonId.toString().padStart(3, '0');
     const sanitizedName = sanitizeFileName(pokemonName);
     const baseFileName = `${paddedId}-${sanitizedName}`;
+    
     for (const format of IMAGE_FORMATS) {
         const url = `${IMAGE_BASE_URL}${baseFileName}.${format}`;
-        if (await imageExists(url)) {
-            return url;
-        }
+        if (await imageExists(url)) return url;
     }
     return null;
 }
 
 function imageExists(url) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
         const img = new Image();
         img.onload = () => resolve(true);
         img.onerror = () => resolve(false);
@@ -963,73 +467,1478 @@ function imageExists(url) {
     });
 }
 
-// Initialize
-window.onload = async function() {
-    const soundToggle = document.getElementById('soundToggle');
-    if (soundToggle) {
-        soundToggle.addEventListener('click', toggleSound);
-    } else {
-        console.warn("Sound toggle button not found");
+// ===========================================
+// VIEW MANAGEMENT
+// ===========================================
+
+function showView(viewName) {
+    state.currentView = viewName;
+    
+    document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+    document.getElementById(`${viewName}Tab`)?.classList.add('active');
+    
+    document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+    document.getElementById(`${viewName}View`)?.classList.add('active');
+}
+
+// ===========================================
+// FILTER SYSTEM
+// ===========================================
+
+function populateFilters() {
+    const filterOptions = {
+        types: new Set(),
+        sizes: new Set(),
+        behaviors: new Set(),
+        activities: new Set(),
+        rarities: new Set(),
+        habitats: new Set()
+    };
+    
+    state.pokemonData.forEach(pokemon => {
+        if (isRegistered(pokemon.name)) {
+            filterOptions.types.add(pokemon.primaryType);
+            if (pokemon.secondaryType) filterOptions.types.add(pokemon.secondaryType);
+            if (pokemon.size) filterOptions.sizes.add(pokemon.size);
+            if (pokemon.behavior) filterOptions.behaviors.add(pokemon.behavior);
+            if (pokemon.activityTime) filterOptions.activities.add(pokemon.activityTime);
+            if (pokemon.rarity) filterOptions.rarities.add(pokemon.rarity);
+            if (pokemon.habitat) filterOptions.habitats.add(pokemon.habitat);
+        }
+    });
+    
+    populateSelect('typeFilter', filterOptions.types, 'All Types');
+    populateSelect('sizeFilter', filterOptions.sizes, 'All Sizes');
+    populateSelect('behaviorFilter', filterOptions.behaviors, 'All Behaviors');
+    populateSelect('activityFilter', filterOptions.activities, 'All Activities');
+    populateSelect('rarityFilter', filterOptions.rarities, 'All Rarities');
+    populateSelect('habitatFilter', filterOptions.habitats, 'All Habitats');
+}
+
+function populateSelect(id, options, defaultText) {
+    const select = document.getElementById(id);
+    if (!select) return;
+    
+    select.innerHTML = `<option value="">${defaultText}</option>`;
+    [...options].sort().forEach(option => {
+        if (option) {
+            const opt = document.createElement('option');
+            opt.value = option;
+            opt.textContent = option;
+            select.appendChild(opt);
+        }
+    });
+}
+
+// ===========================================
+// REGISTRATION HELPERS
+// ===========================================
+
+function isRegistered(pokemonName) {
+    return state.config.registered.some(name => name.toLowerCase() === pokemonName.toLowerCase());
+}
+
+function getVisibility(pokemonName) {
+    const key = pokemonName.toLowerCase();
+    const vis = state.config.visibility[key];
+    if (vis) return { ...DEFAULT_VISIBILITY, ...vis };
+    return { ...state.config.defaults };
+}
+
+// ===========================================
+// POKEMON SEARCH & DISPLAY
+// ===========================================
+
+function searchPokemon() {
+    const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+    const typeFilter = document.getElementById('typeFilter').value;
+    const sizeFilter = document.getElementById('sizeFilter').value;
+    const behaviorFilter = document.getElementById('behaviorFilter').value;
+    const activityFilter = document.getElementById('activityFilter').value;
+    const rarityFilter = document.getElementById('rarityFilter').value;
+    const habitatFilter = document.getElementById('habitatFilter').value;
+    
+    state.currentResults = state.pokemonData.filter(pokemon => {
+        if (!pokemon || typeof pokemon !== 'object') return false;
+        if (!isRegistered(pokemon.name)) return false;
+        
+        if (typeFilter && pokemon.primaryType !== typeFilter && pokemon.secondaryType !== typeFilter) return false;
+        if (sizeFilter && pokemon.size !== sizeFilter) return false;
+        if (behaviorFilter && pokemon.behavior !== behaviorFilter) return false;
+        if (activityFilter && pokemon.activityTime !== activityFilter) return false;
+        if (rarityFilter && pokemon.rarity !== rarityFilter) return false;
+        if (habitatFilter && pokemon.habitat !== habitatFilter) return false;
+        
+        if (!searchTerm) return true;
+        
+        if (!isNaN(searchTerm) && searchTerm !== "") {
+            return pokemon.id === searchTerm;
+        }
+        
+        const vis = getVisibility(pokemon.name);
+        if (pokemon.name.toLowerCase().includes(searchTerm)) return true;
+        
+        if (vis.types) {
+            if (pokemon.primaryType.toLowerCase().includes(searchTerm)) return true;
+            if (pokemon.secondaryType?.toLowerCase().includes(searchTerm)) return true;
+        }
+        
+        return false;
+    });
+    
+    state.currentPage = 1;
+    displayPokemonResults();
+}
+
+function displayPokemonResults() {
+    const container = document.getElementById('pokemonResults');
+    container.innerHTML = '';
+    
+    if (state.currentResults.length === 0) {
+        container.innerHTML = '<p class="placeholder-text">No Pokémon found. Try different search terms or filters.</p>';
+        return;
     }
+    
+    const totalPages = Math.ceil(state.currentResults.length / RESULTS_PER_PAGE);
+    const startIndex = (state.currentPage - 1) * RESULTS_PER_PAGE;
+    const endIndex = Math.min(startIndex + RESULTS_PER_PAGE, state.currentResults.length);
+    
+    const info = document.createElement('p');
+    info.className = 'results-info';
+    info.textContent = `Showing ${startIndex + 1}-${endIndex} of ${state.currentResults.length} results`;
+    container.appendChild(info);
+    
+    for (let i = startIndex; i < endIndex; i++) {
+        container.appendChild(createPokemonCard(state.currentResults[i]));
+    }
+    
+    if (totalPages > 1) {
+        container.appendChild(createPagination(totalPages));
+    }
+}
 
-    try {
-        await loadPokemonData(); // This will also load move data
-        await loadItemData(); // Load item data
-        console.log('Data loaded successfully');
+function createPokemonCard(pokemon) {
+    const visibility = getVisibility(pokemon.name);
+    const card = document.createElement('div');
+    card.className = 'pokemon-card';
+    card.dataset.pokemon = pokemon.name;
+    
+    const primaryColor = getTypeColor(pokemon.primaryType);
+    const secondaryColor = pokemon.secondaryType ? getTypeColor(pokemon.secondaryType) : primaryColor;
+    const showTypes = visibility.types;
+    
+    let html = '';
+    
+    // Header with type-colored border/frame
+    const headerBg = showTypes 
+        ? (pokemon.secondaryType 
+            ? `linear-gradient(135deg, ${primaryColor} 50%, ${secondaryColor} 50%)`
+            : primaryColor)
+        : 'var(--bg-elevated)';
+    
+    html += `<div class="card-header" style="background: ${headerBg}">`;
+    
+    // Image side (in the colored area)
+    html += '<div class="card-header-image">';
+    if (pokemon.image) {
+        html += `<img src="${pokemon.image}" alt="${pokemon.name}" class="header-image">`;
+    } else {
+        html += '<div class="header-no-image">?</div>';
+    }
+    html += '</div>';
+    
+    // Recessed dark panel for data
+    html += '<div class="card-header-info">';
+    
+    // Admin edit button
+    if (state.isAdminMode) {
+        html += `<button class="card-edit-btn" data-pokemon="${pokemon.name}">✏️</button>`;
+    }
+    
+    html += `<span class="card-number">#${pokemon.id}</span>`;
+    html += `<h2 class="card-name">${pokemon.name}</h2>`;
+    
+    // Types with original colors
+    if (showTypes) {
+        html += '<div class="card-types">';
+        html += `<span class="type-pill" style="background:${primaryColor}">${pokemon.primaryType}</span>`;
+        if (pokemon.secondaryType) {
+            html += `<span class="type-pill" style="background:${secondaryColor}">${pokemon.secondaryType}</span>`;
+        }
+        html += '</div>';
+    } else {
+        html += '<div class="card-types"><span class="type-pill unknown">Unknown</span></div>';
+    }
+    
+    // Classification
+    if (visibility.description && pokemon.classification) {
+        html += `<p class="card-classification">${pokemon.classification}</p>`;
+    }
+    
+    html += '</div></div>';
+    
+    // Flavor text (if enabled)
+    if (visibility.description && pokemon.flavorText) {
+        html += `<p class="card-flavor">${pokemon.flavorText}</p>`;
+    }
+    
+    // Tabbed sections
+    const tabs = [];
+    const tabContents = [];
+    
+    // Characteristics tab
+    if (visibility.characteristics) {
+        tabs.push({ id: 'chars', label: 'Info', icon: '📋' });
+        let content = '<div class="tab-content-inner"><div class="char-grid">';
+        if (pokemon.size) content += `<div class="char-item"><span class="char-label">Size</span><span class="char-value">${pokemon.size}</span></div>`;
+        if (pokemon.rarity) content += `<div class="char-item"><span class="char-label">Rarity</span><span class="char-value">${pokemon.rarity}</span></div>`;
+        if (pokemon.behavior) content += `<div class="char-item"><span class="char-label">Behavior</span><span class="char-value">${pokemon.behavior}</span></div>`;
+        if (pokemon.habitat) content += `<div class="char-item"><span class="char-label">Habitat</span><span class="char-value">${pokemon.habitat}</span></div>`;
+        if (pokemon.activityTime) content += `<div class="char-item"><span class="char-label">Activity</span><span class="char-value">${pokemon.activityTime}</span></div>`;
+        if (pokemon.catchDifficulty) content += `<div class="char-item"><span class="char-label">Catch DC</span><span class="char-value">${pokemon.catchDifficulty}</span></div>`;
+        content += '</div></div>';
+        tabContents.push({ id: 'chars', content });
+    }
+    
+    // Stats tab (now includes AC, HD, VD, SPD)
+    if (visibility.stats) {
+        tabs.push({ id: 'stats', label: 'Stats', icon: '📊' });
+        let content = '<div class="tab-content-inner">';
         
-        // Add event listeners
-        const searchButton = document.getElementById('searchButton');
-        const searchInput = document.getElementById('searchInput');
-        if (searchButton && searchInput) {
-            searchButton.addEventListener('click', searchPokemon);
-            searchInput.addEventListener('keyup', function(event) {
-                if (event.key === 'Enter') {
-                    searchPokemon();
-                }
-            });
-        } else {
-            console.warn("Search button or input not found");
-        }
-
-        const moveSearchButton = document.getElementById('moveSearchButton');
-        const moveSearchInput = document.getElementById('moveSearchInput');
-        if (moveSearchButton && moveSearchInput) {
-            moveSearchButton.addEventListener('click', searchMoves);
-            moveSearchInput.addEventListener('keyup', function(event) {
-                if (event.key === 'Enter') {
-                    searchMoves();
-                }
-            });
-        } else {
-            console.warn("Move search button or input not found");
-        }
+        // Combat stats row
+        content += '<div class="combat-stats">';
+        content += `<div class="combat-stat"><span class="combat-value">${pokemon.ac}</span><span class="combat-label">AC</span></div>`;
+        content += `<div class="combat-stat"><span class="combat-value">${pokemon.hitDice}</span><span class="combat-label">Hit Dice</span></div>`;
+        content += `<div class="combat-stat"><span class="combat-value">${pokemon.vitalityDice}</span><span class="combat-label">Vitality</span></div>`;
+        content += `<div class="combat-stat"><span class="combat-value">${pokemon.speed}</span><span class="combat-label">Speed</span></div>`;
+        content += '</div>';
         
-        const itemSearchButton = document.getElementById('itemSearchButton');
-        const itemSearchInput = document.getElementById('itemSearchInput');
-        const itemTypeFilter = document.getElementById('itemTypeFilter');
-        if (itemSearchButton && itemSearchInput && itemTypeFilter) {
-            itemSearchButton.addEventListener('click', searchItems);
-            itemSearchInput.addEventListener('keyup', function(event) {
-                if (event.key === 'Enter') {
-                    searchItems();
-                }
-            });
-            itemTypeFilter.addEventListener('change', searchItems);
-        } else {
-            console.warn("Item search elements not found");
+        // Ability scores
+        content += '<div class="stat-hexagon">';
+        content += `<div class="hex-stat"><span class="hex-value">${pokemon.strength}</span><span class="hex-label">STR</span></div>`;
+        content += `<div class="hex-stat"><span class="hex-value">${pokemon.dexterity}</span><span class="hex-label">DEX</span></div>`;
+        content += `<div class="hex-stat"><span class="hex-value">${pokemon.constitution}</span><span class="hex-label">CON</span></div>`;
+        content += `<div class="hex-stat"><span class="hex-value">${pokemon.intelligence}</span><span class="hex-label">INT</span></div>`;
+        content += `<div class="hex-stat"><span class="hex-value">${pokemon.wisdom}</span><span class="hex-label">WIS</span></div>`;
+        content += `<div class="hex-stat"><span class="hex-value">${pokemon.charisma}</span><span class="hex-label">CHA</span></div>`;
+        content += '</div>';
+        if (pokemon.savingThrows) content += `<p class="stat-extra"><strong>Saves:</strong> ${pokemon.savingThrows}</p>`;
+        if (pokemon.skills) content += `<p class="stat-extra"><strong>Skills:</strong> ${pokemon.skills}</p>`;
+        content += '</div>';
+        tabContents.push({ id: 'stats', content });
+    }
+    
+    // Abilities tab
+    const hasAnyAbility = visibility.primaryAbility || visibility.secondaryAbility || visibility.hiddenAbility;
+    if (hasAnyAbility) {
+        tabs.push({ id: 'abilities', label: 'Abilities', icon: '✨' });
+        let content = '<div class="tab-content-inner"><div class="ability-list">';
+        if (visibility.primaryAbility && pokemon.primaryAbility) {
+            content += `<div class="ability-card">
+                <div class="ability-header"><span class="ability-name">${pokemon.primaryAbility.name}</span></div>
+                <p class="ability-desc">${pokemon.primaryAbility.description}</p>
+            </div>`;
         }
+        if (visibility.secondaryAbility && pokemon.secondaryAbility) {
+            content += `<div class="ability-card">
+                <div class="ability-header"><span class="ability-name">${pokemon.secondaryAbility.name}</span></div>
+                <p class="ability-desc">${pokemon.secondaryAbility.description}</p>
+            </div>`;
+        }
+        if (visibility.hiddenAbility && pokemon.hiddenAbility) {
+            content += `<div class="ability-card hidden">
+                <div class="ability-header"><span class="ability-name">${pokemon.hiddenAbility.name}</span><span class="ability-tag">Hidden</span></div>
+                <p class="ability-desc">${pokemon.hiddenAbility.description}</p>
+            </div>`;
+        }
+        content += '</div></div>';
+        tabContents.push({ id: 'abilities', content });
+    }
+    
+    // Senses tab
+    if (visibility.senses) {
+        const senseEntries = Object.entries(pokemon.senses)
+            .filter(([_, v]) => v && v !== "0" && v.toLowerCase() !== "no" && v !== "-");
+        if (senseEntries.length > 0) {
+            tabs.push({ id: 'senses', label: 'Senses', icon: '👁️' });
+            let content = '<div class="tab-content-inner"><div class="sense-list">';
+            senseEntries.forEach(([k, v]) => {
+                content += `<div class="sense-row"><span class="sense-name">${k}</span><span class="sense-value">${v}</span></div>`;
+            });
+            content += '</div></div>';
+            tabContents.push({ id: 'senses', content });
+        }
+    }
+    
+    // Evolution tab
+    if (visibility.evolution && pokemon.evolutionReq) {
+        const evoData = parseEvolutionData(pokemon.evolutionReq);
+        if (evoData.evolvesFrom || evoData.evolvesTo.length > 0) {
+            tabs.push({ id: 'evo', label: 'Evolution', icon: '🔄' });
+            let content = '<div class="tab-content-inner"><div class="evo-chain">';
+            if (evoData.evolvesFrom) {
+                if (evoData.evolvesFrom.type === 'fusion') {
+                    content += `<div class="evo-item evo-from"><span class="evo-label">Fusion from</span><span class="evo-name">${evoData.evolvesFrom.pokemon1} + ${evoData.evolvesFrom.pokemon2}</span></div>`;
+                } else {
+                    content += `<div class="evo-item evo-from"><span class="evo-label">Evolves from</span><span class="evo-name">${evoData.evolvesFrom.pokemon}</span></div>`;
+                }
+            }
+            evoData.evolvesTo.forEach(evo => {
+                content += `<div class="evo-item evo-to"><span class="evo-label">Evolves to</span><span class="evo-name">${evo.target}</span></div>`;
+            });
+            content += '</div></div>';
+            tabContents.push({ id: 'evo', content });
+        }
+    }
+    
+    // Moves tab
+    if (visibility.moves) {
+        const movesContent = createMovesTabContent(pokemon, visibility.movesMaxLevel || 1, visibility.extraVisibleMoves || []);
+        if (movesContent) {
+            tabs.push({ id: 'moves', label: 'Moves', icon: '⚔️' });
+            tabContents.push({ id: 'moves', content: movesContent });
+        }
+    }
+    
+    // Build tabs UI (no tab selected by default)
+    if (tabs.length > 0) {
+        html += '<div class="card-tabs">';
+        html += '<div class="tab-bar">';
+        tabs.forEach((tab) => {
+            html += `<button class="tab-btn" data-tab="${tab.id}"><span class="tab-icon">${tab.icon}</span><span class="tab-label">${tab.label}</span></button>`;
+        });
+        html += '</div>';
+        html += '<div class="tab-panels">';
+        tabContents.forEach((tc) => {
+            html += `<div class="tab-panel" data-panel="${tc.id}">${tc.content}</div>`;
+        });
+        html += '</div>';
+        html += '</div>';
+    }
+    
+    card.innerHTML = html;
+    return card;
+}
 
-        // Add event listeners for filters
-        ['typeFilter', 'sizeFilter', 'behaviorFilter', 'activityFilter', 'rarityFilter', 'habitatFilter'].forEach(filterId => {
-            const filterElement = document.getElementById(filterId);
-            if (filterElement) {
-                filterElement.addEventListener('change', searchPokemon);
-            } else {
-                console.warn(`Filter element ${filterId} not found`);
+function createMovesTabContent(pokemon, maxLevel, extraVisibleMoves = []) {
+    const moveLevels = [
+        { level: 1, title: "Starting Moves", moves: pokemon.moves.starting },
+        { level: 2, title: "Level 2", moves: pokemon.moves.level2 },
+        { level: 6, title: "Level 6", moves: pokemon.moves.level6 },
+        { level: 10, title: "Level 10", moves: pokemon.moves.level10 },
+        { level: 14, title: "Level 14", moves: pokemon.moves.level14 },
+        { level: 18, title: "Level 18", moves: pokemon.moves.level18 }
+    ];
+    
+    const extraLower = extraVisibleMoves.map(m => m.toLowerCase());
+    let html = '<div class="tab-content-inner"><div class="moves-container">';
+    let hasAnyMoves = false;
+    
+    moveLevels.forEach(section => {
+        const allMoves = section.moves.split(', ').filter(m => m);
+        if (allMoves.length === 0) return;
+        
+        const visibleMoves = allMoves.filter(m => section.level <= maxLevel || extraLower.includes(m.toLowerCase()));
+        if (visibleMoves.length === 0) return;
+        
+        hasAnyMoves = true;
+        const hiddenCount = allMoves.length - visibleMoves.length;
+        
+        html += `<div class="move-group">`;
+        html += `<div class="move-group-header">${section.title}${hiddenCount > 0 ? ` <span class="move-hidden-count">+${hiddenCount}</span>` : ''}</div>`;
+        
+        visibleMoves.forEach(moveName => {
+            const move = state.moveData.find(m => m.name === moveName);
+            if (!move) return;
+            const typeColor = getTypeColor(move.type);
+            
+            html += `<div class="move-entry" data-move="${moveName}">
+                <div class="move-summary">
+                    <span class="move-name">${move.name}</span>
+                    <div class="move-tags">
+                        <span class="move-type-tag" style="background:${typeColor}">${move.type}</span>
+                        <span class="move-vp-tag">${move.vp} VP</span>
+                    </div>
+                </div>
+                <div class="move-expand">
+                    <div class="move-stats">
+                        ${move.power ? `<span><b>Power:</b> ${move.power}</span>` : ''}
+                        <span><b>Time:</b> ${move.time}</span>
+                        <span><b>Range:</b> ${move.range}</span>
+                        <span><b>Duration:</b> ${move.duration}</span>
+                    </div>
+                    <p class="move-description">${move.description}</p>
+                    ${move.higher ? `<p class="move-higher"><b>Higher Levels:</b> ${move.higher}</p>` : ''}
+                </div>
+            </div>`;
+        });
+        
+        html += '</div>';
+    });
+    
+    html += '</div></div>';
+    return hasAnyMoves ? html : null;
+}
+
+// ===========================================
+// MOVE SEARCH
+// ===========================================
+
+function getSearchableMoves() {
+    // Build set of all searchable move names
+    const searchable = new Set();
+    
+    // Add moves from registered Pokémon up to their visibility level
+    state.pokemonData.forEach(pokemon => {
+        if (!isRegistered(pokemon.name)) return;
+        const vis = getVisibility(pokemon.name);
+        if (!vis.moves) return;
+        
+        const maxLevel = vis.movesMaxLevel || 1;
+        const extraMoves = vis.extraVisibleMoves || [];
+        
+        const moveLevels = [
+            { level: 1, moves: pokemon.moves.starting },
+            { level: 2, moves: pokemon.moves.level2 },
+            { level: 6, moves: pokemon.moves.level6 },
+            { level: 10, moves: pokemon.moves.level10 },
+            { level: 14, moves: pokemon.moves.level14 },
+            { level: 18, moves: pokemon.moves.level18 }
+        ];
+        
+        moveLevels.forEach(({ level, moves }) => {
+            if (level <= maxLevel) {
+                moves.split(', ').filter(m => m).forEach(m => searchable.add(m));
             }
         });
+        
+        // Add extra visible moves for this Pokémon
+        extraMoves.forEach(m => searchable.add(m));
+    });
+    
+    // Add globally searchable moves from config
+    (state.config.extraSearchableMoves || []).forEach(m => searchable.add(m));
+    
+    return searchable;
+}
 
-    } catch (error) {
-        console.error('Error loading data:', error);
+function searchMoves() {
+    const searchTerm = document.getElementById('moveSearchInput').value.toLowerCase().trim();
+    const level = parseInt(document.getElementById('pokemonLevelInput').value) || 20;
+    const container = document.getElementById('moveResults');
+    container.innerHTML = '';
+    
+    if (!searchTerm) {
+        container.innerHTML = '<p class="placeholder-text">Enter a move name or Pokémon name to search</p>';
+        return;
     }
-};
+    
+    const searchableMoves = getSearchableMoves();
+    
+    // Check if searching for a Pokémon's moves
+    const pokemon = state.pokemonData.find(p => p.name.toLowerCase() === searchTerm);
+    
+    if (pokemon) {
+        if (!isRegistered(pokemon.name)) {
+            container.innerHTML = `<p class="placeholder-text"><strong>${pokemon.name}</strong> is not registered in the Pokédex.</p>`;
+            return;
+        }
+        
+        const vis = getVisibility(pokemon.name);
+        if (!vis.moves) {
+            container.innerHTML = `<p class="placeholder-text">Move data for <strong>${pokemon.name}</strong> has not been discovered yet.</p>`;
+            return;
+        }
+        
+        const maxLevel = Math.min(level, vis.movesMaxLevel || 1);
+        const availableMoves = getMovesUpToLevel(pokemon, maxLevel);
+        
+        // Also include extra visible moves
+        const extraMoves = vis.extraVisibleMoves || [];
+        extraMoves.forEach(m => {
+            if (!availableMoves.includes(m)) availableMoves.push(m);
+        });
+        
+        const results = state.moveData.filter(m => availableMoves.includes(m.name));
+        
+        container.innerHTML = `<h3 class="results-title">Moves for ${pokemon.name} (up to Level ${maxLevel})</h3>`;
+        
+        if (results.length === 0) {
+            container.innerHTML += '<p class="placeholder-text">No moves available at this level.</p>';
+        } else {
+            const grid = document.createElement('div');
+            grid.className = 'move-results-grid';
+            results.forEach(move => grid.appendChild(createMoveCard(move)));
+            container.appendChild(grid);
+        }
+    } else {
+        // Search for moves by name/type - only show searchable moves
+        const results = state.moveData.filter(move => {
+            if (!searchableMoves.has(move.name)) return false;
+            return move.name.toLowerCase().includes(searchTerm) ||
+                   move.type.toLowerCase().includes(searchTerm);
+        });
+        
+        if (results.length === 0) {
+            container.innerHTML = '<p class="placeholder-text">No moves found matching that search.</p>';
+        } else {
+            container.innerHTML = `<p class="results-info">${results.length} move(s) found</p>`;
+            const grid = document.createElement('div');
+            grid.className = 'move-results-grid';
+            results.slice(0, 50).forEach(move => grid.appendChild(createMoveCard(move)));
+            container.appendChild(grid);
+        }
+    }
+}
+
+function getMovesUpToLevel(pokemon, level) {
+    const moveLevels = { 1: pokemon.moves.starting, 2: pokemon.moves.level2, 6: pokemon.moves.level6, 10: pokemon.moves.level10, 14: pokemon.moves.level14, 18: pokemon.moves.level18 };
+    const moves = new Set();
+    for (const [moveLevel, moveStr] of Object.entries(moveLevels)) {
+        if (level >= parseInt(moveLevel)) {
+            moveStr.split(', ').filter(m => m).forEach(m => moves.add(m));
+        }
+    }
+    return Array.from(moves);
+}
+
+function createMoveCard(move) {
+    const card = document.createElement('div');
+    card.className = 'move-card';
+    const typeColor = getTypeColor(move.type);
+    
+    card.innerHTML = `
+        <div class="move-card-header" style="background:${typeColor}">
+            <span class="move-card-name">${move.name}</span>
+            <span class="move-card-type">${move.type}</span>
+        </div>
+        <div class="move-card-body">
+            <div class="move-card-stats">
+                <div class="move-card-stat"><span>VP</span><span>${move.vp}</span></div>
+                <div class="move-card-stat"><span>Power</span><span>${move.power || '-'}</span></div>
+                <div class="move-card-stat"><span>Time</span><span>${move.time || '-'}</span></div>
+                <div class="move-card-stat"><span>Range</span><span>${move.range || '-'}</span></div>
+            </div>
+            <div class="move-card-desc">${move.description}</div>
+            ${move.higher ? `<div class="move-card-higher"><strong>Higher:</strong> ${move.higher}</div>` : ''}
+        </div>
+    `;
+    return card;
+}
+
+// ===========================================
+// PAGINATION
+// ===========================================
+
+function createPagination(totalPages) {
+    const pagination = document.createElement('div');
+    pagination.className = 'pagination';
+    pagination.innerHTML = `
+        <button class="btn btn-secondary" ${state.currentPage === 1 ? 'disabled' : ''} data-page="prev">← Prev</button>
+        <span class="pagination-info">Page ${state.currentPage} of ${totalPages}</span>
+        <button class="btn btn-secondary" ${state.currentPage === totalPages ? 'disabled' : ''} data-page="next">Next →</button>
+    `;
+    return pagination;
+}
+
+// ===========================================
+// ADMIN MODE
+// ===========================================
+
+function toggleAdminMode() {
+    if (state.isAdminMode) {
+        openAdminPanel();
+    } else {
+        document.getElementById('adminLoginModal').classList.add('active');
+        document.getElementById('adminPassword').focus();
+    }
+}
+
+function attemptAdminLogin() {
+    const password = document.getElementById('adminPassword').value;
+    if (password === ADMIN_PASSWORD) {
+        state.isAdminMode = true;
+        document.body.classList.add('admin-mode');
+        setCachedData(CACHE_KEYS.ADMIN_SESSION, { loggedIn: true, timestamp: Date.now() });
+        closeAdminLogin();
+        openAdminPanel();
+        showToast('Admin mode activated', 'success');
+    } else {
+        document.getElementById('loginError').style.display = 'block';
+        document.getElementById('adminPassword').value = '';
+    }
+}
+
+function closeAdminLogin() {
+    document.getElementById('adminLoginModal').classList.remove('active');
+    document.getElementById('adminPassword').value = '';
+    document.getElementById('loginError').style.display = 'none';
+}
+
+function openAdminPanel() {
+    populateAdminPokemonList();
+    updateRegistrationStats();
+    populateDefaultsTab();
+    populateSearchableMovesTab();
+    document.getElementById('adminModal').classList.add('active');
+}
+
+function closeAdminPanel() {
+    document.getElementById('adminModal').classList.remove('active');
+    if (state.currentResults.length > 0) displayPokemonResults();
+}
+
+function logoutAdmin() {
+    state.isAdminMode = false;
+    document.body.classList.remove('admin-mode');
+    localStorage.removeItem(CACHE_KEYS.ADMIN_SESSION);
+    closeAdminPanel();
+    if (state.currentResults.length > 0) displayPokemonResults();
+    showToast('Logged out', 'success');
+}
+
+function restoreAdminSession() {
+    const session = getCachedData(CACHE_KEYS.ADMIN_SESSION);
+    if (session?.loggedIn) {
+        const maxAge = 24 * 60 * 60 * 1000;
+        if (Date.now() - (session.timestamp || 0) < maxAge) {
+            state.isAdminMode = true;
+            document.body.classList.add('admin-mode');
+        } else {
+            localStorage.removeItem(CACHE_KEYS.ADMIN_SESSION);
+        }
+    }
+}
+
+// ===========================================
+// ADMIN - POKEMON LIST
+// ===========================================
+
+function populateAdminPokemonList() {
+    const container = document.getElementById('adminPokemonList');
+    const searchTerm = document.getElementById('adminPokemonSearch')?.value.toLowerCase() || '';
+    
+    const filtered = state.pokemonData.filter(p => 
+        p.name.toLowerCase().includes(searchTerm) ||
+        p.id.toString().includes(searchTerm) ||
+        p.primaryType.toLowerCase().includes(searchTerm)
+    );
+    
+    container.innerHTML = filtered.map(pokemon => {
+        const registered = isRegistered(pokemon.name);
+        const isExpanded = state.expandedAdminRows.has(pokemon.name);
+        const primaryColor = getTypeColor(pokemon.primaryType);
+        const secondaryColor = pokemon.secondaryType ? getTypeColor(pokemon.secondaryType) : null;
+        
+        return `
+            <div class="admin-pokemon-row ${registered ? 'registered' : ''} ${isExpanded ? 'expanded' : ''}" data-pokemon="${pokemon.name}">
+                <div class="admin-pokemon-header" data-pokemon="${pokemon.name}">
+                    <input type="checkbox" class="pokemon-select" data-name="${pokemon.name}">
+                    <span class="pokemon-id">#${pokemon.id}</span>
+                    <span class="pokemon-name">${pokemon.name}</span>
+                    <div class="pokemon-types">
+                        <span class="mini-badge" style="background:${primaryColor}">${pokemon.primaryType.substring(0,3)}</span>
+                        ${secondaryColor ? `<span class="mini-badge" style="background:${secondaryColor}">${pokemon.secondaryType.substring(0,3)}</span>` : ''}
+                    </div>
+                    <span class="status-badge ${registered ? 'registered' : ''}">${registered ? '✓' : '○'}</span>
+                    <span class="expand-arrow">${isExpanded ? '▲' : '▼'}</span>
+                </div>
+                ${isExpanded ? createAdminExpandedContent(pokemon) : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+function createAdminExpandedContent(pokemon) {
+    const registered = isRegistered(pokemon.name);
+    const vis = registered ? getVisibility(pokemon.name) : DEFAULT_VISIBILITY;
+    
+    return `
+        <div class="admin-pokemon-body">
+            <div class="admin-controls-row">
+                <button class="btn btn-small ${registered ? 'btn-danger' : 'btn-success'}" data-action="toggle-register" data-pokemon="${pokemon.name}">
+                    ${registered ? 'Unregister' : 'Register'}
+                </button>
+                ${registered ? `
+                    <button class="btn btn-small btn-secondary" data-action="show-all" data-pokemon="${pokemon.name}">Show All</button>
+                    <button class="btn btn-small btn-secondary" data-action="hide-all" data-pokemon="${pokemon.name}">Hide All</button>
+                ` : ''}
+            </div>
+            ${registered ? `
+                <div class="visibility-controls">
+                    <div class="vis-section">
+                        <h4>Basic Info</h4>
+                        <div class="vis-grid">
+                            <label class="vis-toggle-label">
+                                <input type="checkbox" ${vis.types ? 'checked' : ''} data-field="types" data-pokemon="${pokemon.name}">
+                                <span>Types</span>
+                            </label>
+                            <label class="vis-toggle-label">
+                                <input type="checkbox" ${vis.description ? 'checked' : ''} data-field="description" data-pokemon="${pokemon.name}">
+                                <span>Description</span>
+                            </label>
+                            <label class="vis-toggle-label">
+                                <input type="checkbox" ${vis.characteristics ? 'checked' : ''} data-field="characteristics" data-pokemon="${pokemon.name}">
+                                <span>Characteristics</span>
+                            </label>
+                            <label class="vis-toggle-label">
+                                <input type="checkbox" ${vis.stats ? 'checked' : ''} data-field="stats" data-pokemon="${pokemon.name}">
+                                <span>Stats</span>
+                            </label>
+                            <label class="vis-toggle-label">
+                                <input type="checkbox" ${vis.senses ? 'checked' : ''} data-field="senses" data-pokemon="${pokemon.name}">
+                                <span>Senses</span>
+                            </label>
+                            <label class="vis-toggle-label">
+                                <input type="checkbox" ${vis.evolution ? 'checked' : ''} data-field="evolution" data-pokemon="${pokemon.name}">
+                                <span>Evolution</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="vis-section">
+                        <h4>Abilities</h4>
+                        <div class="vis-grid">
+                            <label class="vis-toggle-label">
+                                <input type="checkbox" ${vis.primaryAbility ? 'checked' : ''} data-field="primaryAbility" data-pokemon="${pokemon.name}">
+                                <span>Primary: ${pokemon.primaryAbility?.name || 'None'}</span>
+                            </label>
+                            ${pokemon.secondaryAbility ? `
+                                <label class="vis-toggle-label">
+                                    <input type="checkbox" ${vis.secondaryAbility ? 'checked' : ''} data-field="secondaryAbility" data-pokemon="${pokemon.name}">
+                                    <span>Secondary: ${pokemon.secondaryAbility.name}</span>
+                                </label>
+                            ` : ''}
+                            ${pokemon.hiddenAbility ? `
+                                <label class="vis-toggle-label">
+                                    <input type="checkbox" ${vis.hiddenAbility ? 'checked' : ''} data-field="hiddenAbility" data-pokemon="${pokemon.name}">
+                                    <span>Hidden: ${pokemon.hiddenAbility.name}</span>
+                                </label>
+                            ` : ''}
+                        </div>
+                    </div>
+                    <div class="vis-section">
+                        <h4>Moves</h4>
+                        <div class="vis-grid">
+                            <label class="vis-toggle-label">
+                                <input type="checkbox" ${vis.moves ? 'checked' : ''} data-field="moves" data-pokemon="${pokemon.name}">
+                                <span>Show Moves</span>
+                            </label>
+                            <div class="moves-level-input">
+                                <label>Up to Level:</label>
+                                <input type="number" min="1" max="20" value="${vis.movesMaxLevel || 1}" data-field="movesMaxLevel" data-pokemon="${pokemon.name}">
+                            </div>
+                        </div>
+                        <div class="extra-moves-section">
+                            <span class="extra-moves-label">Extra Moves:</span>
+                            <button class="btn btn-small btn-secondary" data-action="edit-moves" data-pokemon="${pokemon.name}">Edit (${(vis.extraVisibleMoves || []).length})</button>
+                        </div>
+                    </div>
+                </div>
+            ` : '<p class="register-hint">Register this Pokémon to configure visibility settings</p>'}
+        </div>
+    `;
+}
+
+function toggleAdminRow(pokemonName) {
+    if (state.expandedAdminRows.has(pokemonName)) {
+        state.expandedAdminRows.delete(pokemonName);
+    } else {
+        state.expandedAdminRows.add(pokemonName);
+    }
+    populateAdminPokemonList();
+}
+
+function toggleRegistration(pokemonName) {
+    const index = state.config.registered.findIndex(n => n.toLowerCase() === pokemonName.toLowerCase());
+    
+    if (index >= 0) {
+        state.config.registered.splice(index, 1);
+        delete state.config.visibility[pokemonName.toLowerCase()];
+        showToast(`${pokemonName} unregistered`, 'success');
+    } else {
+        state.config.registered.push(pokemonName);
+        state.config.visibility[pokemonName.toLowerCase()] = { ...state.config.defaults };
+        showToast(`${pokemonName} registered`, 'success');
+    }
+    
+    saveConfigLocally();
+    populateAdminPokemonList();
+    updateRegistrationStats();
+    populateFilters();
+}
+
+function updateVisibilityField(pokemonName, field, value) {
+    const key = pokemonName.toLowerCase();
+    if (!state.config.visibility[key]) {
+        state.config.visibility[key] = { ...state.config.defaults };
+    }
+    state.config.visibility[key][field] = value;
+    saveConfigLocally();
+}
+
+function setAllVisibility(pokemonName, visible) {
+    const key = pokemonName.toLowerCase();
+    const pokemon = state.pokemonData.find(p => p.name === pokemonName);
+    
+    state.config.visibility[key] = {
+        types: visible,
+        description: visible,
+        characteristics: visible,
+        primaryAbility: visible,
+        secondaryAbility: visible && !!pokemon?.secondaryAbility,
+        hiddenAbility: visible && !!pokemon?.hiddenAbility,
+        stats: visible,
+        senses: visible,
+        evolution: visible,
+        moves: visible,
+        movesMaxLevel: visible ? 20 : 1,
+        extraVisibleMoves: []
+    };
+    
+    saveConfigLocally();
+    populateAdminPokemonList();
+    showToast(visible ? 'All fields shown' : 'All fields hidden', 'success');
+}
+
+function selectAllVisible() {
+    document.querySelectorAll('.admin-pokemon-list .pokemon-select').forEach(cb => cb.checked = true);
+}
+
+function registerSelected() {
+    let count = 0;
+    document.querySelectorAll('.admin-pokemon-list .pokemon-select:checked').forEach(cb => {
+        const name = cb.dataset.name;
+        if (!isRegistered(name)) {
+            state.config.registered.push(name);
+            state.config.visibility[name.toLowerCase()] = { ...state.config.defaults };
+            count++;
+        }
+        cb.checked = false;
+    });
+    
+    if (count > 0) {
+        saveConfigLocally();
+        populateAdminPokemonList();
+        updateRegistrationStats();
+        populateFilters();
+        showToast(`${count} Pokémon registered`, 'success');
+    }
+}
+
+function unregisterSelected() {
+    let count = 0;
+    document.querySelectorAll('.admin-pokemon-list .pokemon-select:checked').forEach(cb => {
+        const name = cb.dataset.name;
+        const index = state.config.registered.findIndex(n => n.toLowerCase() === name.toLowerCase());
+        if (index >= 0) {
+            state.config.registered.splice(index, 1);
+            delete state.config.visibility[name.toLowerCase()];
+            count++;
+        }
+        cb.checked = false;
+    });
+    
+    if (count > 0) {
+        saveConfigLocally();
+        populateAdminPokemonList();
+        updateRegistrationStats();
+        populateFilters();
+        showToast(`${count} Pokémon unregistered`, 'success');
+    }
+}
+
+function updateRegistrationStats() {
+    const total = state.pokemonData.length;
+    const registered = state.config.registered.length;
+    document.getElementById('registeredCount').textContent = registered;
+    document.getElementById('unregisteredCount').textContent = total - registered;
+}
+
+// ===========================================
+// MOVE EDIT MODAL
+// ===========================================
+
+function openMoveEditModal(pokemonName) {
+    state.editingPokemonName = pokemonName;
+    const pokemon = state.pokemonData.find(p => p.name === pokemonName);
+    const vis = getVisibility(pokemonName);
+    
+    document.getElementById('moveEditPokemonName').textContent = pokemonName;
+    document.getElementById('moveEditLevel').value = vis.movesMaxLevel || 1;
+    
+    populateMoveEditList(pokemon, vis);
+    document.getElementById('moveEditModal').classList.add('active');
+}
+
+function closeMoveEditModal() {
+    document.getElementById('moveEditModal').classList.remove('active');
+    state.editingPokemonName = null;
+    populateAdminPokemonList();
+}
+
+function populateMoveEditList(pokemon, visibility) {
+    const container = document.getElementById('moveEditList');
+    const maxLevel = visibility.movesMaxLevel || 1;
+    const extraMoves = visibility.extraVisibleMoves || [];
+    const extraLower = extraMoves.map(m => m.toLowerCase());
+    
+    const moveLevels = [
+        { level: 1, moves: pokemon.moves.starting },
+        { level: 2, moves: pokemon.moves.level2 },
+        { level: 6, moves: pokemon.moves.level6 },
+        { level: 10, moves: pokemon.moves.level10 },
+        { level: 14, moves: pokemon.moves.level14 },
+        { level: 18, moves: pokemon.moves.level18 }
+    ];
+    
+    const allMoves = [];
+    moveLevels.forEach(({ level, moves }) => {
+        moves.split(', ').filter(m => m).forEach(name => allMoves.push({ name, level }));
+    });
+    
+    container.innerHTML = allMoves.map(move => {
+        const withinLevel = move.level <= maxLevel;
+        const manuallyAdded = extraLower.includes(move.name.toLowerCase());
+        
+        return `
+            <label class="move-check-item ${withinLevel ? 'within-level' : ''}">
+                <input type="checkbox" ${withinLevel || manuallyAdded ? 'checked' : ''} ${withinLevel ? 'disabled' : ''} data-move="${move.name}">
+                <span class="move-check-name">${move.name}</span>
+                <span class="move-check-level">Lv${move.level}</span>
+            </label>
+        `;
+    }).join('');
+}
+
+function updateMoveEditLevel() {
+    if (!state.editingPokemonName) return;
+    
+    const level = parseInt(document.getElementById('moveEditLevel').value) || 1;
+    const key = state.editingPokemonName.toLowerCase();
+    
+    if (!state.config.visibility[key]) {
+        state.config.visibility[key] = { ...state.config.defaults };
+    }
+    state.config.visibility[key].movesMaxLevel = level;
+    
+    const pokemon = state.pokemonData.find(p => p.name === state.editingPokemonName);
+    populateMoveEditList(pokemon, state.config.visibility[key]);
+    saveConfigLocally();
+}
+
+function toggleExtraMove(moveName, isChecked) {
+    if (!state.editingPokemonName) return;
+    
+    const key = state.editingPokemonName.toLowerCase();
+    if (!state.config.visibility[key]) {
+        state.config.visibility[key] = { ...state.config.defaults };
+    }
+    if (!state.config.visibility[key].extraVisibleMoves) {
+        state.config.visibility[key].extraVisibleMoves = [];
+    }
+    
+    const extra = state.config.visibility[key].extraVisibleMoves;
+    const idx = extra.findIndex(m => m.toLowerCase() === moveName.toLowerCase());
+    
+    if (isChecked && idx === -1) {
+        extra.push(moveName);
+    } else if (!isChecked && idx !== -1) {
+        extra.splice(idx, 1);
+    }
+    
+    saveConfigLocally();
+}
+
+// ===========================================
+// POKEMON EDIT MODAL (from card)
+// ===========================================
+
+function openPokemonEditModal(pokemonName) {
+    state.editingPokemonName = pokemonName;
+    const pokemon = state.pokemonData.find(p => p.name === pokemonName);
+    const vis = getVisibility(pokemonName);
+    
+    document.getElementById('editModalPokemonName').textContent = pokemonName;
+    
+    // Set all checkboxes
+    document.getElementById('cardEdit_types').checked = vis.types;
+    document.getElementById('cardEdit_description').checked = vis.description;
+    document.getElementById('cardEdit_characteristics').checked = vis.characteristics;
+    document.getElementById('cardEdit_primaryAbility').checked = vis.primaryAbility;
+    document.getElementById('cardEdit_secondaryAbility').checked = vis.secondaryAbility;
+    document.getElementById('cardEdit_hiddenAbility').checked = vis.hiddenAbility;
+    document.getElementById('cardEdit_stats').checked = vis.stats;
+    document.getElementById('cardEdit_senses').checked = vis.senses;
+    document.getElementById('cardEdit_evolution').checked = vis.evolution;
+    document.getElementById('cardEdit_moves').checked = vis.moves;
+    document.getElementById('cardEdit_movesMaxLevel').value = vis.movesMaxLevel || 1;
+    
+    // Show/hide ability options based on pokemon
+    document.getElementById('cardEdit_secondaryAbility_row').style.display = pokemon?.secondaryAbility ? 'flex' : 'none';
+    document.getElementById('cardEdit_hiddenAbility_row').style.display = pokemon?.hiddenAbility ? 'flex' : 'none';
+    
+    document.getElementById('pokemonEditModal').classList.add('active');
+}
+
+function closePokemonEditModal() {
+    document.getElementById('pokemonEditModal').classList.remove('active');
+    state.editingPokemonName = null;
+    if (state.currentResults.length > 0) displayPokemonResults();
+}
+
+function updateCardEditField(field) {
+    if (!state.editingPokemonName) return;
+    
+    const key = state.editingPokemonName.toLowerCase();
+    if (!state.config.visibility[key]) {
+        state.config.visibility[key] = { ...state.config.defaults };
+    }
+    
+    if (field === 'movesMaxLevel') {
+        state.config.visibility[key].movesMaxLevel = parseInt(document.getElementById('cardEdit_movesMaxLevel').value) || 1;
+    } else {
+        state.config.visibility[key][field] = document.getElementById(`cardEdit_${field}`).checked;
+    }
+    
+    saveConfigLocally();
+}
+
+function cardEditShowAll() {
+    if (!state.editingPokemonName) return;
+    setAllVisibility(state.editingPokemonName, true);
+    closePokemonEditModal();
+    openPokemonEditModal(state.editingPokemonName);
+}
+
+function cardEditHideAll() {
+    if (!state.editingPokemonName) return;
+    setAllVisibility(state.editingPokemonName, false);
+    closePokemonEditModal();
+    openPokemonEditModal(state.editingPokemonName);
+}
+
+// ===========================================
+// CONFIG IMPORT/EXPORT
+// ===========================================
+
+function saveConfigLocally() {
+    setCachedData(CACHE_KEYS.CONFIG, state.config);
+    updateCacheTimestamp(CACHE_KEYS.CONFIG);
+}
+
+function exportConfig() {
+    const blob = new Blob([JSON.stringify(state.config, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'pokedex_config.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Config exported!', 'success');
+}
+
+function importConfig() {
+    document.getElementById('configFileInput').click();
+}
+
+function handleConfigImport(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const config = JSON.parse(e.target.result);
+            if (!config.registered || !Array.isArray(config.registered)) {
+                throw new Error('Invalid config');
+            }
+            
+            state.config = {
+                registered: config.registered || [],
+                visibility: config.visibility || {},
+                defaults: config.defaults || { ...DEFAULT_VISIBILITY },
+                extraSearchableMoves: config.extraSearchableMoves || [],
+                splashCount: config.splashCount || DEFAULT_SPLASH_COUNT
+            };
+            
+            saveConfigLocally();
+            populateAdminPokemonList();
+            updateRegistrationStats();
+            populateFilters();
+            populateDefaultsTab();
+            populateSearchableMovesTab();
+            showToast('Config imported', 'success');
+        } catch (err) {
+            showToast('Error: ' + err.message, 'error');
+        }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+}
+
+// ===========================================
+// ADMIN - DEFAULTS TAB
+// ===========================================
+
+function populateDefaultsTab() {
+    const defaults = state.config.defaults || DEFAULT_VISIBILITY;
+    
+    document.getElementById('default_types').checked = defaults.types;
+    document.getElementById('default_description').checked = defaults.description;
+    document.getElementById('default_characteristics').checked = defaults.characteristics;
+    document.getElementById('default_primaryAbility').checked = defaults.primaryAbility;
+    document.getElementById('default_secondaryAbility').checked = defaults.secondaryAbility;
+    document.getElementById('default_hiddenAbility').checked = defaults.hiddenAbility;
+    document.getElementById('default_stats').checked = defaults.stats;
+    document.getElementById('default_senses').checked = defaults.senses;
+    document.getElementById('default_evolution').checked = defaults.evolution;
+    document.getElementById('default_moves').checked = defaults.moves;
+    document.getElementById('default_movesMaxLevel').value = defaults.movesMaxLevel || 1;
+    
+    // App settings
+    document.getElementById('splashCountInput').value = state.config.splashCount || DEFAULT_SPLASH_COUNT;
+}
+
+function updateDefault(field) {
+    if (!state.config.defaults) {
+        state.config.defaults = { ...DEFAULT_VISIBILITY };
+    }
+    
+    if (field === 'movesMaxLevel') {
+        state.config.defaults.movesMaxLevel = parseInt(document.getElementById('default_movesMaxLevel').value) || 1;
+    } else {
+        state.config.defaults[field] = document.getElementById(`default_${field}`).checked;
+    }
+    
+    saveConfigLocally();
+    showToast('Defaults updated', 'success');
+}
+
+function updateSplashCount() {
+    const count = parseInt(document.getElementById('splashCountInput').value) || DEFAULT_SPLASH_COUNT;
+    state.config.splashCount = Math.max(1, Math.min(99, count));
+    document.getElementById('splashCountInput').value = state.config.splashCount;
+    saveConfigLocally();
+    showToast('Splash count updated', 'success');
+}
+
+// ===========================================
+// ADMIN - SEARCHABLE MOVES TAB
+// ===========================================
+
+function populateSearchableMovesTab() {
+    const container = document.getElementById('searchableMoveslist');
+    const searchTerm = document.getElementById('searchableMoveSearch')?.value?.toLowerCase() || '';
+    const extraMoves = state.config.extraSearchableMoves || [];
+    const extraLower = extraMoves.map(m => m.toLowerCase());
+    
+    // Get moves that are already searchable via Pokémon
+    const pokemonMoves = new Set();
+    state.pokemonData.forEach(pokemon => {
+        if (!isRegistered(pokemon.name)) return;
+        const vis = getVisibility(pokemon.name);
+        if (!vis.moves) return;
+        
+        const maxLevel = vis.movesMaxLevel || 1;
+        const moveLevels = [
+            { level: 1, moves: pokemon.moves.starting },
+            { level: 2, moves: pokemon.moves.level2 },
+            { level: 6, moves: pokemon.moves.level6 },
+            { level: 10, moves: pokemon.moves.level10 },
+            { level: 14, moves: pokemon.moves.level14 },
+            { level: 18, moves: pokemon.moves.level18 }
+        ];
+        
+        moveLevels.forEach(({ level, moves }) => {
+            if (level <= maxLevel) {
+                moves.split(', ').filter(m => m).forEach(m => pokemonMoves.add(m));
+            }
+        });
+        
+        (vis.extraVisibleMoves || []).forEach(m => pokemonMoves.add(m));
+    });
+    
+    // Filter moves by search term
+    const filteredMoves = state.moveData.filter(move => {
+        if (!searchTerm) return true;
+        return move.name.toLowerCase().includes(searchTerm) ||
+               move.type.toLowerCase().includes(searchTerm);
+    });
+    
+    container.innerHTML = filteredMoves.map(move => {
+        const isFromPokemon = pokemonMoves.has(move.name);
+        const isExtra = extraLower.includes(move.name.toLowerCase());
+        const typeColor = getTypeColor(move.type);
+        
+        return `
+            <label class="searchable-move-item ${isFromPokemon ? 'from-pokemon' : ''} ${isExtra ? 'extra' : ''}">
+                <input type="checkbox" 
+                       ${isFromPokemon || isExtra ? 'checked' : ''} 
+                       ${isFromPokemon ? 'disabled' : ''}
+                       data-move="${move.name}">
+                <span class="move-type-dot" style="background:${typeColor}"></span>
+                <span class="move-name">${move.name}</span>
+                ${isFromPokemon ? '<span class="from-pokemon-tag">via Pokémon</span>' : ''}
+            </label>
+        `;
+    }).join('');
+    
+    // Update count
+    const totalSearchable = pokemonMoves.size + extraMoves.filter(m => !pokemonMoves.has(m)).length;
+    document.getElementById('searchableMoveCount').textContent = totalSearchable;
+}
+
+function toggleSearchableMove(moveName, isChecked) {
+    if (!state.config.extraSearchableMoves) {
+        state.config.extraSearchableMoves = [];
+    }
+    
+    const extra = state.config.extraSearchableMoves;
+    const idx = extra.findIndex(m => m.toLowerCase() === moveName.toLowerCase());
+    
+    if (isChecked && idx === -1) {
+        extra.push(moveName);
+    } else if (!isChecked && idx !== -1) {
+        extra.splice(idx, 1);
+    }
+    
+    saveConfigLocally();
+    
+    // Update the count
+    const pokemonMoves = new Set();
+    state.pokemonData.forEach(pokemon => {
+        if (!isRegistered(pokemon.name)) return;
+        const vis = getVisibility(pokemon.name);
+        if (!vis.moves) return;
+        const maxLevel = vis.movesMaxLevel || 1;
+        const moveLevels = [
+            { level: 1, moves: pokemon.moves.starting },
+            { level: 2, moves: pokemon.moves.level2 },
+            { level: 6, moves: pokemon.moves.level6 },
+            { level: 10, moves: pokemon.moves.level10 },
+            { level: 14, moves: pokemon.moves.level14 },
+            { level: 18, moves: pokemon.moves.level18 }
+        ];
+        moveLevels.forEach(({ level, moves }) => {
+            if (level <= maxLevel) {
+                moves.split(', ').filter(m => m).forEach(m => pokemonMoves.add(m));
+            }
+        });
+        (vis.extraVisibleMoves || []).forEach(m => pokemonMoves.add(m));
+    });
+    
+    const totalSearchable = pokemonMoves.size + extra.filter(m => !pokemonMoves.has(m)).length;
+    document.getElementById('searchableMoveCount').textContent = totalSearchable;
+}
+
+// ===========================================
+// EVENT DELEGATION
+// ===========================================
+
+function showAdminTab(tabName) {
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+    
+    document.querySelector(`.admin-tab[data-tab="${tabName}"]`)?.classList.add('active');
+    document.getElementById(`${tabName}Tab`)?.classList.add('active');
+}
+
+function setupEventDelegation() {
+    // Global click handler
+    document.addEventListener('click', function(e) {
+        const target = e.target;
+        
+        // Pokemon card edit button
+        if (target.classList.contains('card-edit-btn') || target.closest('.card-edit-btn')) {
+            const btn = target.classList.contains('card-edit-btn') ? target : target.closest('.card-edit-btn');
+            const pokemonName = btn.dataset.pokemon;
+            if (pokemonName) {
+                e.preventDefault();
+                e.stopPropagation();
+                openPokemonEditModal(pokemonName);
+            }
+            return;
+        }
+        
+        // Card tab switching (toggle off if clicking active tab)
+        if (target.classList.contains('tab-btn') || target.closest('.tab-btn')) {
+            const btn = target.classList.contains('tab-btn') ? target : target.closest('.tab-btn');
+            const tabId = btn.dataset.tab;
+            const card = btn.closest('.pokemon-card');
+            if (card && tabId) {
+                const isActive = btn.classList.contains('active');
+                const tabPanels = card.querySelector('.tab-panels');
+                
+                // Deactivate all tabs
+                card.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+                card.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                
+                if (isActive) {
+                    // Close tabs
+                    tabPanels.classList.remove('open');
+                } else {
+                    // Open new tab
+                    btn.classList.add('active');
+                    card.querySelector(`.tab-panel[data-panel="${tabId}"]`)?.classList.add('active');
+                    tabPanels.classList.add('open');
+                }
+            }
+            return;
+        }
+        
+        // Move entry expansion
+        if (target.closest('.move-summary')) {
+            const entry = target.closest('.move-entry');
+            if (entry) {
+                entry.classList.toggle('expanded');
+            }
+            return;
+        }
+        
+        // Pagination
+        if (target.dataset.page) {
+            const totalPages = Math.ceil(state.currentResults.length / RESULTS_PER_PAGE);
+            if (target.dataset.page === 'prev' && state.currentPage > 1) {
+                state.currentPage--;
+                displayPokemonResults();
+                document.getElementById('pokemonResults').scrollIntoView({ behavior: 'smooth' });
+            } else if (target.dataset.page === 'next' && state.currentPage < totalPages) {
+                state.currentPage++;
+                displayPokemonResults();
+                document.getElementById('pokemonResults').scrollIntoView({ behavior: 'smooth' });
+            }
+            return;
+        }
+        
+        // Admin tab switching
+        if (target.classList.contains('admin-tab') && target.dataset.tab) {
+            showAdminTab(target.dataset.tab);
+            return;
+        }
+        
+        // Admin row expand
+        if (target.classList.contains('admin-pokemon-header') || target.closest('.admin-pokemon-header')) {
+            const header = target.classList.contains('admin-pokemon-header') ? target : target.closest('.admin-pokemon-header');
+            // Don't expand if clicking checkbox
+            if (target.classList.contains('pokemon-select')) return;
+            const pokemonName = header.dataset.pokemon;
+            if (pokemonName) toggleAdminRow(pokemonName);
+            return;
+        }
+        
+        // Admin action buttons
+        if (target.dataset.action) {
+            const action = target.dataset.action;
+            const pokemonName = target.dataset.pokemon;
+            
+            if (action === 'toggle-register') toggleRegistration(pokemonName);
+            else if (action === 'show-all') setAllVisibility(pokemonName, true);
+            else if (action === 'hide-all') setAllVisibility(pokemonName, false);
+            else if (action === 'edit-moves') openMoveEditModal(pokemonName);
+            return;
+        }
+    });
+    
+    // Change handler for checkboxes and inputs
+    document.addEventListener('change', function(e) {
+        const target = e.target;
+        
+        // Visibility toggle in admin (pokemon-specific)
+        if (target.dataset.field && target.dataset.pokemon) {
+            const field = target.dataset.field;
+            const pokemon = target.dataset.pokemon;
+            
+            if (field === 'movesMaxLevel') {
+                updateVisibilityField(pokemon, field, parseInt(target.value) || 1);
+            } else {
+                updateVisibilityField(pokemon, field, target.checked);
+            }
+            return;
+        }
+        
+        // Default visibility toggles
+        if (target.id && target.id.startsWith('default_')) {
+            const field = target.id.replace('default_', '');
+            updateDefault(field);
+            return;
+        }
+        
+        // Move checkbox in move edit modal
+        if (target.dataset.move && target.closest('#moveEditList')) {
+            toggleExtraMove(target.dataset.move, target.checked);
+            return;
+        }
+        
+        // Searchable move checkbox
+        if (target.dataset.move && target.closest('#searchableMoveslist')) {
+            toggleSearchableMove(target.dataset.move, target.checked);
+            return;
+        }
+    });
+}
+
+// ===========================================
+// INITIALIZATION
+// ===========================================
+
+async function init() {
+    // Show random splash image immediately
+    setRandomSplash();
+    
+    try {
+        updateLoadingProgress(5, 'Loading configuration...');
+        state.config = await loadConfig();
+        
+        updateLoadingProgress(20, 'Loading move data...');
+        state.moveData = await loadMoveData();
+        
+        updateLoadingProgress(40, 'Loading Pokémon data...');
+        state.pokemonData = await loadPokemonData();
+        
+        updateLoadingProgress(90, 'Initializing...');
+        
+        restoreAdminSession();
+        populateFilters();
+        setupEventListeners();
+        setupEventDelegation();
+        updateLastCacheTime();
+        
+        hideLoading();
+        
+        console.log(`Loaded ${state.pokemonData.length} Pokémon, ${state.moveData.length} moves`);
+        console.log(`${state.config.registered.length} registered`);
+        
+    } catch (error) {
+        console.error('Init error:', error);
+        showToast('Failed to load: ' + error.message, 'error');
+    }
+}
+
+function setupEventListeners() {
+    document.getElementById('searchButton')?.addEventListener('click', searchPokemon);
+    document.getElementById('searchInput')?.addEventListener('keyup', e => {
+        if (e.key === 'Enter') searchPokemon();
+    });
+    
+    document.getElementById('moveSearchButton')?.addEventListener('click', searchMoves);
+    document.getElementById('moveSearchInput')?.addEventListener('keyup', e => {
+        if (e.key === 'Enter') searchMoves();
+    });
+    
+    ['typeFilter', 'sizeFilter', 'behaviorFilter', 'activityFilter', 'rarityFilter', 'habitatFilter'].forEach(id => {
+        document.getElementById(id)?.addEventListener('change', searchPokemon);
+    });
+    
+    document.getElementById('adminPokemonSearch')?.addEventListener('input', populateAdminPokemonList);
+    document.getElementById('searchableMoveSearch')?.addEventListener('input', populateSearchableMovesTab);
+    document.getElementById('adminPassword')?.addEventListener('keyup', e => {
+        if (e.key === 'Enter') attemptAdminLogin();
+    });
+    
+    document.getElementById('moveEditLevel')?.addEventListener('change', updateMoveEditLevel);
+    document.getElementById('splashCountInput')?.addEventListener('change', updateSplashCount);
+}
+
+document.addEventListener('DOMContentLoaded', init);

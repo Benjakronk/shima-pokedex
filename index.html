@@ -2,69 +2,279 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Shima Pokédex</title>
     <link rel="icon" type="image/x-icon" href="favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://apis.google.com/js/api.js"></script>
 </head>
 <body>
-    <audio id="loadingCompleteSound" src="https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/SFX_TURN_ON_PC.wav" preload="auto"></audio>
-    <audio id="searchSelect" src="https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/SFX_PRESS_AB.wav" preload="auto"></audio>
-
-    <div class="pokedex">
-        <div class="pokedex-header">
-            <h1>Shima Pokédex</h1>
-            <button id="soundToggle">🔊 Sound On</button>
-        </div>
-        <nav>
-            <button id="pokedex_button" onclick="showPokemonSearch()">Pokédex Search</button>
-            <button id="move_button" onclick="showMoveSearch()">Move Database</button>
-            <button id="item_button" onclick="showItemSearch()">Item Database</button>
-        </nav>
-
-        <div class="pokedex-screen">
-            <div id="pokemonSearch">
-                <div id="filters">
-                    <select id="typeFilter"><option value="">All Types</option></select>
-                    <select id="sizeFilter"><option value="">All Sizes</option></select>
-                    <select id="behaviorFilter"><option value="">All Behaviors</option></select>
-                    <select id="activityFilter"><option value="">All Activities</option></select>
-                    <select id="rarityFilter"><option value="">All Rarities</option></select>
-                    <select id="habitatFilter"><option value="">All Habitats</option></select>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loader">
+            <div id="splashImage" class="splash-image"></div>
+            <div class="loading-info">
+                <p id="loadingText">Initializing Pokédex...</p>
+                <div class="progress-container">
+                    <div id="progressBar" class="progress-bar"></div>
                 </div>
-
-                <div id="searchSection">
-                    <input type="text" id="searchInput" placeholder="Search by name, type, or ability...">
-                    <button id="searchButton">Search</button>
-                </div>
-
-                <div id="results"></div>
-            </div>
-
-            <div id="moveSearch" style="display: none;">
-                <h2>Move Database</h2>
-                <div id="searchSection">
-                    <input type="text" id="moveSearchInput" placeholder="Search for a move or Pokémon...">
-                    <input type="number" id="pokemonLevelInput" min="1" max="20" value="20" placeholder="Pokémon Level">
-                    <button id="moveSearchButton">Search Moves</button>
-                </div>
-                <div id="moveResults"></div>
-            </div>
-
-            <div id="itemSearch" style="display: none;">
-                <h2>Item Database</h2>
-                <div id="searchSection">
-                    <select id="itemTypeFilter">
-                        <option value="">All Types</option>
-                    </select>
-                    <input type="text" id="itemSearchInput" placeholder="Search for an item...">
-                    <button id="itemSearchButton">Search Items</button>
-                </div>
-                <div id="itemResults"></div>
+                <p id="loadingPercent">0%</p>
             </div>
         </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Admin Login Modal -->
+    <div id="adminLoginModal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>🔐 Admin Access</h2>
+                <button class="btn btn-ghost" onclick="closeAdminLogin()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" placeholder="Enter password">
+                </div>
+                <p id="loginError" class="error-text" style="display:none;">Incorrect password</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAdminLogin()">Cancel</button>
+                <button class="btn btn-primary" onclick="attemptAdminLogin()">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pokemon Edit Modal (from card) -->
+    <div id="pokemonEditModal" class="modal">
+        <div class="modal-content modal-medium">
+            <div class="modal-header">
+                <h2>✏️ <span id="editModalPokemonName">Pokémon</span></h2>
+                <button class="btn btn-ghost" onclick="closePokemonEditModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="edit-section">
+                    <h4>Basic Info</h4>
+                    <div class="edit-grid">
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_types" onchange="updateCardEditField('types')"><span>Types</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_description" onchange="updateCardEditField('description')"><span>Description</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_characteristics" onchange="updateCardEditField('characteristics')"><span>Characteristics</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_stats" onchange="updateCardEditField('stats')"><span>Stats</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_senses" onchange="updateCardEditField('senses')"><span>Senses</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_evolution" onchange="updateCardEditField('evolution')"><span>Evolution</span></label>
+                    </div>
+                </div>
+                <div class="edit-section">
+                    <h4>Abilities</h4>
+                    <div class="edit-grid">
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_primaryAbility" onchange="updateCardEditField('primaryAbility')"><span>Primary Ability</span></label>
+                        <label class="edit-toggle" id="cardEdit_secondaryAbility_row"><input type="checkbox" id="cardEdit_secondaryAbility" onchange="updateCardEditField('secondaryAbility')"><span>Secondary Ability</span></label>
+                        <label class="edit-toggle" id="cardEdit_hiddenAbility_row"><input type="checkbox" id="cardEdit_hiddenAbility" onchange="updateCardEditField('hiddenAbility')"><span>Hidden Ability</span></label>
+                    </div>
+                </div>
+                <div class="edit-section">
+                    <h4>Moves</h4>
+                    <div class="edit-grid">
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_moves" onchange="updateCardEditField('moves')"><span>Show Moves</span></label>
+                        <div class="edit-level">
+                            <label>Up to Level:</label>
+                            <input type="number" id="cardEdit_movesMaxLevel" min="1" max="20" value="1" onchange="updateCardEditField('movesMaxLevel')">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="cardEditShowAll()">Show All</button>
+                <button class="btn btn-secondary" onclick="cardEditHideAll()">Hide All</button>
+                <button class="btn btn-primary" onclick="closePokemonEditModal()">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Move Edit Modal -->
+    <div id="moveEditModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>📋 Moves: <span id="moveEditPokemonName">Pokémon</span></h2>
+                <button class="btn btn-ghost" onclick="closeMoveEditModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="move-edit-controls">
+                    <label>Show moves up to level:</label>
+                    <input type="number" id="moveEditLevel" min="1" max="20" value="1">
+                </div>
+                <p class="help-text">Checked moves are visible. Greyed moves are auto-shown by level threshold.</p>
+                <div id="moveEditList" class="move-edit-list"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeMoveEditModal()">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <div class="admin-header">
+                <h2>🔧 Admin Panel</h2>
+                <div class="admin-header-actions">
+                    <button class="btn btn-secondary" onclick="exportConfig()">📤 Export</button>
+                    <button class="btn btn-secondary" onclick="importConfig()">📥 Import</button>
+                    <button class="btn btn-danger" onclick="logoutAdmin()">Logout</button>
+                    <button class="btn btn-ghost" onclick="closeAdminPanel()">✕</button>
+                </div>
+                <input type="file" id="configFileInput" accept=".json" style="display:none" onchange="handleConfigImport(event)">
+            </div>
+            
+            <!-- Admin Tabs -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-tab="pokemon">📋 Pokémon</button>
+                <button class="admin-tab" data-tab="defaults">⚙️ Defaults</button>
+                <button class="admin-tab" data-tab="searchMoves">🔍 Move Search</button>
+            </div>
+            
+            <!-- Pokemon Tab -->
+            <div id="pokemonTab" class="admin-tab-content active">
+                <div class="admin-toolbar">
+                    <input type="text" id="adminPokemonSearch" placeholder="Search Pokémon...">
+                    <div class="admin-bulk-actions">
+                        <button class="btn btn-small btn-secondary" onclick="selectAllVisible()">Select All</button>
+                        <button class="btn btn-small btn-success" onclick="registerSelected()">Register</button>
+                        <button class="btn btn-small btn-danger" onclick="unregisterSelected()">Unregister</button>
+                    </div>
+                </div>
+                
+                <div class="admin-stats">
+                    <span><strong id="registeredCount">0</strong> Registered</span>
+                    <span><strong id="unregisteredCount">0</strong> Unregistered</span>
+                </div>
+                
+                <div id="adminPokemonList" class="admin-pokemon-list"></div>
+            </div>
+            
+            <!-- Defaults Tab -->
+            <div id="defaultsTab" class="admin-tab-content">
+                <div class="defaults-content">
+                    <p class="tab-description">These settings apply when registering new Pokémon</p>
+                    
+                    <div class="defaults-section">
+                        <h4>Basic Info</h4>
+                        <div class="defaults-grid">
+                            <label class="default-toggle"><input type="checkbox" id="default_types"><span>Types</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_description"><span>Description</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_characteristics"><span>Characteristics</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_stats"><span>Stats</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_senses"><span>Senses</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_evolution"><span>Evolution</span></label>
+                        </div>
+                    </div>
+                    
+                    <div class="defaults-section">
+                        <h4>Abilities</h4>
+                        <div class="defaults-grid">
+                            <label class="default-toggle"><input type="checkbox" id="default_primaryAbility"><span>Primary Ability</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_secondaryAbility"><span>Secondary Ability</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_hiddenAbility"><span>Hidden Ability</span></label>
+                        </div>
+                    </div>
+                    
+                    <div class="defaults-section">
+                        <h4>Moves</h4>
+                        <div class="defaults-grid">
+                            <label class="default-toggle"><input type="checkbox" id="default_moves"><span>Show Moves</span></label>
+                            <div class="default-level-input">
+                                <label>Up to Level:</label>
+                                <input type="number" id="default_movesMaxLevel" min="1" max="20" value="1">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="defaults-section">
+                        <h4>App Settings</h4>
+                        <div class="defaults-grid">
+                            <div class="default-level-input">
+                                <label>Splash Images:</label>
+                                <input type="number" id="splashCountInput" min="1" max="99" value="9">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Searchable Moves Tab -->
+            <div id="searchMovesTab" class="admin-tab-content">
+                <div class="searchable-moves-content">
+                    <p class="tab-description">Control which moves players can search for. Moves on registered Pokémon (up to their level) are automatically searchable.</p>
+                    
+                    <div class="searchable-moves-toolbar">
+                        <input type="text" id="searchableMoveSearch" placeholder="Filter moves...">
+                        <span class="move-count"><strong id="searchableMoveCount">0</strong> searchable</span>
+                    </div>
+                    
+                    <div id="searchableMoveslist" class="searchable-moves-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app">
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">Shima Pokédex</h1>
+                <button id="adminToggle" class="btn btn-icon" onclick="toggleAdminMode()" title="Admin">⚙️</button>
+            </div>
+            <nav class="nav-tabs">
+                <button id="pokedexTab" class="nav-tab active" onclick="showView('pokedex')">📖 Pokédex</button>
+                <button id="movesTab" class="nav-tab" onclick="showView('moves')">⚔️ Moves</button>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <!-- Pokédex View -->
+            <div id="pokedexView" class="view active">
+                <div class="search-section">
+                    <input type="text" id="searchInput" placeholder="Search by name, type, or #...">
+                    <button id="searchButton" class="btn btn-primary">Search</button>
+                </div>
+                
+                <div class="filters-section">
+                    <select id="typeFilter"><option value="">Type</option></select>
+                    <select id="sizeFilter"><option value="">Size</option></select>
+                    <select id="rarityFilter"><option value="">Rarity</option></select>
+                    <select id="behaviorFilter"><option value="">Behavior</option></select>
+                    <select id="habitatFilter"><option value="">Habitat</option></select>
+                    <select id="activityFilter"><option value="">Activity</option></select>
+                </div>
+                
+                <div id="pokemonResults" class="results-container">
+                    <p class="placeholder-text">Search or use filters to find Pokémon</p>
+                </div>
+            </div>
+
+            <!-- Moves View -->
+            <div id="movesView" class="view">
+                <div class="search-section">
+                    <input type="text" id="moveSearchInput" placeholder="Search move or Pokémon name...">
+                    <div class="level-input">
+                        <label>Lv</label>
+                        <input type="number" id="pokemonLevelInput" min="1" max="20" value="20">
+                    </div>
+                    <button id="moveSearchButton" class="btn btn-primary">Search</button>
+                </div>
+                
+                <div id="moveResults" class="results-container">
+                    <p class="placeholder-text">Search for moves or enter a Pokémon name</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <span>Cached: <span id="lastCacheTime">Never</span></span>
+            <button class="btn btn-ghost btn-small" onclick="clearCacheAndReload()">🔄 Refresh</button>
+        </footer>
     </div>
 
     <script src="script.js"></script>
