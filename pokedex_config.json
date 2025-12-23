@@ -1,6 +1,5 @@
 {
   "registered": [
-    "Octodendron",
     "Octuber",
     "Salamandrop",
     "Hydrasylph",
@@ -54,35 +53,22 @@
     "Onix",
     "Skarling",
     "Scrollix",
-    "Morbit"
+    "Morbit",
+    "Octodendron"
   ],
   "visibility": {
-    "octodendron": {
+    "octuber": {
       "types": true,
       "description": true,
       "characteristics": true,
       "primaryAbility": true,
-      "secondaryAbility": false,
+      "secondaryAbility": true,
       "hiddenAbility": true,
       "stats": true,
       "senses": true,
       "evolution": true,
       "moves": true,
       "movesMaxLevel": 6,
-      "extraVisibleMoves": []
-    },
-    "octuber": {
-      "types": false,
-      "description": true,
-      "characteristics": false,
-      "primaryAbility": false,
-      "secondaryAbility": false,
-      "hiddenAbility": false,
-      "stats": false,
-      "senses": false,
-      "evolution": false,
-      "moves": false,
-      "movesMaxLevel": 1,
       "extraVisibleMoves": []
     },
     "salamandrop": {
@@ -825,6 +811,20 @@
       "evolution": false,
       "moves": false,
       "movesMaxLevel": 1,
+      "extraVisibleMoves": []
+    },
+    "octodendron": {
+      "types": true,
+      "description": true,
+      "characteristics": true,
+      "primaryAbility": true,
+      "secondaryAbility": false,
+      "hiddenAbility": true,
+      "stats": true,
+      "senses": true,
+      "evolution": true,
+      "moves": true,
+      "movesMaxLevel": 6,
       "extraVisibleMoves": []
     }
   },
