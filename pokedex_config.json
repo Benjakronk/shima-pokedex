@@ -58,17 +58,17 @@
   ],
   "visibility": {
     "octodendron": {
-      "types": false,
+      "types": true,
       "description": true,
-      "characteristics": false,
-      "primaryAbility": false,
+      "characteristics": true,
+      "primaryAbility": true,
       "secondaryAbility": false,
-      "hiddenAbility": false,
-      "stats": false,
-      "senses": false,
-      "evolution": false,
-      "moves": false,
-      "movesMaxLevel": 1,
+      "hiddenAbility": true,
+      "stats": true,
+      "senses": true,
+      "evolution": true,
+      "moves": true,
+      "movesMaxLevel": 6,
       "extraVisibleMoves": []
     },
     "octuber": {
@@ -843,5 +843,5 @@
     "extraVisibleMoves": []
   },
   "extraSearchableMoves": [],
-  "splashCount": 43
+  "splashCount": 45
 }
