@@ -75,9 +75,10 @@ const DEFAULT_VISIBILITY = {
     senseTrillsense: false,
     senseMindsense: false,
     
-    // Evolution (granular)
-    evoFrom: false,
-    evoTo: false,
+    // Evolution (granular per target)
+    evoFrom: false,           // Show "evolves from" 
+    evoTo: false,             // Default for all evolution targets
+    evoToTargets: {},         // Object: { "TargetName": true/false } - populated per pokemon
     
     // Moves
     moves: false,
@@ -659,18 +660,21 @@ function createPokemonCard(pokemon) {
     
     const primaryColor = getTypeColor(pokemon.primaryType);
     const secondaryColor = pokemon.secondaryType ? getTypeColor(pokemon.secondaryType) : primaryColor;
+    const unknownColor = '#555555'; // Color for unrevealed types
     
     // Determine header background based on visible types
     const showPrimary = visibility.primaryType;
     const showSecondary = visibility.secondaryType && pokemon.secondaryType;
     
-    let headerBg = 'var(--bg-elevated)';
-    if (showPrimary && showSecondary) {
-        headerBg = `linear-gradient(135deg, ${primaryColor} 50%, ${secondaryColor} 50%)`;
-    } else if (showPrimary) {
-        headerBg = primaryColor;
-    } else if (showSecondary) {
-        headerBg = secondaryColor;
+    let headerBg;
+    if (pokemon.secondaryType) {
+        // Dual-type: always show split, use unknown color for hidden types
+        const leftColor = showPrimary ? primaryColor : unknownColor;
+        const rightColor = showSecondary ? secondaryColor : unknownColor;
+        headerBg = `linear-gradient(135deg, ${leftColor} 50%, ${rightColor} 50%)`;
+    } else {
+        // Single type
+        headerBg = showPrimary ? primaryColor : unknownColor;
     }
     
     let html = '';
@@ -835,13 +839,15 @@ function createPokemonCard(pokemon) {
         tabContents.push({ id: 'senses', content });
     }
     
-    // Evolution tab (granular)
-    if (pokemon.evolutionReq && (visibility.evoFrom || visibility.evoTo)) {
+    // Evolution tab (granular per target)
+    if (pokemon.evolutionReq) {
         const evoData = parseEvolutionData(pokemon.evolutionReq);
-        const showFrom = visibility.evoFrom && evoData.evolvesFrom;
-        const showTo = visibility.evoTo && evoData.evolvesTo.length > 0;
+        const evoToTargets = visibility.evoToTargets || {};
         
-        if (showFrom || showTo) {
+        const showFrom = visibility.evoFrom && evoData.evolvesFrom;
+        const visibleEvosTo = evoData.evolvesTo.filter(evo => evoToTargets[evo.target]);
+        
+        if (showFrom || visibleEvosTo.length > 0) {
             tabs.push({ id: 'evo', label: 'Evolution', icon: '🔄' });
             let content = '<div class="tab-content-inner"><div class="evo-chain">';
             if (showFrom) {
@@ -851,11 +857,9 @@ function createPokemonCard(pokemon) {
                     content += `<div class="evo-item evo-from"><span class="evo-label">Evolves from</span><span class="evo-name">${evoData.evolvesFrom.pokemon}</span></div>`;
                 }
             }
-            if (showTo) {
-                evoData.evolvesTo.forEach(evo => {
-                    content += `<div class="evo-item evo-to"><span class="evo-label">Evolves to</span><span class="evo-name">${evo.target}</span></div>`;
-                });
-            }
+            visibleEvosTo.forEach(evo => {
+                content += `<div class="evo-item evo-to"><span class="evo-label">Evolves to</span><span class="evo-name">${evo.target}</span></div>`;
+            });
             content += '</div></div>';
             tabContents.push({ id: 'evo', content });
         }
@@ -1291,6 +1295,15 @@ function setAllVisibility(pokemonName, visible) {
     const key = pokemonName.toLowerCase();
     const pokemon = state.pokemonData.find(p => p.name === pokemonName);
     
+    // Build evoToTargets object
+    let evoToTargets = {};
+    if (pokemon?.evolutionReq) {
+        const evoData = parseEvolutionData(pokemon.evolutionReq);
+        evoData.evolvesTo.forEach(evo => {
+            evoToTargets[evo.target] = visible;
+        });
+    }
+    
     state.config.visibility[key] = {
         // Types
         primaryType: visible,
@@ -1336,7 +1349,7 @@ function setAllVisibility(pokemonName, visible) {
         
         // Evolution
         evoFrom: visible,
-        evoTo: visible,
+        evoToTargets: evoToTargets,
         
         // Moves
         moves: visible,
@@ -1554,9 +1567,35 @@ function openPokemonEditModal(pokemonName) {
     document.getElementById('cardEdit_senseTrillsense').checked = vis.senseTrillsense;
     document.getElementById('cardEdit_senseMindsense').checked = vis.senseMindsense;
     
-    // Evolution
-    document.getElementById('cardEdit_evoFrom').checked = vis.evoFrom;
-    document.getElementById('cardEdit_evoTo').checked = vis.evoTo;
+    // Evolution - build dynamically
+    const evoGrid = document.getElementById('cardEdit_evolution_grid');
+    const evoSection = document.getElementById('cardEdit_evolution_section');
+    
+    if (pokemon?.evolutionReq) {
+        const evoData = parseEvolutionData(pokemon.evolutionReq);
+        const evoToTargets = vis.evoToTargets || {};
+        let evoHtml = '';
+        
+        // Evolves from
+        if (evoData.evolvesFrom) {
+            const fromLabel = evoData.evolvesFrom.type === 'fusion' 
+                ? `From: ${evoData.evolvesFrom.pokemon1} + ${evoData.evolvesFrom.pokemon2}`
+                : `From: ${evoData.evolvesFrom.pokemon}`;
+            evoHtml += `<label class="edit-toggle"><input type="checkbox" id="cardEdit_evoFrom" ${vis.evoFrom ? 'checked' : ''} onchange="updateCardEditField('evoFrom')"><span>${fromLabel}</span></label>`;
+        }
+        
+        // Evolves to (each target individually)
+        evoData.evolvesTo.forEach(evo => {
+            const isChecked = evoToTargets[evo.target] ? 'checked' : '';
+            evoHtml += `<label class="edit-toggle"><input type="checkbox" data-evo-target="${evo.target}" ${isChecked} onchange="updateEvoTarget('${evo.target}', this.checked)"><span>To: ${evo.target}</span></label>`;
+        });
+        
+        evoGrid.innerHTML = evoHtml || '<p class="text-muted">No evolution data</p>';
+        evoSection.style.display = 'block';
+    } else {
+        evoGrid.innerHTML = '<p class="text-muted">No evolution data</p>';
+        evoSection.style.display = 'block';
+    }
     
     // Moves
     document.getElementById('cardEdit_moves').checked = vis.moves;
@@ -1600,6 +1639,65 @@ function cardEditHideAll() {
     setAllVisibility(state.editingPokemonName, false);
     closePokemonEditModal();
     openPokemonEditModal(state.editingPokemonName);
+}
+
+function setCategoryVisibility(category, visible) {
+    if (!state.editingPokemonName) return;
+    
+    const key = state.editingPokemonName.toLowerCase();
+    if (!state.config.visibility[key]) {
+        state.config.visibility[key] = { ...state.config.defaults };
+    }
+    
+    const vis = state.config.visibility[key];
+    const pokemon = state.pokemonData.find(p => p.name === state.editingPokemonName);
+    
+    const categoryFields = {
+        types: ['primaryType', 'secondaryType'],
+        description: ['description'],
+        characteristics: ['charSize', 'charRarity', 'charBehavior', 'charHabitat', 'charActivity'],
+        combatStats: ['statAC', 'statHD', 'statVD', 'statSpeed'],
+        abilityScores: ['statSTR', 'statDEX', 'statCON', 'statINT', 'statWIS', 'statCHA', 'statSaves', 'statSkills'],
+        abilities: ['primaryAbility', 'secondaryAbility', 'hiddenAbility'],
+        senses: ['senseDarkvision', 'senseBlindsight', 'senseTremorsense', 'senseTrillsense', 'senseMindsense'],
+        moves: ['moves']
+    };
+    
+    if (category === 'evolution') {
+        vis.evoFrom = visible;
+        if (pokemon?.evolutionReq) {
+            const evoData = parseEvolutionData(pokemon.evolutionReq);
+            if (!vis.evoToTargets) vis.evoToTargets = {};
+            evoData.evolvesTo.forEach(evo => {
+                vis.evoToTargets[evo.target] = visible;
+            });
+        }
+    } else if (categoryFields[category]) {
+        categoryFields[category].forEach(field => {
+            vis[field] = visible;
+        });
+    }
+    
+    saveConfigLocally();
+    // Refresh the modal to update checkboxes
+    closePokemonEditModal();
+    openPokemonEditModal(state.editingPokemonName);
+}
+
+function updateEvoTarget(targetName, visible) {
+    if (!state.editingPokemonName) return;
+    
+    const key = state.editingPokemonName.toLowerCase();
+    if (!state.config.visibility[key]) {
+        state.config.visibility[key] = { ...state.config.defaults };
+    }
+    
+    if (!state.config.visibility[key].evoToTargets) {
+        state.config.visibility[key].evoToTargets = {};
+    }
+    
+    state.config.visibility[key].evoToTargets[targetName] = visible;
+    saveConfigLocally();
 }
 
 // ===========================================

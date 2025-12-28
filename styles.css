@@ -1048,6 +1048,41 @@ body.admin-mode .card-edit-btn {
 /* Edit Modal */
 .edit-section { margin-bottom: var(--space-md); }
 .edit-section:last-child { margin-bottom: 0; }
+
+.edit-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-sm);
+}
+
+.edit-section-header h4 {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    color: var(--accent-primary);
+    margin: 0;
+}
+
+.edit-section-btns {
+    display: flex;
+    gap: var(--space-xs);
+}
+
+.btn-tiny {
+    padding: 2px 8px;
+    font-size: 0.65rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.btn-tiny:hover {
+    background: var(--bg-dark);
+    color: var(--text-primary);
+}
+
 .edit-section h4 {
     font-family: var(--font-display);
     font-size: 0.9rem;
@@ -1085,6 +1120,12 @@ body.admin-mode .card-edit-btn {
 }
 
 .edit-level input { width: 70px; text-align: center; }
+
+.text-muted {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-style: italic;
+}
 
 /* Move Edit Modal */
 .move-edit-controls {

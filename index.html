@@ -56,20 +56,38 @@
             </div>
             <div class="modal-body modal-scrollable">
                 <div class="edit-section">
-                    <h4>Types</h4>
+                    <div class="edit-section-header">
+                        <h4>Types</h4>
+                        <div class="edit-section-btns">
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('types', true)">Show</button>
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('types', false)">Hide</button>
+                        </div>
+                    </div>
                     <div class="edit-grid">
                         <label class="edit-toggle"><input type="checkbox" id="cardEdit_primaryType" onchange="updateCardEditField('primaryType')"><span>Primary Type</span></label>
                         <label class="edit-toggle" id="cardEdit_secondaryType_row"><input type="checkbox" id="cardEdit_secondaryType" onchange="updateCardEditField('secondaryType')"><span>Secondary Type</span></label>
                     </div>
                 </div>
                 <div class="edit-section">
-                    <h4>Description</h4>
+                    <div class="edit-section-header">
+                        <h4>Description</h4>
+                        <div class="edit-section-btns">
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('description', true)">Show</button>
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('description', false)">Hide</button>
+                        </div>
+                    </div>
                     <div class="edit-grid">
                         <label class="edit-toggle"><input type="checkbox" id="cardEdit_description" onchange="updateCardEditField('description')"><span>Classification & Flavor Text</span></label>
                     </div>
                 </div>
                 <div class="edit-section">
-                    <h4>Characteristics</h4>
+                    <div class="edit-section-header">
+                        <h4>Characteristics</h4>
+                        <div class="edit-section-btns">
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('characteristics', true)">Show</button>
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('characteristics', false)">Hide</button>
+                        </div>
+                    </div>
                     <div class="edit-grid">
                         <label class="edit-toggle"><input type="checkbox" id="cardEdit_charSize" onchange="updateCardEditField('charSize')"><span>Size</span></label>
                         <label class="edit-toggle"><input type="checkbox" id="cardEdit_charRarity" onchange="updateCardEditField('charRarity')"><span>Rarity</span></label>
@@ -79,7 +97,13 @@
                     </div>
                 </div>
                 <div class="edit-section">
-                    <h4>Combat Stats</h4>
+                    <div class="edit-section-header">
+                        <h4>Combat Stats</h4>
+                        <div class="edit-section-btns">
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('combatStats', true)">Show</button>
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('combatStats', false)">Hide</button>
+                        </div>
+                    </div>
                     <div class="edit-grid">
                         <label class="edit-toggle"><input type="checkbox" id="cardEdit_statAC" onchange="updateCardEditField('statAC')"><span>AC</span></label>
                         <label class="edit-toggle"><input type="checkbox" id="cardEdit_statHD" onchange="updateCardEditField('statHD')"><span>Hit Dice</span></label>
@@ -88,7 +112,13 @@
                     </div>
                 </div>
                 <div class="edit-section">
-                    <h4>Ability Scores</h4>
+                    <div class="edit-section-header">
+                        <h4>Ability Scores</h4>
+                        <div class="edit-section-btns">
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('abilityScores', true)">Show</button>
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('abilityScores', false)">Hide</button>
+                        </div>
+                    </div>
                     <div class="edit-grid">
                         <label class="edit-toggle"><input type="checkbox" id="cardEdit_statSTR" onchange="updateCardEditField('statSTR')"><span>STR</span></label>
                         <label class="edit-toggle"><input type="checkbox" id="cardEdit_statDEX" onchange="updateCardEditField('statDEX')"><span>DEX</span></label>
@@ -101,7 +131,13 @@
                     </div>
                 </div>
                 <div class="edit-section">
-                    <h4>Abilities</h4>
+                    <div class="edit-section-header">
+                        <h4>Abilities</h4>
+                        <div class="edit-section-btns">
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('abilities', true)">Show</button>
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('abilities', false)">Hide</button>
+                        </div>
+                    </div>
                     <div class="edit-grid">
                         <label class="edit-toggle"><input type="checkbox" id="cardEdit_primaryAbility" onchange="updateCardEditField('primaryAbility')"><span>Primary Ability</span></label>
                         <label class="edit-toggle" id="cardEdit_secondaryAbility_row"><input type="checkbox" id="cardEdit_secondaryAbility" onchange="updateCardEditField('secondaryAbility')"><span>Secondary Ability</span></label>
@@ -109,7 +145,13 @@
                     </div>
                 </div>
                 <div class="edit-section">
-                    <h4>Senses</h4>
+                    <div class="edit-section-header">
+                        <h4>Senses</h4>
+                        <div class="edit-section-btns">
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('senses', true)">Show</button>
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('senses', false)">Hide</button>
+                        </div>
+                    </div>
                     <div class="edit-grid">
                         <label class="edit-toggle"><input type="checkbox" id="cardEdit_senseDarkvision" onchange="updateCardEditField('senseDarkvision')"><span>Darkvision</span></label>
                         <label class="edit-toggle"><input type="checkbox" id="cardEdit_senseBlindsight" onchange="updateCardEditField('senseBlindsight')"><span>Blindsight</span></label>
@@ -118,15 +160,26 @@
                         <label class="edit-toggle"><input type="checkbox" id="cardEdit_senseMindsense" onchange="updateCardEditField('senseMindsense')"><span>Mindsense</span></label>
                     </div>
                 </div>
-                <div class="edit-section">
-                    <h4>Evolution</h4>
-                    <div class="edit-grid">
-                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_evoFrom" onchange="updateCardEditField('evoFrom')"><span>Evolves From</span></label>
-                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_evoTo" onchange="updateCardEditField('evoTo')"><span>Evolves To</span></label>
+                <div class="edit-section" id="cardEdit_evolution_section">
+                    <div class="edit-section-header">
+                        <h4>Evolution</h4>
+                        <div class="edit-section-btns">
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('evolution', true)">Show</button>
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('evolution', false)">Hide</button>
+                        </div>
+                    </div>
+                    <div class="edit-grid" id="cardEdit_evolution_grid">
+                        <!-- Populated dynamically -->
                     </div>
                 </div>
                 <div class="edit-section">
-                    <h4>Moves</h4>
+                    <div class="edit-section-header">
+                        <h4>Moves</h4>
+                        <div class="edit-section-btns">
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('moves', true)">Show</button>
+                            <button class="btn btn-tiny" onclick="setCategoryVisibility('moves', false)">Hide</button>
+                        </div>
+                    </div>
                     <div class="edit-grid">
                         <label class="edit-toggle"><input type="checkbox" id="cardEdit_moves" onchange="updateCardEditField('moves')"><span>Show Moves</span></label>
                         <div class="edit-level">
@@ -284,7 +337,7 @@
                         <h4>Evolution</h4>
                         <div class="defaults-grid">
                             <label class="default-toggle"><input type="checkbox" id="default_evoFrom" onchange="updateDefault('evoFrom')"><span>Evolves From</span></label>
-                            <label class="default-toggle"><input type="checkbox" id="default_evoTo" onchange="updateDefault('evoTo')"><span>Evolves To</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_evoTo" onchange="updateDefault('evoTo')"><span>Evolves To (all targets)</span></label>
                         </div>
                     </div>
                     
