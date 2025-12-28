@@ -1523,49 +1523,55 @@ function openPokemonEditModal(pokemonName) {
     document.getElementById('editModalPokemonName').textContent = pokemonName;
     
     // Types
-    document.getElementById('cardEdit_primaryType').checked = vis.primaryType;
-    document.getElementById('cardEdit_secondaryType').checked = vis.secondaryType;
-    document.getElementById('cardEdit_secondaryType_row').style.display = pokemon?.secondaryType ? 'flex' : 'none';
+    const primaryTypeEl = document.getElementById('cardEdit_primaryType');
+    if (primaryTypeEl) primaryTypeEl.checked = vis.primaryType;
+    const secTypeCheckbox = document.getElementById('cardEdit_secondaryType');
+    const secTypeRow = document.getElementById('cardEdit_secondaryType_row');
+    if (secTypeCheckbox) secTypeCheckbox.checked = vis.secondaryType;
+    if (secTypeRow) secTypeRow.style.display = pokemon?.secondaryType ? 'flex' : 'none';
     
     // Description
-    document.getElementById('cardEdit_description').checked = vis.description;
+    const descEl = document.getElementById('cardEdit_description');
+    if (descEl) descEl.checked = vis.description;
     
     // Characteristics
-    document.getElementById('cardEdit_charSize').checked = vis.charSize;
-    document.getElementById('cardEdit_charRarity').checked = vis.charRarity;
-    document.getElementById('cardEdit_charBehavior').checked = vis.charBehavior;
-    document.getElementById('cardEdit_charHabitat').checked = vis.charHabitat;
-    document.getElementById('cardEdit_charActivity').checked = vis.charActivity;
+    ['charSize', 'charRarity', 'charBehavior', 'charHabitat', 'charActivity'].forEach(field => {
+        const el = document.getElementById(`cardEdit_${field}`);
+        if (el) el.checked = vis[field];
+    });
     
     // Combat stats
-    document.getElementById('cardEdit_statAC').checked = vis.statAC;
-    document.getElementById('cardEdit_statHD').checked = vis.statHD;
-    document.getElementById('cardEdit_statVD').checked = vis.statVD;
-    document.getElementById('cardEdit_statSpeed').checked = vis.statSpeed;
+    ['statAC', 'statHD', 'statVD', 'statSpeed'].forEach(field => {
+        const el = document.getElementById(`cardEdit_${field}`);
+        if (el) el.checked = vis[field];
+    });
     
     // Ability scores
-    document.getElementById('cardEdit_statSTR').checked = vis.statSTR;
-    document.getElementById('cardEdit_statDEX').checked = vis.statDEX;
-    document.getElementById('cardEdit_statCON').checked = vis.statCON;
-    document.getElementById('cardEdit_statINT').checked = vis.statINT;
-    document.getElementById('cardEdit_statWIS').checked = vis.statWIS;
-    document.getElementById('cardEdit_statCHA').checked = vis.statCHA;
-    document.getElementById('cardEdit_statSaves').checked = vis.statSaves;
-    document.getElementById('cardEdit_statSkills').checked = vis.statSkills;
+    ['statSTR', 'statDEX', 'statCON', 'statINT', 'statWIS', 'statCHA', 'statSaves', 'statSkills'].forEach(field => {
+        const el = document.getElementById(`cardEdit_${field}`);
+        if (el) el.checked = vis[field];
+    });
     
     // Abilities
-    document.getElementById('cardEdit_primaryAbility').checked = vis.primaryAbility;
-    document.getElementById('cardEdit_secondaryAbility').checked = vis.secondaryAbility;
-    document.getElementById('cardEdit_hiddenAbility').checked = vis.hiddenAbility;
-    document.getElementById('cardEdit_secondaryAbility_row').style.display = pokemon?.secondaryAbility ? 'flex' : 'none';
-    document.getElementById('cardEdit_hiddenAbility_row').style.display = pokemon?.hiddenAbility ? 'flex' : 'none';
+    const primAbilityEl = document.getElementById('cardEdit_primaryAbility');
+    if (primAbilityEl) primAbilityEl.checked = vis.primaryAbility;
+    
+    const secAbilityCheckbox = document.getElementById('cardEdit_secondaryAbility');
+    const secAbilityRow = document.getElementById('cardEdit_secondaryAbility_row');
+    if (secAbilityCheckbox) secAbilityCheckbox.checked = vis.secondaryAbility;
+    if (secAbilityRow) secAbilityRow.style.display = pokemon?.secondaryAbility ? 'flex' : 'none';
+    
+    const hidAbilityCheckbox = document.getElementById('cardEdit_hiddenAbility');
+    const hidAbilityRow = document.getElementById('cardEdit_hiddenAbility_row');
+    if (hidAbilityCheckbox) hidAbilityCheckbox.checked = vis.hiddenAbility;
+    if (hidAbilityRow) hidAbilityRow.style.display = pokemon?.hiddenAbility ? 'flex' : 'none';
     
     // Senses
-    document.getElementById('cardEdit_senseDarkvision').checked = vis.senseDarkvision;
-    document.getElementById('cardEdit_senseBlindsight').checked = vis.senseBlindsight;
-    document.getElementById('cardEdit_senseTremorsense').checked = vis.senseTremorsense;
-    document.getElementById('cardEdit_senseTrillsense').checked = vis.senseTrillsense;
-    document.getElementById('cardEdit_senseMindsense').checked = vis.senseMindsense;
+    const senseFields = ['Darkvision', 'Blindsight', 'Tremorsense', 'Trillsense', 'Mindsense'];
+    senseFields.forEach(sense => {
+        const el = document.getElementById(`cardEdit_sense${sense}`);
+        if (el) el.checked = vis[`sense${sense}`];
+    });
     
     // Evolution - build dynamically
     const evoGrid = document.getElementById('cardEdit_evolution_grid');
@@ -1598,8 +1604,10 @@ function openPokemonEditModal(pokemonName) {
     }
     
     // Moves
-    document.getElementById('cardEdit_moves').checked = vis.moves;
-    document.getElementById('cardEdit_movesMaxLevel').value = vis.movesMaxLevel || 1;
+    const movesCheckbox = document.getElementById('cardEdit_moves');
+    const movesLevel = document.getElementById('cardEdit_movesMaxLevel');
+    if (movesCheckbox) movesCheckbox.checked = vis.moves;
+    if (movesLevel) movesLevel.value = vis.movesMaxLevel || 1;
     
     document.getElementById('pokemonEditModal').classList.add('active');
 }
