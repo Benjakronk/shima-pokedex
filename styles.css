@@ -1033,6 +1033,10 @@ body.admin-mode .card-edit-btn {
     flex: 1;
 }
 
+.modal-body.modal-scrollable {
+    max-height: 60vh;
+}
+
 .modal-footer {
     display: flex;
     justify-content: flex-end;
@@ -1239,6 +1243,11 @@ body.admin-mode .card-edit-btn {
     padding: var(--space-md);
 }
 
+.defaults-content.defaults-scrollable {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
 .defaults-section {
     margin-bottom: var(--space-lg);
 }
@@ -1423,6 +1432,28 @@ body.admin-mode .card-edit-btn {
     color: var(--text-muted);
     font-size: 0.85rem;
     font-style: italic;
+}
+
+.visibility-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    padding: var(--space-sm);
+    background: var(--bg-surface);
+    border-radius: var(--radius-sm);
+    margin-top: var(--space-sm);
+}
+
+.visibility-summary p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.visibility-summary strong {
+    color: var(--accent-primary);
 }
 
 .visibility-controls { display: flex; flex-direction: column; gap: var(--space-md); }

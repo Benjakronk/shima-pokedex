@@ -49,21 +49,55 @@
 
     <!-- Pokemon Edit Modal (from card) -->
     <div id="pokemonEditModal" class="modal">
-        <div class="modal-content modal-medium">
+        <div class="modal-content modal-large">
             <div class="modal-header">
                 <h2>✏️ <span id="editModalPokemonName">Pokémon</span></h2>
                 <button class="btn btn-ghost" onclick="closePokemonEditModal()">✕</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body modal-scrollable">
                 <div class="edit-section">
-                    <h4>Basic Info</h4>
+                    <h4>Types</h4>
                     <div class="edit-grid">
-                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_types" onchange="updateCardEditField('types')"><span>Types</span></label>
-                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_description" onchange="updateCardEditField('description')"><span>Description</span></label>
-                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_characteristics" onchange="updateCardEditField('characteristics')"><span>Characteristics</span></label>
-                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_stats" onchange="updateCardEditField('stats')"><span>Stats</span></label>
-                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_senses" onchange="updateCardEditField('senses')"><span>Senses</span></label>
-                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_evolution" onchange="updateCardEditField('evolution')"><span>Evolution</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_primaryType" onchange="updateCardEditField('primaryType')"><span>Primary Type</span></label>
+                        <label class="edit-toggle" id="cardEdit_secondaryType_row"><input type="checkbox" id="cardEdit_secondaryType" onchange="updateCardEditField('secondaryType')"><span>Secondary Type</span></label>
+                    </div>
+                </div>
+                <div class="edit-section">
+                    <h4>Description</h4>
+                    <div class="edit-grid">
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_description" onchange="updateCardEditField('description')"><span>Classification & Flavor Text</span></label>
+                    </div>
+                </div>
+                <div class="edit-section">
+                    <h4>Characteristics</h4>
+                    <div class="edit-grid">
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_charSize" onchange="updateCardEditField('charSize')"><span>Size</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_charRarity" onchange="updateCardEditField('charRarity')"><span>Rarity</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_charBehavior" onchange="updateCardEditField('charBehavior')"><span>Behavior</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_charHabitat" onchange="updateCardEditField('charHabitat')"><span>Habitat</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_charActivity" onchange="updateCardEditField('charActivity')"><span>Activity</span></label>
+                    </div>
+                </div>
+                <div class="edit-section">
+                    <h4>Combat Stats</h4>
+                    <div class="edit-grid">
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_statAC" onchange="updateCardEditField('statAC')"><span>AC</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_statHD" onchange="updateCardEditField('statHD')"><span>Hit Dice</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_statVD" onchange="updateCardEditField('statVD')"><span>Vitality Dice</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_statSpeed" onchange="updateCardEditField('statSpeed')"><span>Speed</span></label>
+                    </div>
+                </div>
+                <div class="edit-section">
+                    <h4>Ability Scores</h4>
+                    <div class="edit-grid">
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_statSTR" onchange="updateCardEditField('statSTR')"><span>STR</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_statDEX" onchange="updateCardEditField('statDEX')"><span>DEX</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_statCON" onchange="updateCardEditField('statCON')"><span>CON</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_statINT" onchange="updateCardEditField('statINT')"><span>INT</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_statWIS" onchange="updateCardEditField('statWIS')"><span>WIS</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_statCHA" onchange="updateCardEditField('statCHA')"><span>CHA</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_statSaves" onchange="updateCardEditField('statSaves')"><span>Saves</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_statSkills" onchange="updateCardEditField('statSkills')"><span>Skills</span></label>
                     </div>
                 </div>
                 <div class="edit-section">
@@ -72,6 +106,23 @@
                         <label class="edit-toggle"><input type="checkbox" id="cardEdit_primaryAbility" onchange="updateCardEditField('primaryAbility')"><span>Primary Ability</span></label>
                         <label class="edit-toggle" id="cardEdit_secondaryAbility_row"><input type="checkbox" id="cardEdit_secondaryAbility" onchange="updateCardEditField('secondaryAbility')"><span>Secondary Ability</span></label>
                         <label class="edit-toggle" id="cardEdit_hiddenAbility_row"><input type="checkbox" id="cardEdit_hiddenAbility" onchange="updateCardEditField('hiddenAbility')"><span>Hidden Ability</span></label>
+                    </div>
+                </div>
+                <div class="edit-section">
+                    <h4>Senses</h4>
+                    <div class="edit-grid">
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_senseDarkvision" onchange="updateCardEditField('senseDarkvision')"><span>Darkvision</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_senseBlindsight" onchange="updateCardEditField('senseBlindsight')"><span>Blindsight</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_senseTremorsense" onchange="updateCardEditField('senseTremorsense')"><span>Tremorsense</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_senseTrillsense" onchange="updateCardEditField('senseTrillsense')"><span>Trillsense</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_senseMindsense" onchange="updateCardEditField('senseMindsense')"><span>Mindsense</span></label>
+                    </div>
+                </div>
+                <div class="edit-section">
+                    <h4>Evolution</h4>
+                    <div class="edit-grid">
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_evoFrom" onchange="updateCardEditField('evoFrom')"><span>Evolves From</span></label>
+                        <label class="edit-toggle"><input type="checkbox" id="cardEdit_evoTo" onchange="updateCardEditField('evoTo')"><span>Evolves To</span></label>
                     </div>
                 </div>
                 <div class="edit-section">
@@ -156,37 +207,94 @@
             
             <!-- Defaults Tab -->
             <div id="defaultsTab" class="admin-tab-content">
-                <div class="defaults-content">
+                <div class="defaults-content defaults-scrollable">
                     <p class="tab-description">These settings apply when registering new Pokémon</p>
                     
                     <div class="defaults-section">
-                        <h4>Basic Info</h4>
+                        <h4>Types</h4>
                         <div class="defaults-grid">
-                            <label class="default-toggle"><input type="checkbox" id="default_types"><span>Types</span></label>
-                            <label class="default-toggle"><input type="checkbox" id="default_description"><span>Description</span></label>
-                            <label class="default-toggle"><input type="checkbox" id="default_characteristics"><span>Characteristics</span></label>
-                            <label class="default-toggle"><input type="checkbox" id="default_stats"><span>Stats</span></label>
-                            <label class="default-toggle"><input type="checkbox" id="default_senses"><span>Senses</span></label>
-                            <label class="default-toggle"><input type="checkbox" id="default_evolution"><span>Evolution</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_primaryType" onchange="updateDefault('primaryType')"><span>Primary Type</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_secondaryType" onchange="updateDefault('secondaryType')"><span>Secondary Type</span></label>
+                        </div>
+                    </div>
+                    
+                    <div class="defaults-section">
+                        <h4>Description</h4>
+                        <div class="defaults-grid">
+                            <label class="default-toggle"><input type="checkbox" id="default_description" onchange="updateDefault('description')"><span>Classification & Flavor</span></label>
+                        </div>
+                    </div>
+                    
+                    <div class="defaults-section">
+                        <h4>Characteristics</h4>
+                        <div class="defaults-grid">
+                            <label class="default-toggle"><input type="checkbox" id="default_charSize" onchange="updateDefault('charSize')"><span>Size</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_charRarity" onchange="updateDefault('charRarity')"><span>Rarity</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_charBehavior" onchange="updateDefault('charBehavior')"><span>Behavior</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_charHabitat" onchange="updateDefault('charHabitat')"><span>Habitat</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_charActivity" onchange="updateDefault('charActivity')"><span>Activity</span></label>
+                        </div>
+                    </div>
+                    
+                    <div class="defaults-section">
+                        <h4>Combat Stats</h4>
+                        <div class="defaults-grid">
+                            <label class="default-toggle"><input type="checkbox" id="default_statAC" onchange="updateDefault('statAC')"><span>AC</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_statHD" onchange="updateDefault('statHD')"><span>Hit Dice</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_statVD" onchange="updateDefault('statVD')"><span>Vitality</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_statSpeed" onchange="updateDefault('statSpeed')"><span>Speed</span></label>
+                        </div>
+                    </div>
+                    
+                    <div class="defaults-section">
+                        <h4>Ability Scores</h4>
+                        <div class="defaults-grid">
+                            <label class="default-toggle"><input type="checkbox" id="default_statSTR" onchange="updateDefault('statSTR')"><span>STR</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_statDEX" onchange="updateDefault('statDEX')"><span>DEX</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_statCON" onchange="updateDefault('statCON')"><span>CON</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_statINT" onchange="updateDefault('statINT')"><span>INT</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_statWIS" onchange="updateDefault('statWIS')"><span>WIS</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_statCHA" onchange="updateDefault('statCHA')"><span>CHA</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_statSaves" onchange="updateDefault('statSaves')"><span>Saves</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_statSkills" onchange="updateDefault('statSkills')"><span>Skills</span></label>
                         </div>
                     </div>
                     
                     <div class="defaults-section">
                         <h4>Abilities</h4>
                         <div class="defaults-grid">
-                            <label class="default-toggle"><input type="checkbox" id="default_primaryAbility"><span>Primary Ability</span></label>
-                            <label class="default-toggle"><input type="checkbox" id="default_secondaryAbility"><span>Secondary Ability</span></label>
-                            <label class="default-toggle"><input type="checkbox" id="default_hiddenAbility"><span>Hidden Ability</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_primaryAbility" onchange="updateDefault('primaryAbility')"><span>Primary Ability</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_secondaryAbility" onchange="updateDefault('secondaryAbility')"><span>Secondary Ability</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_hiddenAbility" onchange="updateDefault('hiddenAbility')"><span>Hidden Ability</span></label>
+                        </div>
+                    </div>
+                    
+                    <div class="defaults-section">
+                        <h4>Senses</h4>
+                        <div class="defaults-grid">
+                            <label class="default-toggle"><input type="checkbox" id="default_senseDarkvision" onchange="updateDefault('senseDarkvision')"><span>Darkvision</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_senseBlindsight" onchange="updateDefault('senseBlindsight')"><span>Blindsight</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_senseTremorsense" onchange="updateDefault('senseTremorsense')"><span>Tremorsense</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_senseTrillsense" onchange="updateDefault('senseTrillsense')"><span>Trillsense</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_senseMindsense" onchange="updateDefault('senseMindsense')"><span>Mindsense</span></label>
+                        </div>
+                    </div>
+                    
+                    <div class="defaults-section">
+                        <h4>Evolution</h4>
+                        <div class="defaults-grid">
+                            <label class="default-toggle"><input type="checkbox" id="default_evoFrom" onchange="updateDefault('evoFrom')"><span>Evolves From</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_evoTo" onchange="updateDefault('evoTo')"><span>Evolves To</span></label>
                         </div>
                     </div>
                     
                     <div class="defaults-section">
                         <h4>Moves</h4>
                         <div class="defaults-grid">
-                            <label class="default-toggle"><input type="checkbox" id="default_moves"><span>Show Moves</span></label>
+                            <label class="default-toggle"><input type="checkbox" id="default_moves" onchange="updateDefault('moves')"><span>Show Moves</span></label>
                             <div class="default-level-input">
                                 <label>Up to Level:</label>
-                                <input type="number" id="default_movesMaxLevel" min="1" max="20" value="1">
+                                <input type="number" id="default_movesMaxLevel" min="1" max="20" value="1" onchange="updateDefault('movesMaxLevel')">
                             </div>
                         </div>
                     </div>

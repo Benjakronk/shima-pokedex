@@ -35,15 +35,51 @@ const RESULTS_PER_PAGE = 5;
 const ADMIN_PASSWORD = 'shimamaster';
 
 const DEFAULT_VISIBILITY = {
-    types: true,
+    // Types (granular)
+    primaryType: true,
+    secondaryType: true,
+    
+    // Description
     description: true,
-    characteristics: true,
+    
+    // Characteristics (granular)
+    charSize: true,
+    charRarity: true,
+    charBehavior: true,
+    charHabitat: true,
+    charActivity: true,
+    
+    // Stats (granular)
+    statAC: false,
+    statHD: false,
+    statVD: false,
+    statSpeed: false,
+    statSTR: false,
+    statDEX: false,
+    statCON: false,
+    statINT: false,
+    statWIS: false,
+    statCHA: false,
+    statSaves: false,
+    statSkills: false,
+    
+    // Abilities
     primaryAbility: false,
     secondaryAbility: false,
     hiddenAbility: false,
-    stats: false,
-    senses: false,
-    evolution: false,
+    
+    // Senses (granular)
+    senseDarkvision: false,
+    senseBlindsight: false,
+    senseTremorsense: false,
+    senseTrillsense: false,
+    senseMindsense: false,
+    
+    // Evolution (granular)
+    evoFrom: false,
+    evoTo: false,
+    
+    // Moves
     moves: false,
     movesMaxLevel: 1,
     extraVisibleMoves: []
@@ -578,10 +614,8 @@ function searchPokemon() {
         const vis = getVisibility(pokemon.name);
         if (pokemon.name.toLowerCase().includes(searchTerm)) return true;
         
-        if (vis.types) {
-            if (pokemon.primaryType.toLowerCase().includes(searchTerm)) return true;
-            if (pokemon.secondaryType?.toLowerCase().includes(searchTerm)) return true;
-        }
+        if (vis.primaryType && pokemon.primaryType.toLowerCase().includes(searchTerm)) return true;
+        if (vis.secondaryType && pokemon.secondaryType?.toLowerCase().includes(searchTerm)) return true;
         
         return false;
     });
@@ -625,17 +659,23 @@ function createPokemonCard(pokemon) {
     
     const primaryColor = getTypeColor(pokemon.primaryType);
     const secondaryColor = pokemon.secondaryType ? getTypeColor(pokemon.secondaryType) : primaryColor;
-    const showTypes = visibility.types;
+    
+    // Determine header background based on visible types
+    const showPrimary = visibility.primaryType;
+    const showSecondary = visibility.secondaryType && pokemon.secondaryType;
+    
+    let headerBg = 'var(--bg-elevated)';
+    if (showPrimary && showSecondary) {
+        headerBg = `linear-gradient(135deg, ${primaryColor} 50%, ${secondaryColor} 50%)`;
+    } else if (showPrimary) {
+        headerBg = primaryColor;
+    } else if (showSecondary) {
+        headerBg = secondaryColor;
+    }
     
     let html = '';
     
     // Header with type-colored border/frame
-    const headerBg = showTypes 
-        ? (pokemon.secondaryType 
-            ? `linear-gradient(135deg, ${primaryColor} 50%, ${secondaryColor} 50%)`
-            : primaryColor)
-        : 'var(--bg-elevated)';
-    
     html += `<div class="card-header" style="background: ${headerBg}">`;
     
     // Image side (in the colored area)
@@ -658,17 +698,18 @@ function createPokemonCard(pokemon) {
     html += `<span class="card-number">#${pokemon.id}</span>`;
     html += `<h2 class="card-name">${pokemon.name}</h2>`;
     
-    // Types with original colors
-    if (showTypes) {
-        html += '<div class="card-types">';
+    // Types with original colors (granular)
+    html += '<div class="card-types">';
+    if (showPrimary) {
         html += `<span class="type-pill" style="background:${primaryColor}">${pokemon.primaryType}</span>`;
-        if (pokemon.secondaryType) {
-            html += `<span class="type-pill" style="background:${secondaryColor}">${pokemon.secondaryType}</span>`;
-        }
-        html += '</div>';
-    } else {
-        html += '<div class="card-types"><span class="type-pill unknown">Unknown</span></div>';
     }
+    if (showSecondary) {
+        html += `<span class="type-pill" style="background:${secondaryColor}">${pokemon.secondaryType}</span>`;
+    }
+    if (!showPrimary && !showSecondary) {
+        html += '<span class="type-pill unknown">Unknown</span>';
+    }
+    html += '</div>';
     
     // Classification
     if (visibility.description && pokemon.classification) {
@@ -686,44 +727,58 @@ function createPokemonCard(pokemon) {
     const tabs = [];
     const tabContents = [];
     
-    // Characteristics tab
-    if (visibility.characteristics) {
+    // Characteristics tab (granular)
+    const hasAnyChar = (visibility.charSize && pokemon.size) || 
+                       (visibility.charRarity && pokemon.rarity) || 
+                       (visibility.charBehavior && pokemon.behavior) || 
+                       (visibility.charHabitat && pokemon.habitat) || 
+                       (visibility.charActivity && pokemon.activityTime);
+    if (hasAnyChar) {
         tabs.push({ id: 'chars', label: 'Info', icon: '📋' });
         let content = '<div class="tab-content-inner"><div class="char-grid">';
-        if (pokemon.size) content += `<div class="char-item"><span class="char-label">Size</span><span class="char-value">${pokemon.size}</span></div>`;
-        if (pokemon.rarity) content += `<div class="char-item"><span class="char-label">Rarity</span><span class="char-value">${pokemon.rarity}</span></div>`;
-        if (pokemon.behavior) content += `<div class="char-item"><span class="char-label">Behavior</span><span class="char-value">${pokemon.behavior}</span></div>`;
-        if (pokemon.habitat) content += `<div class="char-item"><span class="char-label">Habitat</span><span class="char-value">${pokemon.habitat}</span></div>`;
-        if (pokemon.activityTime) content += `<div class="char-item"><span class="char-label">Activity</span><span class="char-value">${pokemon.activityTime}</span></div>`;
-        if (pokemon.catchDifficulty) content += `<div class="char-item"><span class="char-label">Catch DC</span><span class="char-value">${pokemon.catchDifficulty}</span></div>`;
+        if (visibility.charSize && pokemon.size) content += `<div class="char-item"><span class="char-label">Size</span><span class="char-value">${pokemon.size}</span></div>`;
+        if (visibility.charRarity && pokemon.rarity) content += `<div class="char-item"><span class="char-label">Rarity</span><span class="char-value">${pokemon.rarity}</span></div>`;
+        if (visibility.charBehavior && pokemon.behavior) content += `<div class="char-item"><span class="char-label">Behavior</span><span class="char-value">${pokemon.behavior}</span></div>`;
+        if (visibility.charHabitat && pokemon.habitat) content += `<div class="char-item"><span class="char-label">Habitat</span><span class="char-value">${pokemon.habitat}</span></div>`;
+        if (visibility.charActivity && pokemon.activityTime) content += `<div class="char-item"><span class="char-label">Activity</span><span class="char-value">${pokemon.activityTime}</span></div>`;
         content += '</div></div>';
         tabContents.push({ id: 'chars', content });
     }
     
-    // Stats tab (now includes AC, HD, VD, SPD)
-    if (visibility.stats) {
+    // Stats tab (granular)
+    const hasAnyCombatStat = visibility.statAC || visibility.statHD || visibility.statVD || visibility.statSpeed;
+    const hasAnyAbilityStat = visibility.statSTR || visibility.statDEX || visibility.statCON || 
+                              visibility.statINT || visibility.statWIS || visibility.statCHA;
+    const hasAnyExtraStat = (visibility.statSaves && pokemon.savingThrows) || (visibility.statSkills && pokemon.skills);
+    
+    if (hasAnyCombatStat || hasAnyAbilityStat || hasAnyExtraStat) {
         tabs.push({ id: 'stats', label: 'Stats', icon: '📊' });
         let content = '<div class="tab-content-inner">';
         
         // Combat stats row
-        content += '<div class="combat-stats">';
-        content += `<div class="combat-stat"><span class="combat-value">${pokemon.ac}</span><span class="combat-label">AC</span></div>`;
-        content += `<div class="combat-stat"><span class="combat-value">${pokemon.hitDice}</span><span class="combat-label">Hit Dice</span></div>`;
-        content += `<div class="combat-stat"><span class="combat-value">${pokemon.vitalityDice}</span><span class="combat-label">Vitality</span></div>`;
-        content += `<div class="combat-stat"><span class="combat-value">${pokemon.speed}</span><span class="combat-label">Speed</span></div>`;
-        content += '</div>';
+        if (hasAnyCombatStat) {
+            content += '<div class="combat-stats">';
+            if (visibility.statAC) content += `<div class="combat-stat"><span class="combat-value">${pokemon.ac}</span><span class="combat-label">AC</span></div>`;
+            if (visibility.statHD) content += `<div class="combat-stat"><span class="combat-value">${pokemon.hitDice}</span><span class="combat-label">Hit Dice</span></div>`;
+            if (visibility.statVD) content += `<div class="combat-stat"><span class="combat-value">${pokemon.vitalityDice}</span><span class="combat-label">Vitality</span></div>`;
+            if (visibility.statSpeed) content += `<div class="combat-stat"><span class="combat-value">${pokemon.speed}</span><span class="combat-label">Speed</span></div>`;
+            content += '</div>';
+        }
         
         // Ability scores
-        content += '<div class="stat-hexagon">';
-        content += `<div class="hex-stat"><span class="hex-value">${pokemon.strength}</span><span class="hex-label">STR</span></div>`;
-        content += `<div class="hex-stat"><span class="hex-value">${pokemon.dexterity}</span><span class="hex-label">DEX</span></div>`;
-        content += `<div class="hex-stat"><span class="hex-value">${pokemon.constitution}</span><span class="hex-label">CON</span></div>`;
-        content += `<div class="hex-stat"><span class="hex-value">${pokemon.intelligence}</span><span class="hex-label">INT</span></div>`;
-        content += `<div class="hex-stat"><span class="hex-value">${pokemon.wisdom}</span><span class="hex-label">WIS</span></div>`;
-        content += `<div class="hex-stat"><span class="hex-value">${pokemon.charisma}</span><span class="hex-label">CHA</span></div>`;
-        content += '</div>';
-        if (pokemon.savingThrows) content += `<p class="stat-extra"><strong>Saves:</strong> ${pokemon.savingThrows}</p>`;
-        if (pokemon.skills) content += `<p class="stat-extra"><strong>Skills:</strong> ${pokemon.skills}</p>`;
+        if (hasAnyAbilityStat) {
+            content += '<div class="stat-hexagon">';
+            if (visibility.statSTR) content += `<div class="hex-stat"><span class="hex-value">${pokemon.strength}</span><span class="hex-label">STR</span></div>`;
+            if (visibility.statDEX) content += `<div class="hex-stat"><span class="hex-value">${pokemon.dexterity}</span><span class="hex-label">DEX</span></div>`;
+            if (visibility.statCON) content += `<div class="hex-stat"><span class="hex-value">${pokemon.constitution}</span><span class="hex-label">CON</span></div>`;
+            if (visibility.statINT) content += `<div class="hex-stat"><span class="hex-value">${pokemon.intelligence}</span><span class="hex-label">INT</span></div>`;
+            if (visibility.statWIS) content += `<div class="hex-stat"><span class="hex-value">${pokemon.wisdom}</span><span class="hex-label">WIS</span></div>`;
+            if (visibility.statCHA) content += `<div class="hex-stat"><span class="hex-value">${pokemon.charisma}</span><span class="hex-label">CHA</span></div>`;
+            content += '</div>';
+        }
+        
+        if (visibility.statSaves && pokemon.savingThrows) content += `<p class="stat-extra"><strong>Saves:</strong> ${pokemon.savingThrows}</p>`;
+        if (visibility.statSkills && pokemon.skills) content += `<p class="stat-extra"><strong>Skills:</strong> ${pokemon.skills}</p>`;
         content += '</div>';
         tabContents.push({ id: 'stats', content });
     }
@@ -755,37 +810,52 @@ function createPokemonCard(pokemon) {
         tabContents.push({ id: 'abilities', content });
     }
     
-    // Senses tab
-    if (visibility.senses) {
-        const senseEntries = Object.entries(pokemon.senses)
-            .filter(([_, v]) => v && v !== "0" && v.toLowerCase() !== "no" && v !== "-");
-        if (senseEntries.length > 0) {
-            tabs.push({ id: 'senses', label: 'Senses', icon: '👁️' });
-            let content = '<div class="tab-content-inner"><div class="sense-list">';
-            senseEntries.forEach(([k, v]) => {
-                content += `<div class="sense-row"><span class="sense-name">${k}</span><span class="sense-value">${v}</span></div>`;
-            });
-            content += '</div></div>';
-            tabContents.push({ id: 'senses', content });
-        }
+    // Senses tab (granular)
+    const senseMap = {
+        'Darkvision': 'senseDarkvision',
+        'Blindsight': 'senseBlindsight', 
+        'Tremorsense': 'senseTremorsense',
+        'Trillsense': 'senseTrillsense',
+        'Mindsense': 'senseMindsense'
+    };
+    const visibleSenses = Object.entries(pokemon.senses)
+        .filter(([k, v]) => {
+            if (!v || v === "0" || v.toLowerCase() === "no" || v === "-") return false;
+            const visKey = senseMap[k];
+            return visKey ? visibility[visKey] : false;
+        });
+    
+    if (visibleSenses.length > 0) {
+        tabs.push({ id: 'senses', label: 'Senses', icon: '👁️' });
+        let content = '<div class="tab-content-inner"><div class="sense-list">';
+        visibleSenses.forEach(([k, v]) => {
+            content += `<div class="sense-row"><span class="sense-name">${k}</span><span class="sense-value">${v}</span></div>`;
+        });
+        content += '</div></div>';
+        tabContents.push({ id: 'senses', content });
     }
     
-    // Evolution tab
-    if (visibility.evolution && pokemon.evolutionReq) {
+    // Evolution tab (granular)
+    if (pokemon.evolutionReq && (visibility.evoFrom || visibility.evoTo)) {
         const evoData = parseEvolutionData(pokemon.evolutionReq);
-        if (evoData.evolvesFrom || evoData.evolvesTo.length > 0) {
+        const showFrom = visibility.evoFrom && evoData.evolvesFrom;
+        const showTo = visibility.evoTo && evoData.evolvesTo.length > 0;
+        
+        if (showFrom || showTo) {
             tabs.push({ id: 'evo', label: 'Evolution', icon: '🔄' });
             let content = '<div class="tab-content-inner"><div class="evo-chain">';
-            if (evoData.evolvesFrom) {
+            if (showFrom) {
                 if (evoData.evolvesFrom.type === 'fusion') {
                     content += `<div class="evo-item evo-from"><span class="evo-label">Fusion from</span><span class="evo-name">${evoData.evolvesFrom.pokemon1} + ${evoData.evolvesFrom.pokemon2}</span></div>`;
                 } else {
                     content += `<div class="evo-item evo-from"><span class="evo-label">Evolves from</span><span class="evo-name">${evoData.evolvesFrom.pokemon}</span></div>`;
                 }
             }
-            evoData.evolvesTo.forEach(evo => {
-                content += `<div class="evo-item evo-to"><span class="evo-label">Evolves to</span><span class="evo-name">${evo.target}</span></div>`;
-            });
+            if (showTo) {
+                evoData.evolvesTo.forEach(evo => {
+                    content += `<div class="evo-item evo-to"><span class="evo-label">Evolves to</span><span class="evo-name">${evo.target}</span></div>`;
+                });
+            }
             content += '</div></div>';
             tabContents.push({ id: 'evo', content });
         }
@@ -1153,6 +1223,11 @@ function createAdminExpandedContent(pokemon) {
     const registered = isRegistered(pokemon.name);
     const vis = registered ? getVisibility(pokemon.name) : DEFAULT_VISIBILITY;
     
+    // Count visible fields for summary
+    const visibleCount = Object.entries(vis).filter(([k, v]) => 
+        typeof v === 'boolean' && v && k !== 'movesMaxLevel'
+    ).length;
+    
     return `
         <div class="admin-pokemon-body">
             <div class="admin-controls-row">
@@ -1160,79 +1235,15 @@ function createAdminExpandedContent(pokemon) {
                     ${registered ? 'Unregister' : 'Register'}
                 </button>
                 ${registered ? `
+                    <button class="btn btn-small btn-primary" onclick="openPokemonEditModal('${pokemon.name}')">✏️ Edit Visibility</button>
                     <button class="btn btn-small btn-secondary" data-action="show-all" data-pokemon="${pokemon.name}">Show All</button>
                     <button class="btn btn-small btn-secondary" data-action="hide-all" data-pokemon="${pokemon.name}">Hide All</button>
                 ` : ''}
             </div>
             ${registered ? `
-                <div class="visibility-controls">
-                    <div class="vis-section">
-                        <h4>Basic Info</h4>
-                        <div class="vis-grid">
-                            <label class="vis-toggle-label">
-                                <input type="checkbox" ${vis.types ? 'checked' : ''} data-field="types" data-pokemon="${pokemon.name}">
-                                <span>Types</span>
-                            </label>
-                            <label class="vis-toggle-label">
-                                <input type="checkbox" ${vis.description ? 'checked' : ''} data-field="description" data-pokemon="${pokemon.name}">
-                                <span>Description</span>
-                            </label>
-                            <label class="vis-toggle-label">
-                                <input type="checkbox" ${vis.characteristics ? 'checked' : ''} data-field="characteristics" data-pokemon="${pokemon.name}">
-                                <span>Characteristics</span>
-                            </label>
-                            <label class="vis-toggle-label">
-                                <input type="checkbox" ${vis.stats ? 'checked' : ''} data-field="stats" data-pokemon="${pokemon.name}">
-                                <span>Stats</span>
-                            </label>
-                            <label class="vis-toggle-label">
-                                <input type="checkbox" ${vis.senses ? 'checked' : ''} data-field="senses" data-pokemon="${pokemon.name}">
-                                <span>Senses</span>
-                            </label>
-                            <label class="vis-toggle-label">
-                                <input type="checkbox" ${vis.evolution ? 'checked' : ''} data-field="evolution" data-pokemon="${pokemon.name}">
-                                <span>Evolution</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="vis-section">
-                        <h4>Abilities</h4>
-                        <div class="vis-grid">
-                            <label class="vis-toggle-label">
-                                <input type="checkbox" ${vis.primaryAbility ? 'checked' : ''} data-field="primaryAbility" data-pokemon="${pokemon.name}">
-                                <span>Primary: ${pokemon.primaryAbility?.name || 'None'}</span>
-                            </label>
-                            ${pokemon.secondaryAbility ? `
-                                <label class="vis-toggle-label">
-                                    <input type="checkbox" ${vis.secondaryAbility ? 'checked' : ''} data-field="secondaryAbility" data-pokemon="${pokemon.name}">
-                                    <span>Secondary: ${pokemon.secondaryAbility.name}</span>
-                                </label>
-                            ` : ''}
-                            ${pokemon.hiddenAbility ? `
-                                <label class="vis-toggle-label">
-                                    <input type="checkbox" ${vis.hiddenAbility ? 'checked' : ''} data-field="hiddenAbility" data-pokemon="${pokemon.name}">
-                                    <span>Hidden: ${pokemon.hiddenAbility.name}</span>
-                                </label>
-                            ` : ''}
-                        </div>
-                    </div>
-                    <div class="vis-section">
-                        <h4>Moves</h4>
-                        <div class="vis-grid">
-                            <label class="vis-toggle-label">
-                                <input type="checkbox" ${vis.moves ? 'checked' : ''} data-field="moves" data-pokemon="${pokemon.name}">
-                                <span>Show Moves</span>
-                            </label>
-                            <div class="moves-level-input">
-                                <label>Up to Level:</label>
-                                <input type="number" min="1" max="20" value="${vis.movesMaxLevel || 1}" data-field="movesMaxLevel" data-pokemon="${pokemon.name}">
-                            </div>
-                        </div>
-                        <div class="extra-moves-section">
-                            <span class="extra-moves-label">Extra Moves:</span>
-                            <button class="btn btn-small btn-secondary" data-action="edit-moves" data-pokemon="${pokemon.name}">Edit (${(vis.extraVisibleMoves || []).length})</button>
-                        </div>
-                    </div>
+                <div class="visibility-summary">
+                    <p><strong>${visibleCount}</strong> fields visible · Moves up to Lv ${vis.movesMaxLevel || 1}${(vis.extraVisibleMoves || []).length > 0 ? ` · +${vis.extraVisibleMoves.length} extra moves` : ''}</p>
+                    <button class="btn btn-small btn-secondary" data-action="edit-moves" data-pokemon="${pokemon.name}">Edit Moves</button>
                 </div>
             ` : '<p class="register-hint">Register this Pokémon to configure visibility settings</p>'}
         </div>
@@ -1281,15 +1292,53 @@ function setAllVisibility(pokemonName, visible) {
     const pokemon = state.pokemonData.find(p => p.name === pokemonName);
     
     state.config.visibility[key] = {
-        types: visible,
+        // Types
+        primaryType: visible,
+        secondaryType: visible && !!pokemon?.secondaryType,
+        
+        // Description
         description: visible,
-        characteristics: visible,
+        
+        // Characteristics
+        charSize: visible,
+        charRarity: visible,
+        charBehavior: visible,
+        charHabitat: visible,
+        charActivity: visible,
+        
+        // Combat stats
+        statAC: visible,
+        statHD: visible,
+        statVD: visible,
+        statSpeed: visible,
+        
+        // Ability scores
+        statSTR: visible,
+        statDEX: visible,
+        statCON: visible,
+        statINT: visible,
+        statWIS: visible,
+        statCHA: visible,
+        statSaves: visible,
+        statSkills: visible,
+        
+        // Abilities
         primaryAbility: visible,
         secondaryAbility: visible && !!pokemon?.secondaryAbility,
         hiddenAbility: visible && !!pokemon?.hiddenAbility,
-        stats: visible,
-        senses: visible,
-        evolution: visible,
+        
+        // Senses
+        senseDarkvision: visible,
+        senseBlindsight: visible,
+        senseTremorsense: visible,
+        senseTrillsense: visible,
+        senseMindsense: visible,
+        
+        // Evolution
+        evoFrom: visible,
+        evoTo: visible,
+        
+        // Moves
         moves: visible,
         movesMaxLevel: visible ? 20 : 1,
         extraVisibleMoves: []
@@ -1460,22 +1509,58 @@ function openPokemonEditModal(pokemonName) {
     
     document.getElementById('editModalPokemonName').textContent = pokemonName;
     
-    // Set all checkboxes
-    document.getElementById('cardEdit_types').checked = vis.types;
+    // Types
+    document.getElementById('cardEdit_primaryType').checked = vis.primaryType;
+    document.getElementById('cardEdit_secondaryType').checked = vis.secondaryType;
+    document.getElementById('cardEdit_secondaryType_row').style.display = pokemon?.secondaryType ? 'flex' : 'none';
+    
+    // Description
     document.getElementById('cardEdit_description').checked = vis.description;
-    document.getElementById('cardEdit_characteristics').checked = vis.characteristics;
+    
+    // Characteristics
+    document.getElementById('cardEdit_charSize').checked = vis.charSize;
+    document.getElementById('cardEdit_charRarity').checked = vis.charRarity;
+    document.getElementById('cardEdit_charBehavior').checked = vis.charBehavior;
+    document.getElementById('cardEdit_charHabitat').checked = vis.charHabitat;
+    document.getElementById('cardEdit_charActivity').checked = vis.charActivity;
+    
+    // Combat stats
+    document.getElementById('cardEdit_statAC').checked = vis.statAC;
+    document.getElementById('cardEdit_statHD').checked = vis.statHD;
+    document.getElementById('cardEdit_statVD').checked = vis.statVD;
+    document.getElementById('cardEdit_statSpeed').checked = vis.statSpeed;
+    
+    // Ability scores
+    document.getElementById('cardEdit_statSTR').checked = vis.statSTR;
+    document.getElementById('cardEdit_statDEX').checked = vis.statDEX;
+    document.getElementById('cardEdit_statCON').checked = vis.statCON;
+    document.getElementById('cardEdit_statINT').checked = vis.statINT;
+    document.getElementById('cardEdit_statWIS').checked = vis.statWIS;
+    document.getElementById('cardEdit_statCHA').checked = vis.statCHA;
+    document.getElementById('cardEdit_statSaves').checked = vis.statSaves;
+    document.getElementById('cardEdit_statSkills').checked = vis.statSkills;
+    
+    // Abilities
     document.getElementById('cardEdit_primaryAbility').checked = vis.primaryAbility;
     document.getElementById('cardEdit_secondaryAbility').checked = vis.secondaryAbility;
     document.getElementById('cardEdit_hiddenAbility').checked = vis.hiddenAbility;
-    document.getElementById('cardEdit_stats').checked = vis.stats;
-    document.getElementById('cardEdit_senses').checked = vis.senses;
-    document.getElementById('cardEdit_evolution').checked = vis.evolution;
-    document.getElementById('cardEdit_moves').checked = vis.moves;
-    document.getElementById('cardEdit_movesMaxLevel').value = vis.movesMaxLevel || 1;
-    
-    // Show/hide ability options based on pokemon
     document.getElementById('cardEdit_secondaryAbility_row').style.display = pokemon?.secondaryAbility ? 'flex' : 'none';
     document.getElementById('cardEdit_hiddenAbility_row').style.display = pokemon?.hiddenAbility ? 'flex' : 'none';
+    
+    // Senses
+    document.getElementById('cardEdit_senseDarkvision').checked = vis.senseDarkvision;
+    document.getElementById('cardEdit_senseBlindsight').checked = vis.senseBlindsight;
+    document.getElementById('cardEdit_senseTremorsense').checked = vis.senseTremorsense;
+    document.getElementById('cardEdit_senseTrillsense').checked = vis.senseTrillsense;
+    document.getElementById('cardEdit_senseMindsense').checked = vis.senseMindsense;
+    
+    // Evolution
+    document.getElementById('cardEdit_evoFrom').checked = vis.evoFrom;
+    document.getElementById('cardEdit_evoTo').checked = vis.evoTo;
+    
+    // Moves
+    document.getElementById('cardEdit_moves').checked = vis.moves;
+    document.getElementById('cardEdit_movesMaxLevel').value = vis.movesMaxLevel || 1;
     
     document.getElementById('pokemonEditModal').classList.add('active');
 }
@@ -1585,15 +1670,53 @@ function handleConfigImport(event) {
 function populateDefaultsTab() {
     const defaults = state.config.defaults || DEFAULT_VISIBILITY;
     
-    document.getElementById('default_types').checked = defaults.types;
+    // Types
+    document.getElementById('default_primaryType').checked = defaults.primaryType;
+    document.getElementById('default_secondaryType').checked = defaults.secondaryType;
+    
+    // Description
     document.getElementById('default_description').checked = defaults.description;
-    document.getElementById('default_characteristics').checked = defaults.characteristics;
+    
+    // Characteristics
+    document.getElementById('default_charSize').checked = defaults.charSize;
+    document.getElementById('default_charRarity').checked = defaults.charRarity;
+    document.getElementById('default_charBehavior').checked = defaults.charBehavior;
+    document.getElementById('default_charHabitat').checked = defaults.charHabitat;
+    document.getElementById('default_charActivity').checked = defaults.charActivity;
+    
+    // Combat stats
+    document.getElementById('default_statAC').checked = defaults.statAC;
+    document.getElementById('default_statHD').checked = defaults.statHD;
+    document.getElementById('default_statVD').checked = defaults.statVD;
+    document.getElementById('default_statSpeed').checked = defaults.statSpeed;
+    
+    // Ability scores
+    document.getElementById('default_statSTR').checked = defaults.statSTR;
+    document.getElementById('default_statDEX').checked = defaults.statDEX;
+    document.getElementById('default_statCON').checked = defaults.statCON;
+    document.getElementById('default_statINT').checked = defaults.statINT;
+    document.getElementById('default_statWIS').checked = defaults.statWIS;
+    document.getElementById('default_statCHA').checked = defaults.statCHA;
+    document.getElementById('default_statSaves').checked = defaults.statSaves;
+    document.getElementById('default_statSkills').checked = defaults.statSkills;
+    
+    // Abilities
     document.getElementById('default_primaryAbility').checked = defaults.primaryAbility;
     document.getElementById('default_secondaryAbility').checked = defaults.secondaryAbility;
     document.getElementById('default_hiddenAbility').checked = defaults.hiddenAbility;
-    document.getElementById('default_stats').checked = defaults.stats;
-    document.getElementById('default_senses').checked = defaults.senses;
-    document.getElementById('default_evolution').checked = defaults.evolution;
+    
+    // Senses
+    document.getElementById('default_senseDarkvision').checked = defaults.senseDarkvision;
+    document.getElementById('default_senseBlindsight').checked = defaults.senseBlindsight;
+    document.getElementById('default_senseTremorsense').checked = defaults.senseTremorsense;
+    document.getElementById('default_senseTrillsense').checked = defaults.senseTrillsense;
+    document.getElementById('default_senseMindsense').checked = defaults.senseMindsense;
+    
+    // Evolution
+    document.getElementById('default_evoFrom').checked = defaults.evoFrom;
+    document.getElementById('default_evoTo').checked = defaults.evoTo;
+    
+    // Moves
     document.getElementById('default_moves').checked = defaults.moves;
     document.getElementById('default_movesMaxLevel').value = defaults.movesMaxLevel || 1;
     
