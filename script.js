@@ -68,12 +68,16 @@ const DEFAULT_VISIBILITY = {
     secondaryAbility: false,
     hiddenAbility: false,
     
-    // Senses (granular)
-    senseDarkvision: false,
-    senseBlindsight: false,
+    // Senses (granular - matching CSV columns)
+    senseSight: false,
+    senseHearing: false,
+    senseSmell: false,
     senseTremorsense: false,
-    senseTrillsense: false,
-    senseMindsense: false,
+    senseEcholocation: false,
+    senseTelepathy: false,
+    senseBlindsight: false,
+    senseDarkvision: false,
+    senseTruesight: false,
     
     // Evolution (granular per target)
     evoFrom: false,           // Show "evolves from" 
@@ -465,15 +469,15 @@ async function processPokemonRow(row) {
         },
         movePool: row.slice(41, 62).filter(move => move !== ""),
         senses: {
-            sight: row[71],
-            hearing: row[72],
-            smell: row[73],
-            tremorsense: row[74],
-            echolocation: row[75],
-            telepathy: row[76],
-            blindsight: row[77],
-            darkvision: row[78],
-            truesight: row[79]
+            sight: row[69],
+            hearing: row[70],
+            smell: row[71],
+            tremorsense: row[72],
+            echolocation: row[73],
+            telepathy: row[74],
+            blindsight: row[75],
+            darkvision: row[76],
+            truesight: row[77]
         }
     };
 }
@@ -816,11 +820,26 @@ function createPokemonCard(pokemon) {
     
     // Senses tab (granular)
     const senseMap = {
-        'Darkvision': 'senseDarkvision',
-        'Blindsight': 'senseBlindsight', 
-        'Tremorsense': 'senseTremorsense',
-        'Trillsense': 'senseTrillsense',
-        'Mindsense': 'senseMindsense'
+        'sight': 'senseSight',
+        'hearing': 'senseHearing',
+        'smell': 'senseSmell',
+        'tremorsense': 'senseTremorsense',
+        'echolocation': 'senseEcholocation',
+        'telepathy': 'senseTelepathy',
+        'blindsight': 'senseBlindsight',
+        'darkvision': 'senseDarkvision',
+        'truesight': 'senseTruesight'
+    };
+    const senseLabels = {
+        'sight': 'Sight',
+        'hearing': 'Hearing',
+        'smell': 'Smell',
+        'tremorsense': 'Tremorsense',
+        'echolocation': 'Echolocation',
+        'telepathy': 'Telepathy',
+        'blindsight': 'Blindsight',
+        'darkvision': 'Darkvision',
+        'truesight': 'Truesight'
     };
     const visibleSenses = Object.entries(pokemon.senses)
         .filter(([k, v]) => {
@@ -833,7 +852,7 @@ function createPokemonCard(pokemon) {
         tabs.push({ id: 'senses', label: 'Senses', icon: '👁️' });
         let content = '<div class="tab-content-inner"><div class="sense-list">';
         visibleSenses.forEach(([k, v]) => {
-            content += `<div class="sense-row"><span class="sense-name">${k}</span><span class="sense-value">${v}</span></div>`;
+            content += `<div class="sense-row"><span class="sense-name">${senseLabels[k] || k}</span><span class="sense-value">${v}</span></div>`;
         });
         content += '</div></div>';
         tabContents.push({ id: 'senses', content });
@@ -1341,11 +1360,15 @@ function setAllVisibility(pokemonName, visible) {
         hiddenAbility: visible && !!pokemon?.hiddenAbility,
         
         // Senses
-        senseDarkvision: visible,
-        senseBlindsight: visible,
+        senseSight: visible,
+        senseHearing: visible,
+        senseSmell: visible,
         senseTremorsense: visible,
-        senseTrillsense: visible,
-        senseMindsense: visible,
+        senseEcholocation: visible,
+        senseTelepathy: visible,
+        senseBlindsight: visible,
+        senseDarkvision: visible,
+        senseTruesight: visible,
         
         // Evolution
         evoFrom: visible,
@@ -1567,7 +1590,7 @@ function openPokemonEditModal(pokemonName) {
     if (hidAbilityRow) hidAbilityRow.style.display = pokemon?.hiddenAbility ? 'flex' : 'none';
     
     // Senses
-    const senseFields = ['Darkvision', 'Blindsight', 'Tremorsense', 'Trillsense', 'Mindsense'];
+    const senseFields = ['Sight', 'Hearing', 'Smell', 'Tremorsense', 'Echolocation', 'Telepathy', 'Blindsight', 'Darkvision', 'Truesight'];
     senseFields.forEach(sense => {
         const el = document.getElementById(`cardEdit_sense${sense}`);
         if (el) el.checked = vis[`sense${sense}`];
@@ -1667,7 +1690,7 @@ function setCategoryVisibility(category, visible) {
         combatStats: ['statAC', 'statHD', 'statVD', 'statSpeed'],
         abilityScores: ['statSTR', 'statDEX', 'statCON', 'statINT', 'statWIS', 'statCHA', 'statSaves', 'statSkills'],
         abilities: ['primaryAbility', 'secondaryAbility', 'hiddenAbility'],
-        senses: ['senseDarkvision', 'senseBlindsight', 'senseTremorsense', 'senseTrillsense', 'senseMindsense'],
+        senses: ['senseSight', 'senseHearing', 'senseSmell', 'senseTremorsense', 'senseEcholocation', 'senseTelepathy', 'senseBlindsight', 'senseDarkvision', 'senseTruesight'],
         moves: ['moves']
     };
     
@@ -1812,11 +1835,15 @@ function populateDefaultsTab() {
     document.getElementById('default_hiddenAbility').checked = defaults.hiddenAbility;
     
     // Senses
-    document.getElementById('default_senseDarkvision').checked = defaults.senseDarkvision;
-    document.getElementById('default_senseBlindsight').checked = defaults.senseBlindsight;
+    document.getElementById('default_senseSight').checked = defaults.senseSight;
+    document.getElementById('default_senseHearing').checked = defaults.senseHearing;
+    document.getElementById('default_senseSmell').checked = defaults.senseSmell;
     document.getElementById('default_senseTremorsense').checked = defaults.senseTremorsense;
-    document.getElementById('default_senseTrillsense').checked = defaults.senseTrillsense;
-    document.getElementById('default_senseMindsense').checked = defaults.senseMindsense;
+    document.getElementById('default_senseEcholocation').checked = defaults.senseEcholocation;
+    document.getElementById('default_senseTelepathy').checked = defaults.senseTelepathy;
+    document.getElementById('default_senseBlindsight').checked = defaults.senseBlindsight;
+    document.getElementById('default_senseDarkvision').checked = defaults.senseDarkvision;
+    document.getElementById('default_senseTruesight').checked = defaults.senseTruesight;
     
     // Evolution
     document.getElementById('default_evoFrom').checked = defaults.evoFrom;
