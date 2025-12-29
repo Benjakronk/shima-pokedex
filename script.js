@@ -1660,16 +1660,18 @@ function updateCardEditField(field) {
 
 function cardEditShowAll() {
     if (!state.editingPokemonName) return;
-    setAllVisibility(state.editingPokemonName, true);
+    const name = state.editingPokemonName;
+    setAllVisibility(name, true);
     closePokemonEditModal();
-    openPokemonEditModal(state.editingPokemonName);
+    openPokemonEditModal(name);
 }
 
 function cardEditHideAll() {
     if (!state.editingPokemonName) return;
-    setAllVisibility(state.editingPokemonName, false);
+    const name = state.editingPokemonName;
+    setAllVisibility(name, false);
     closePokemonEditModal();
-    openPokemonEditModal(state.editingPokemonName);
+    openPokemonEditModal(name);
 }
 
 function setCategoryVisibility(category, visible) {
@@ -1696,23 +1698,30 @@ function setCategoryVisibility(category, visible) {
     
     if (category === 'evolution') {
         vis.evoFrom = visible;
+        // Update the evoFrom checkbox
+        const evoFromEl = document.getElementById('cardEdit_evoFrom');
+        if (evoFromEl) evoFromEl.checked = visible;
+        
         if (pokemon?.evolutionReq) {
             const evoData = parseEvolutionData(pokemon.evolutionReq);
             if (!vis.evoToTargets) vis.evoToTargets = {};
             evoData.evolvesTo.forEach(evo => {
                 vis.evoToTargets[evo.target] = visible;
+                // Update the evo target checkbox
+                const targetEl = document.querySelector(`[data-evo-target="${evo.target}"]`);
+                if (targetEl) targetEl.checked = visible;
             });
         }
     } else if (categoryFields[category]) {
         categoryFields[category].forEach(field => {
             vis[field] = visible;
+            // Update the checkbox
+            const el = document.getElementById(`cardEdit_${field}`);
+            if (el) el.checked = visible;
         });
     }
     
     saveConfigLocally();
-    // Refresh the modal to update checkboxes
-    closePokemonEditModal();
-    openPokemonEditModal(state.editingPokemonName);
 }
 
 function updateEvoTarget(targetName, visible) {

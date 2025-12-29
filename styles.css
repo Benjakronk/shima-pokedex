@@ -549,6 +549,7 @@ body.admin-mode .card-edit-btn {
 .tab-panel {
     display: none;
     padding: var(--space-md);
+    padding-bottom: 0;
     height: 280px;
     box-sizing: border-box;
 }
@@ -784,6 +785,7 @@ body.admin-mode .card-edit-btn {
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
+    padding-bottom: var(--space-md);
 }
 
 .move-group {
@@ -808,10 +810,12 @@ body.admin-mode .card-edit-btn {
 
 .move-entry {
     border-bottom: 1px solid var(--border-color);
+    position: relative;
 }
 
 .move-entry:last-child {
     border-bottom: none;
+    margin-bottom: var(--space-sm);
 }
 
 .move-summary {
@@ -821,6 +825,8 @@ body.admin-mode .card-edit-btn {
     padding: var(--space-sm) var(--space-md);
     cursor: pointer;
     transition: background 0.15s;
+    position: relative;
+    z-index: 1;
 }
 
 .move-summary:active {
