@@ -55,7 +55,8 @@
     "Scrollix",
     "Morbit",
     "Octodendron",
-    "Snift"
+    "Snift",
+    "Datagus"
   ],
   "visibility": {
     "octuber": {
@@ -854,6 +855,43 @@
       "statSaves": false,
       "statSkills": false,
       "evoFrom": true
+    },
+    "datagus": {
+      "types": false,
+      "description": true,
+      "characteristics": false,
+      "primaryAbility": true,
+      "secondaryAbility": true,
+      "hiddenAbility": false,
+      "stats": false,
+      "senses": false,
+      "evolution": false,
+      "moves": true,
+      "movesMaxLevel": 5,
+      "extraVisibleMoves": [],
+      "statAC": true,
+      "statHD": true,
+      "statVD": true,
+      "statSpeed": true,
+      "statSTR": true,
+      "statDEX": true,
+      "statCON": true,
+      "statINT": true,
+      "statWIS": true,
+      "statCHA": true,
+      "statSaves": true,
+      "statSkills": true,
+      "senseSight": true,
+      "senseHearing": true,
+      "senseSmell": true,
+      "senseTremorsense": true,
+      "senseEcholocation": true,
+      "senseTelepathy": true,
+      "senseBlindsight": true,
+      "senseDarkvision": true,
+      "senseTruesight": true,
+      "evoFrom": true,
+      "evoToTargets": {}
     }
   },
   "defaults": {
