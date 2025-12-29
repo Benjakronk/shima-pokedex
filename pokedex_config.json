@@ -54,7 +54,8 @@
     "Skarling",
     "Scrollix",
     "Morbit",
-    "Octodendron"
+    "Octodendron",
+    "Snift"
   ],
   "visibility": {
     "octuber": {
@@ -826,6 +827,33 @@
       "moves": true,
       "movesMaxLevel": 6,
       "extraVisibleMoves": []
+    },
+    "snift": {
+      "types": false,
+      "description": true,
+      "characteristics": false,
+      "primaryAbility": true,
+      "secondaryAbility": false,
+      "hiddenAbility": false,
+      "stats": false,
+      "senses": false,
+      "evolution": false,
+      "moves": true,
+      "movesMaxLevel": 8,
+      "extraVisibleMoves": [],
+      "statAC": false,
+      "statHD": false,
+      "statVD": false,
+      "statSpeed": false,
+      "statSTR": false,
+      "statDEX": false,
+      "statCON": false,
+      "statINT": false,
+      "statWIS": false,
+      "statCHA": false,
+      "statSaves": false,
+      "statSkills": false,
+      "evoFrom": true
     }
   },
   "defaults": {
