@@ -389,14 +389,7 @@ async function loadConfig() {
         const response = await fetch(CONFIG_URL + '?t=' + Date.now());
         if (response.ok) {
             const config = await response.json();
-            // Ensure all required fields exist
-            const fullConfig = {
-                registered: config.registered || [],
-                visibility: config.visibility || {},
-                defaults: config.defaults || { ...DEFAULT_VISIBILITY },
-                extraSearchableMoves: config.extraSearchableMoves || [],
-                splashCount: config.splashCount || DEFAULT_SPLASH_COUNT
-            };
+            const fullConfig = migrateConfig(config);
             setCachedData(CACHE_KEYS.CONFIG, fullConfig);
             updateCacheTimestamp(CACHE_KEYS.CONFIG);
             console.log('Loaded config from GitHub');
@@ -410,13 +403,7 @@ async function loadConfig() {
     const cached = getCachedData(CACHE_KEYS.CONFIG);
     if (cached) {
         console.log('Using cached config');
-        return {
-            registered: cached.registered || [],
-            visibility: cached.visibility || {},
-            defaults: cached.defaults || { ...DEFAULT_VISIBILITY },
-            extraSearchableMoves: cached.extraSearchableMoves || [],
-            splashCount: cached.splashCount || DEFAULT_SPLASH_COUNT
-        };
+        return migrateConfig(cached);
     }
     
     // Return default config if nothing else available
@@ -579,11 +566,114 @@ function isRegistered(pokemonName) {
     return state.config.registered.some(name => name.toLowerCase() === pokemonName.toLowerCase());
 }
 
+// Migrate old visibility format to new granular format and ensure all fields exist
+function migrateVisibility(vis) {
+    if (!vis) return { ...DEFAULT_VISIBILITY };
+    
+    const migrated = { ...DEFAULT_VISIBILITY, ...vis };
+    
+    // Migrate types -> primaryType, secondaryType
+    if ('types' in vis) {
+        if (!('primaryType' in vis)) migrated.primaryType = vis.types;
+        if (!('secondaryType' in vis)) migrated.secondaryType = vis.types;
+        delete migrated.types;
+    }
+    
+    // Migrate characteristics -> individual char fields
+    if ('characteristics' in vis) {
+        if (!('charSize' in vis)) migrated.charSize = vis.characteristics;
+        if (!('charRarity' in vis)) migrated.charRarity = vis.characteristics;
+        if (!('charBehavior' in vis)) migrated.charBehavior = vis.characteristics;
+        if (!('charHabitat' in vis)) migrated.charHabitat = vis.characteristics;
+        if (!('charActivity' in vis)) migrated.charActivity = vis.characteristics;
+        delete migrated.characteristics;
+    }
+    
+    // Migrate stats -> individual stat fields
+    if ('stats' in vis) {
+        if (!('statAC' in vis)) migrated.statAC = vis.stats;
+        if (!('statHD' in vis)) migrated.statHD = vis.stats;
+        if (!('statVD' in vis)) migrated.statVD = vis.stats;
+        if (!('statSpeed' in vis)) migrated.statSpeed = vis.stats;
+        if (!('statSTR' in vis)) migrated.statSTR = vis.stats;
+        if (!('statDEX' in vis)) migrated.statDEX = vis.stats;
+        if (!('statCON' in vis)) migrated.statCON = vis.stats;
+        if (!('statINT' in vis)) migrated.statINT = vis.stats;
+        if (!('statWIS' in vis)) migrated.statWIS = vis.stats;
+        if (!('statCHA' in vis)) migrated.statCHA = vis.stats;
+        if (!('statSaves' in vis)) migrated.statSaves = vis.stats;
+        if (!('statSkills' in vis)) migrated.statSkills = vis.stats;
+        delete migrated.stats;
+    }
+    
+    // Migrate old sense names to new ones
+    if ('senses' in vis) {
+        if (!('senseSight' in vis)) migrated.senseSight = vis.senses;
+        if (!('senseHearing' in vis)) migrated.senseHearing = vis.senses;
+        if (!('senseSmell' in vis)) migrated.senseSmell = vis.senses;
+        if (!('senseTremorsense' in vis)) migrated.senseTremorsense = vis.senses;
+        if (!('senseEcholocation' in vis)) migrated.senseEcholocation = vis.senses;
+        if (!('senseTelepathy' in vis)) migrated.senseTelepathy = vis.senses;
+        if (!('senseBlindsight' in vis)) migrated.senseBlindsight = vis.senses;
+        if (!('senseDarkvision' in vis)) migrated.senseDarkvision = vis.senses;
+        if (!('senseTruesight' in vis)) migrated.senseTruesight = vis.senses;
+        delete migrated.senses;
+    }
+    
+    // Migrate old sense field names (Trillsense, Mindsense don't exist)
+    if ('senseTrillsense' in vis) delete migrated.senseTrillsense;
+    if ('senseMindsense' in vis) delete migrated.senseMindsense;
+    
+    // Migrate evolution -> evoFrom, evoToTargets
+    if ('evolution' in vis) {
+        if (!('evoFrom' in vis)) migrated.evoFrom = vis.evolution;
+        if (!('evoTo' in vis)) migrated.evoTo = vis.evolution;
+        if (!('evoToTargets' in vis)) migrated.evoToTargets = {};
+        delete migrated.evolution;
+    }
+    
+    // Ensure evoToTargets is always an object
+    if (!migrated.evoToTargets || typeof migrated.evoToTargets !== 'object') {
+        migrated.evoToTargets = {};
+    }
+    
+    // Ensure extraVisibleMoves is always an array
+    if (!Array.isArray(migrated.extraVisibleMoves)) {
+        migrated.extraVisibleMoves = [];
+    }
+    
+    return migrated;
+}
+
+// Migrate entire config object
+function migrateConfig(config) {
+    if (!config) return { ...DEFAULT_CONFIG };
+    
+    const migrated = {
+        registered: config.registered || [],
+        visibility: {},
+        defaults: migrateVisibility(config.defaults),
+        extraSearchableMoves: config.extraSearchableMoves || [],
+        splashCount: config.splashCount || DEFAULT_SPLASH_COUNT
+    };
+    
+    // Migrate per-pokemon visibility
+    if (config.visibility) {
+        Object.keys(config.visibility).forEach(key => {
+            migrated.visibility[key] = migrateVisibility(config.visibility[key]);
+        });
+    }
+    
+    return migrated;
+}
+
 function getVisibility(pokemonName) {
     const key = pokemonName.toLowerCase();
     const vis = state.config.visibility[key];
-    if (vis) return { ...DEFAULT_VISIBILITY, ...vis };
-    return { ...state.config.defaults };
+    if (vis) {
+        return migrateVisibility(vis);
+    }
+    return migrateVisibility(state.config.defaults);
 }
 
 // ===========================================
@@ -1291,7 +1381,7 @@ function toggleRegistration(pokemonName) {
         showToast(`${pokemonName} unregistered`, 'success');
     } else {
         state.config.registered.push(pokemonName);
-        state.config.visibility[pokemonName.toLowerCase()] = { ...state.config.defaults };
+        state.config.visibility[pokemonName.toLowerCase()] = migrateVisibility(state.config.defaults);
         showToast(`${pokemonName} registered`, 'success');
     }
     
@@ -1304,7 +1394,7 @@ function toggleRegistration(pokemonName) {
 function updateVisibilityField(pokemonName, field, value) {
     const key = pokemonName.toLowerCase();
     if (!state.config.visibility[key]) {
-        state.config.visibility[key] = { ...state.config.defaults };
+        state.config.visibility[key] = migrateVisibility(state.config.defaults);
     }
     state.config.visibility[key][field] = value;
     saveConfigLocally();
@@ -1395,7 +1485,7 @@ function registerSelected() {
         const name = cb.dataset.name;
         if (!isRegistered(name)) {
             state.config.registered.push(name);
-            state.config.visibility[name.toLowerCase()] = { ...state.config.defaults };
+            state.config.visibility[name.toLowerCase()] = migrateVisibility(state.config.defaults);
             count++;
         }
         cb.checked = false;
@@ -1502,7 +1592,7 @@ function updateMoveEditLevel() {
     const key = state.editingPokemonName.toLowerCase();
     
     if (!state.config.visibility[key]) {
-        state.config.visibility[key] = { ...state.config.defaults };
+        state.config.visibility[key] = migrateVisibility(state.config.defaults);
     }
     state.config.visibility[key].movesMaxLevel = level;
     
@@ -1516,7 +1606,7 @@ function toggleExtraMove(moveName, isChecked) {
     
     const key = state.editingPokemonName.toLowerCase();
     if (!state.config.visibility[key]) {
-        state.config.visibility[key] = { ...state.config.defaults };
+        state.config.visibility[key] = migrateVisibility(state.config.defaults);
     }
     if (!state.config.visibility[key].extraVisibleMoves) {
         state.config.visibility[key].extraVisibleMoves = [];
@@ -1646,7 +1736,7 @@ function updateCardEditField(field) {
     
     const key = state.editingPokemonName.toLowerCase();
     if (!state.config.visibility[key]) {
-        state.config.visibility[key] = { ...state.config.defaults };
+        state.config.visibility[key] = migrateVisibility(state.config.defaults);
     }
     
     if (field === 'movesMaxLevel') {
@@ -1679,7 +1769,7 @@ function setCategoryVisibility(category, visible) {
     
     const key = state.editingPokemonName.toLowerCase();
     if (!state.config.visibility[key]) {
-        state.config.visibility[key] = { ...state.config.defaults };
+        state.config.visibility[key] = migrateVisibility(state.config.defaults);
     }
     
     const vis = state.config.visibility[key];
@@ -1729,7 +1819,7 @@ function updateEvoTarget(targetName, visible) {
     
     const key = state.editingPokemonName.toLowerCase();
     if (!state.config.visibility[key]) {
-        state.config.visibility[key] = { ...state.config.defaults };
+        state.config.visibility[key] = migrateVisibility(state.config.defaults);
     }
     
     if (!state.config.visibility[key].evoToTargets) {
@@ -1775,16 +1865,11 @@ function handleConfigImport(event) {
         try {
             const config = JSON.parse(e.target.result);
             if (!config.registered || !Array.isArray(config.registered)) {
-                throw new Error('Invalid config');
+                throw new Error('Invalid config: missing registered array');
             }
             
-            state.config = {
-                registered: config.registered || [],
-                visibility: config.visibility || {},
-                defaults: config.defaults || { ...DEFAULT_VISIBILITY },
-                extraSearchableMoves: config.extraSearchableMoves || [],
-                splashCount: config.splashCount || DEFAULT_SPLASH_COUNT
-            };
+            // Migrate to ensure all fields exist
+            state.config = migrateConfig(config);
             
             saveConfigLocally();
             populateAdminPokemonList();
@@ -1806,7 +1891,7 @@ function handleConfigImport(event) {
 // ===========================================
 
 function populateDefaultsTab() {
-    const defaults = state.config.defaults || DEFAULT_VISIBILITY;
+    const defaults = migrateVisibility(state.config.defaults);
     
     // Types
     document.getElementById('default_primaryType').checked = defaults.primaryType;
@@ -1868,7 +1953,7 @@ function populateDefaultsTab() {
 
 function updateDefault(field) {
     if (!state.config.defaults) {
-        state.config.defaults = { ...DEFAULT_VISIBILITY };
+        state.config.defaults = migrateVisibility(null);
     }
     
     if (field === 'movesMaxLevel') {
