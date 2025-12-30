@@ -1103,7 +1103,8 @@
       "senseTruesight": true,
       "evoToTargets": {
         "Octuber": true
-      }
+      },
+      "primaryType": false
     },
     "datagus": {
       "types": false,
