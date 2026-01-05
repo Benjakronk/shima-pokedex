@@ -63,7 +63,8 @@
     "Dracquatic",
     "Flarelex",
     "Toxeak",
-    "Elking"
+    "Elking",
+    "Redoute"
   ],
   "visibility": {
     "octuber": {
@@ -2679,6 +2680,48 @@
       },
       "moves": true,
       "movesMaxLevel": 10,
+      "extraVisibleMoves": []
+    },
+    "redoute": {
+      "primaryType": false,
+      "secondaryType": false,
+      "description": false,
+      "charSize": false,
+      "charRarity": false,
+      "charBehavior": false,
+      "charHabitat": false,
+      "charActivity": false,
+      "statAC": false,
+      "statHD": false,
+      "statVD": false,
+      "statSpeed": false,
+      "statSTR": false,
+      "statDEX": false,
+      "statCON": false,
+      "statINT": false,
+      "statWIS": false,
+      "statCHA": false,
+      "statSaves": false,
+      "statSkills": false,
+      "primaryAbility": false,
+      "secondaryAbility": false,
+      "hiddenAbility": false,
+      "senseSight": false,
+      "senseHearing": false,
+      "senseSmell": false,
+      "senseTremorsense": false,
+      "senseEcholocation": false,
+      "senseTelepathy": false,
+      "senseBlindsight": false,
+      "senseDarkvision": false,
+      "senseTruesight": false,
+      "evoFrom": false,
+      "evoTo": false,
+      "evoToTargets": {
+        "Igniscairn": true
+      },
+      "moves": false,
+      "movesMaxLevel": 1,
       "extraVisibleMoves": []
     }
   },
