@@ -62,7 +62,8 @@
     "Igniscairn",
     "Dracquatic",
     "Flarelex",
-    "Toxeak"
+    "Toxeak",
+    "Elking"
   ],
   "visibility": {
     "octuber": {
@@ -2636,6 +2637,48 @@
       },
       "moves": false,
       "movesMaxLevel": 1,
+      "extraVisibleMoves": []
+    },
+    "elking": {
+      "primaryType": true,
+      "secondaryType": true,
+      "description": true,
+      "charSize": true,
+      "charRarity": true,
+      "charBehavior": true,
+      "charHabitat": true,
+      "charActivity": true,
+      "statAC": true,
+      "statHD": true,
+      "statVD": true,
+      "statSpeed": true,
+      "statSTR": true,
+      "statDEX": true,
+      "statCON": true,
+      "statINT": true,
+      "statWIS": true,
+      "statCHA": true,
+      "statSaves": true,
+      "statSkills": true,
+      "primaryAbility": true,
+      "secondaryAbility": true,
+      "hiddenAbility": false,
+      "senseSight": true,
+      "senseHearing": true,
+      "senseSmell": true,
+      "senseTremorsense": true,
+      "senseEcholocation": true,
+      "senseTelepathy": true,
+      "senseBlindsight": true,
+      "senseDarkvision": true,
+      "senseTruesight": true,
+      "evoFrom": true,
+      "evoTo": false,
+      "evoToTargets": {
+        "Igniscairn": true
+      },
+      "moves": true,
+      "movesMaxLevel": 10,
       "extraVisibleMoves": []
     }
   },
