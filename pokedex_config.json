@@ -2423,6 +2423,7 @@
       "senseDarkvision": true,
       "senseTruesight": true,
       "evoFrom": true,
+      "evoTo": false,
       "evoToTargets": {
         "Scorab": true
       },
@@ -2768,5 +2769,5 @@
     "extraVisibleMoves": []
   },
   "extraSearchableMoves": [],
-  "splashCount": 45
+  "splashCount": 49
 }
