@@ -70,7 +70,8 @@
     "Terratops",
     "Poochyena",
     "Armful",
-    "Merchent"
+    "Merchent",
+    "Tangela (Stalker Form)"
   ],
   "visibility": {
     "octuber": {
@@ -2996,6 +2997,50 @@
       },
       "moves": false,
       "movesMaxLevel": 1,
+      "extraVisibleMoves": []
+    },
+    "tangela (stalker form)": {
+      "primaryType": true,
+      "secondaryType": true,
+      "description": true,
+      "charSize": true,
+      "charRarity": false,
+      "charBehavior": false,
+      "charHabitat": false,
+      "charActivity": false,
+      "statAC": true,
+      "statHD": true,
+      "statVD": true,
+      "statSpeed": true,
+      "statSTR": true,
+      "statDEX": true,
+      "statCON": true,
+      "statINT": true,
+      "statWIS": true,
+      "statCHA": true,
+      "statSaves": true,
+      "statSkills": true,
+      "primaryAbility": true,
+      "secondaryAbility": true,
+      "hiddenAbility": false,
+      "senseSight": true,
+      "senseHearing": true,
+      "senseSmell": true,
+      "senseTremorsense": true,
+      "senseEcholocation": true,
+      "senseTelepathy": true,
+      "senseBlindsight": true,
+      "senseDarkvision": true,
+      "senseTruesight": true,
+      "evoFrom": true,
+      "evoTo": false,
+      "evoToTargets": {
+        "Igniscairn": true,
+        "Albaross": true,
+        "Mightyena": true
+      },
+      "moves": true,
+      "movesMaxLevel": 6,
       "extraVisibleMoves": []
     }
   },
