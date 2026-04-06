@@ -161,7 +161,10 @@ function parseEvolutionData(evolutionReq) {
     if (!evolutionReq || evolutionReq === '-' || evolutionReq.trim() === '') {
         return { evolvesTo: [], evolvesFrom: null };
     }
-    
+
+    // Google Sheets multi-line cell values come through with literal \n — collapse to spaces
+    evolutionReq = evolutionReq.replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
+
     const result = { evolvesTo: [], evolvesFrom: null };
     const parts = evolutionReq.split(';').map(p => p.trim()).filter(p => p);
     
