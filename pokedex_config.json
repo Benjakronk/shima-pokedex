@@ -2440,8 +2440,8 @@
       "evoToTargets": {
         "Scorab": true
       },
-      "moves": false,
-      "movesMaxLevel": 1,
+      "moves": true,
+      "movesMaxLevel": 6,
       "extraVisibleMoves": []
     },
     "scorab": {
