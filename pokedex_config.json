@@ -3132,7 +3132,8 @@
       "evoToTargets": {
         "Igniscairn": true,
         "Albaross": true,
-        "Mightyena": true
+        "Mightyena": true,
+        "Vaultargo": true
       },
       "moves": false,
       "movesMaxLevel": 1,
@@ -3176,7 +3177,8 @@
       "evoToTargets": {
         "Igniscairn": true,
         "Albaross": true,
-        "Mightyena": true
+        "Mightyena": true,
+        "Vaultargo": true
       },
       "moves": false,
       "movesMaxLevel": 1,
@@ -3220,7 +3222,8 @@
       "evoToTargets": {
         "Igniscairn": true,
         "Albaross": true,
-        "Mightyena": true
+        "Mightyena": true,
+        "Vaultargo": true
       },
       "moves": false,
       "movesMaxLevel": 1,
@@ -3264,7 +3267,8 @@
       "evoToTargets": {
         "Igniscairn": true,
         "Albaross": true,
-        "Mightyena": true
+        "Mightyena": true,
+        "Vaultargo": true
       },
       "moves": false,
       "movesMaxLevel": 1,
@@ -3309,7 +3313,8 @@
     "evoToTargets": {
       "Igniscairn": true,
       "Albaross": true,
-      "Mightyena": true
+      "Mightyena": true,
+      "Vaultargo": true
     },
     "moves": false,
     "movesMaxLevel": 1,
