@@ -15,7 +15,7 @@ const TYPE_COLORS = {
     steel: '#B8B8D0', fairy: '#EE99AC', cosmic: '#2E1F5E'
 };
 
-const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/images/';
+const IMAGE_BASE_URL = 'https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/images/pokemon/';
 const SPLASH_BASE_URL = 'https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/images/splashes/';
 const DEFAULT_SPLASH_COUNT = 9; // Fallback if not in config
 const IMAGE_FORMATS = ['png', 'jpg', 'jpeg', 'jfif'];
