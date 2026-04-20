@@ -77,7 +77,8 @@
     "Flintle",
     "Squirtle",
     "Vaultile",
-    "Pixee"
+    "Pixee",
+    "Voltey"
   ],
   "visibility": {
     "octuber": {
@@ -3320,6 +3321,51 @@
       },
       "moves": true,
       "movesMaxLevel": 9,
+      "extraVisibleMoves": []
+    },
+    "voltey": {
+      "primaryType": true,
+      "secondaryType": true,
+      "description": true,
+      "charSize": true,
+      "charRarity": true,
+      "charBehavior": true,
+      "charHabitat": true,
+      "charActivity": true,
+      "statAC": true,
+      "statHD": true,
+      "statVD": true,
+      "statSpeed": true,
+      "statSTR": true,
+      "statDEX": true,
+      "statCON": true,
+      "statINT": true,
+      "statWIS": true,
+      "statCHA": true,
+      "statSaves": true,
+      "statSkills": true,
+      "primaryAbility": true,
+      "secondaryAbility": false,
+      "hiddenAbility": false,
+      "senseSight": true,
+      "senseHearing": true,
+      "senseSmell": true,
+      "senseTremorsense": true,
+      "senseEcholocation": true,
+      "senseTelepathy": true,
+      "senseBlindsight": true,
+      "senseDarkvision": true,
+      "senseTruesight": true,
+      "evoFrom": false,
+      "evoTo": false,
+      "evoToTargets": {
+        "Igniscairn": true,
+        "Albaross": true,
+        "Mightyena": true,
+        "Vaultargo": true
+      },
+      "moves": true,
+      "movesMaxLevel": 4,
       "extraVisibleMoves": []
     }
   },
