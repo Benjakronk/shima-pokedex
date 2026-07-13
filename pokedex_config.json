@@ -82,7 +82,8 @@
     "Pebbling",
     "Corscout",
     "Flareblit",
-    "Beorkub"
+    "Beorkub",
+    "Shimmeral"
   ],
   "visibility": {
     "octuber": {
@@ -3553,6 +3554,52 @@
       "moves": true,
       "movesMaxLevel": 6,
       "extraVisibleMoves": []
+    },
+    "shimmeral": {
+      "primaryType": true,
+      "secondaryType": true,
+      "description": true,
+      "charSize": true,
+      "charRarity": true,
+      "charBehavior": true,
+      "charHabitat": true,
+      "charActivity": true,
+      "statAC": true,
+      "statHD": true,
+      "statVD": true,
+      "statSpeed": true,
+      "statSTR": true,
+      "statDEX": true,
+      "statCON": true,
+      "statINT": true,
+      "statWIS": true,
+      "statCHA": true,
+      "statSaves": true,
+      "statSkills": true,
+      "primaryAbility": true,
+      "secondaryAbility": false,
+      "hiddenAbility": false,
+      "senseSight": true,
+      "senseHearing": true,
+      "senseSmell": true,
+      "senseTremorsense": true,
+      "senseEcholocation": true,
+      "senseTelepathy": true,
+      "senseBlindsight": true,
+      "senseDarkvision": true,
+      "senseTruesight": true,
+      "evoFrom": false,
+      "evoTo": false,
+      "evoToTargets": {
+        "Igniscairn": true,
+        "Albaross": true,
+        "Mightyena": true,
+        "Vaultargo": true,
+        "Dansaic": false
+      },
+      "moves": true,
+      "movesMaxLevel": 4,
+      "extraVisibleMoves": []
     }
   },
   "defaults": {
@@ -3594,7 +3641,8 @@
       "Igniscairn": true,
       "Albaross": true,
       "Mightyena": true,
-      "Vaultargo": true
+      "Vaultargo": true,
+      "Dansaic": false
     },
     "moves": false,
     "movesMaxLevel": 1,
