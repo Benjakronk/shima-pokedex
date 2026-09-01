@@ -1,0 +1,14 @@
+{
+  "kind": "shima-world-clock",
+  "version": 1,
+  "exportedAt": "2026-07-13T20:48:58.837Z",
+  "worldClock": {
+    "year": 848,
+    "month": 2,
+    "day": 14,
+    "hour": 18,
+    "minute": 15,
+    "weather": "overcast",
+    "events": []
+  }
+}
