@@ -29,7 +29,9 @@ python download.py
 
 **Views**: Pokédex browser, Move Library, and Admin panel. Navigation is purely DOM manipulation — no router.
 
-**Admin mode**: Password-protected (`shimamaster`), toggles visibility for each field per Pokémon, writes changes back to `pokedex_config.json` via GitHub API.
+**Admin mode**: Password-protected (`shimamaster`), toggles visibility for each field per Pokémon. Changes live in `localStorage` until exported; **Export** downloads `pokedex_config.json` to commit back to this repo.
+
+**Trainer Tool push**: The admin panel's **Push Live** button POSTs the current config to the Trainer Tool on Scorelax's Raspberry Pi (`PI_PUSH_URL` in `script.js`), so visibility changes reach players immediately instead of waiting on GitHub raw's CDN cache. Requires this device to be on the Pi's Tailscale network and a push key from Scorelax, prompted for once and stored in `localStorage` (`shima_pi_push_key`) — never commit it, this repo is public. GitHub stays the source of truth; if the push fails the Trainer Tool catches up on its next refresh.
 
 ## Key Config Files
 

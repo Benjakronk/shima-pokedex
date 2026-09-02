@@ -21,6 +21,15 @@ const DEFAULT_SPLASH_COUNT = 9; // Fallback if not in config
 const IMAGE_FORMATS = ['png', 'jpg', 'jpeg', 'jfif'];
 const CONFIG_URL = 'https://raw.githubusercontent.com/Benjakronk/shima-pokedex/main/pokedex_config.json';
 
+// Trainer Tool backend, running on Scorelax's Raspberry Pi. Only reachable from
+// devices signed in to its Tailscale network. GitHub raw above stays the source
+// of truth for pokedex_config.json — pushing here just skips the CDN's cache so
+// visibility changes reach players immediately instead of up to 5 minutes later.
+const PI_PUSH_URL = 'https://scorelaxpi.tail32272d.ts.net/api/upstream-push';
+// Shared secret from Scorelax. Prompted for once and kept in localStorage —
+// deliberately NOT a constant, since this repo is public.
+const PI_PUSH_KEY_STORAGE = 'shima_pi_push_key';
+
 const CACHE_KEYS = {
     POKEMON_DATA: 'shima_pokemon_data',
     MOVE_DATA: 'shima_move_data',
@@ -1834,13 +1843,71 @@ function updateEvoTarget(targetName, visible) {
 }
 
 // ===========================================
-// CONFIG IMPORT/EXPORT
+// CONFIG PERSISTENCE
 // ===========================================
 
 function saveConfigLocally() {
     setCachedData(CACHE_KEYS.CONFIG, state.config);
     updateCacheTimestamp(CACHE_KEYS.CONFIG);
 }
+
+// ===========================================
+// TRAINER TOOL PUSH
+// ===========================================
+
+// GitHub stays the source of truth — keep exporting and committing
+// pokedex_config.json as normal. This is only a fast path; if it fails, the
+// Trainer Tool catches up on its own next refresh.
+async function pushConfigToPi() {
+    if (!state.isAdminMode) return;
+
+    const pushKey = getPiPushKey();
+    if (!pushKey) return;
+
+    const btn = document.getElementById('pushConfigBtn');
+    if (btn) { btn.disabled = true; btn.textContent = '📡 Pushing…'; }
+
+    try {
+        let res;
+        try {
+            res = await fetch(PI_PUSH_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-Push-Key': pushKey },
+                body: JSON.stringify({ dataset: 'pokedex-config', data: state.config })
+            });
+        } catch (e) {
+            // Network-level failure — almost always "not on the tailnet"
+            throw new Error('Cannot reach the Pi — is this device on Tailscale?');
+        }
+
+        if (res.status === 401 || res.status === 403) {
+            localStorage.removeItem(PI_PUSH_KEY_STORAGE);
+            throw new Error('Push key rejected — you will be asked for it again');
+        }
+        if (!res.ok) throw new Error(`Pi returned ${res.status}`);
+
+        showToast('Config pushed — live for players now', 'success');
+    } catch (e) {
+        console.warn('Pi push failed (GitHub stays source of truth):', e);
+        showToast(`Push failed: ${e.message}`, 'error');
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = '📡 Push Live'; }
+    }
+}
+
+function getPiPushKey() {
+    let key = localStorage.getItem(PI_PUSH_KEY_STORAGE);
+    if (!key) {
+        key = (prompt('Trainer Tool push key (ask Scorelax):') || '').trim();
+        if (!key) return null;
+        localStorage.setItem(PI_PUSH_KEY_STORAGE, key);
+    }
+    return key;
+}
+
+// ===========================================
+// CONFIG IMPORT/EXPORT
+// ===========================================
 
 function exportConfig() {
     const blob = new Blob([JSON.stringify(state.config, null, 2)], { type: 'application/json' });
